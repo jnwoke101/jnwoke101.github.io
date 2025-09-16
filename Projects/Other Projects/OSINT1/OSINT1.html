@@ -42,45 +42,36 @@
       border-radius: 8px;
     }
 
-    /* Rhombus styling */
-    .rhombus-container {
-      position: relative;
-      width: 100%;
-      max-width: 650px;
-      margin: 3rem auto;
-    }
-    .rhombus {
+    /* Slanted box styling */
+    .slanted-box {
       background-color: #0d1117;
       border: 2px solid #2ac3de;
-      transform: rotate(45deg);
-      padding: 3rem;
-      text-align: center;
-      width: 100%;
-      height: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      transform: skew(-10deg);
+      padding: 2rem;
+      margin: 3rem auto;
+      max-width: 650px;
       position: relative;
     }
-    .rhombus-content {
-      transform: rotate(-45deg);
+    .slanted-content {
+      transform: skew(10deg); /* Reverses the parent skew so text is normal */
       color: #c9d1d9;
-      max-width: 400px;
-      margin: 0 auto;
+      text-align: center;
     }
-    .rhombus h3 {
+    .slanted-content h3 {
       color: #2ac3de;
-      margin-bottom: 0.5rem;
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
       font-weight: bold;
     }
-    .rhombus p, .rhombus ul {
-      font-size: 0.9rem;
-      line-height: 1.4rem;
+    .slanted-content p {
+      font-size: 0.95rem;
+      line-height: 1.5rem;
     }
-    .rhombus ul {
+    .slanted-content ul {
       text-align: left;
       margin-top: 0.75rem;
+      font-size: 0.9rem;
+      line-height: 1.4rem;
     }
   </style>
 </head>
@@ -143,43 +134,39 @@
       </div>
     </div>
 
-    <!-- Purpose inside Rhombus -->
-    <div class="rhombus-container">
-      <div class="rhombus">
-        <div class="rhombus-content">
-          <h3>Purpose</h3>
-          <p>
-            The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to
-            identify potential attack vectors and risks. The target company chosen is a publicly traded entity,
-            ensuring legality and transparency.
-          </p>
-        </div>
+    <!-- Purpose inside Slanted Box -->
+    <div class="slanted-box">
+      <div class="slanted-content">
+        <h3>Purpose</h3>
+        <p>
+          The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to
+          identify potential attack vectors and risks. The target company chosen is a publicly traded entity,
+          ensuring legality and transparency.
+        </p>
       </div>
     </div>
 
-    <!-- Scope inside Rhombus -->
-    <div class="rhombus-container">
-      <div class="rhombus">
-        <div class="rhombus-content">
-          <h3>Scope</h3>
-          <p>
-            The scope of this project is strictly <strong>passive reconnaissance</strong>. Only publicly available data was collected
-            and analyzed. This includes:
-          </p>
-          <ul class="list-disc list-inside mt-2">
-            <li>Reviewing public DNS records</li>
-            <li>Gathering domain registration details via Whois</li>
-            <li>Collecting publicly available email addresses and subdomains using theHarvester</li>
-            <li>Extracting executive information from SEC filings</li>
-            <li>Using search engines to cross-reference and validate data</li>
-          </ul>
-          <p class="mt-4"><strong>Out of Scope:</strong></p>
-          <ul class="list-disc list-inside mt-2">
-            <li>No network scanning, port scanning, or vulnerability scanning was conducted</li>
-            <li>No attempts were made to exploit systems or gain unauthorized access</li>
-            <li>No social engineering or direct contact with Microsoft personnel</li>
-          </ul>
-        </div>
+    <!-- Scope inside Slanted Box -->
+    <div class="slanted-box">
+      <div class="slanted-content">
+        <h3>Scope</h3>
+        <p>
+          The scope of this project is strictly <strong>passive reconnaissance</strong>. Only publicly available data was collected
+          and analyzed. This includes:
+        </p>
+        <ul class="list-disc list-inside mt-2">
+          <li>Reviewing public DNS records</li>
+          <li>Gathering domain registration details via Whois</li>
+          <li>Collecting publicly available email addresses and subdomains using theHarvester</li>
+          <li>Extracting executive information from SEC filings</li>
+          <li>Using search engines to cross-reference and validate data</li>
+        </ul>
+        <p class="mt-4"><strong>Out of Scope:</strong></p>
+        <ul class="list-disc list-inside mt-2">
+          <li>No network scanning, port scanning, or vulnerability scanning was conducted</li>
+          <li>No attempts were made to exploit systems or gain unauthorized access</li>
+          <li>No social engineering or direct contact with Microsoft personnel</li>
+        </ul>
       </div>
     </div>
 
