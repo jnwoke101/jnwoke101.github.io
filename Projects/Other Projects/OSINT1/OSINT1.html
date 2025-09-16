@@ -31,9 +31,19 @@
   <section class="max-w-6xl mx-auto bg-[#161b22] p-6 rounded-lg">
     <h2 class="text-3xl text-[#2ac3de] mb-4">Project: OSINT Reconnaissance Report</h2>
 
+    <!-- Disclosure -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Disclosure</h3>
-    <p><strong>Target:</strong> Microsoft</p>
+    <p>
+      This report was created solely for educational and portfolio purposes. All information presented was gathered from
+      publicly available sources, such as search engines, public DNS records, and SEC filings. No scanning, intrusion, or
+      exploitation of Microsoft’s systems was performed. The intent of this project is to demonstrate the process of passive
+      reconnaissance and raise awareness about the types of data that are accessible to potential attackers.
+    </p>
+    <p class="mt-4">
+      Microsoft has not endorsed or requested this report, and no confidential or proprietary data is included.
+    </p>
 
+    <!-- Tools Used -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Tools Used</h3>
     <ul class="list-disc list-inside space-y-1">
       <li>theHarvester</li>
@@ -41,19 +51,49 @@
       <li>SEC's EDGAR</li>
     </ul>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Purpose</h3>
-    <p>The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to identify potential attack vectors and risks. The target company chosen is a publicly traded entity, ensuring legality and transparency.</p>
+    <!-- Purpose (Centered) -->
+    <div class="text-center mt-10">
+      <h3 class="text-xl text-[#2ac3de]">Purpose</h3>
+      <p class="mt-2 max-w-2xl mx-auto">
+        The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to identify potential
+        attack vectors and risks. The target company chosen is a publicly traded entity, ensuring legality and transparency.
+      </p>
+    </div>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Scope</h3>
-    <p><strong>Passive Reconnaissance Only</strong> – no scanning or exploitation performed.</p>
+    <!-- Scope (Centered) -->
+    <div class="text-center mt-10">
+      <h3 class="text-xl text-[#2ac3de]">Scope</h3>
+      <p class="mt-2 max-w-2xl mx-auto">
+        The scope of this project is strictly <strong>passive reconnaissance</strong>. Only publicly available data was collected and analyzed.
+        This includes:
+      </p>
+      <ul class="list-disc list-inside max-w-lg mx-auto text-left mt-4 space-y-1">
+        <li>Reviewing public DNS records</li>
+        <li>Gathering domain registration details via Whois</li>
+        <li>Collecting publicly available email addresses and subdomains using theHarvester</li>
+        <li>Extracting executive information from SEC filings</li>
+        <li>Using search engines to cross-reference and validate data</li>
+      </ul>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Data Sources</h3>
+      <p class="mt-6 max-w-2xl mx-auto">
+        <strong>Out of Scope:</strong>  
+      </p>
+      <ul class="list-disc list-inside max-w-lg mx-auto text-left mt-2 space-y-1">
+        <li>No network scanning, port scanning, or vulnerability scanning was conducted</li>
+        <li>No attempts were made to exploit systems or gain unauthorized access</li>
+        <li>No social engineering or direct contact with Microsoft personnel</li>
+      </ul>
+    </div>
+
+    <!-- Data Sources -->
+    <h3 class="text-xl text-[#2ac3de] mt-10">Data Sources</h3>
     <ul class="list-disc list-inside space-y-1">
       <li>SEC filings</li>
       <li>Search engines</li>
       <li>Public DNS records</li>
     </ul>
 
+    <!-- Report Overview -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Report Overview</h3>
     <ul class="list-disc list-inside space-y-1">
       <li>Domains and subdomains</li>
@@ -62,41 +102,48 @@
       <li>Risk assessment (phishing, vendor risk, etc.)</li>
     </ul>
 
+    <!-- Key Findings -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Key Findings</h3>
     <ul class="list-disc list-inside space-y-1">
       <li>Number of emails found: 10</li>
       <li>Number of subdomains identified: TBD</li>
       <li>Missing security controls: TBD</li>
-      <li>Risk Level: Low / Medium / High - Short justification of why this risk level was assigned</li>
+      <li>Risk Level: Low / Medium / High - with justification provided</li>
     </ul>
 
+    <!-- Methodology -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Methodology</h3>
     <ol class="list-decimal list-inside space-y-4">
-      <li><strong>Whois Enumeration:</strong> Gathered domain registration data including registrant location, email, phone number, and expiration date.</li>
-            <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="OSINT1_whois_command.mp4" type="video/mp4">
-      </video>
+      <li><strong>Whois Enumeration:</strong> Gathered domain registration data including registrant location, email, phone number, and expiration date.
+        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
+          <source src="OSINT1_whois_command.mp4" type="video/mp4">
+        </video>
+      </li>
       
-      <li><strong>theHarvester:</strong> Identified public emails and subdomains using Bing and urlscan, then integrated Hunter.io API key to generate verified emails.<br>
-      <img src="OSINT1_theharvester.gif" alt="theHarvester Scan" class="zoomable border border-[#2ac3de]" /></li>
+      <li><strong>theHarvester:</strong> Identified public emails and subdomains using Bing and URLscan, then integrated Hunter.io API key to generate verified emails.
+        <img src="OSINT1_theharvester.gif" alt="theHarvester Scan" class="zoomable border border-[#2ac3de] mt-4" />
+        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
+          <source src="OSINT1_theharvester_hunter.mp4" type="video/mp4">
+        </video>
+      </li>
       
-              <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="OSINT1_theharvester_hunter.mp4" type="video/mp4">
-      </video>
+      <li>10 verified emails were found, including directors and management team members confirmed via public LinkedIn searches.
+        <img src="OSINT1_theharvester_pic1.png" alt="theHarvester Emails" class="zoomable border border-[#2ac3de] mt-4" />
+      </li>
       
-      <li>10 verified emails were found, including directors and management team members confirmed via public LinkedIn searches.<br>
-      <img src="OSINT1_theharvester_pic1.png" alt="theHarvester Emails" class="zoomable border border-[#2ac3de]" /></li>
-      
-      <li><strong>EDGAR Filings Review:</strong> Extracted seven executive names along with age, positions, and start dates.<br>
-      <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="OSINT1_EDGAR.mp4" type="video/mp4">
-      </video>  
-      <img src="OSINT1_EDGAR_pic1.png" alt="EDGAR Findings" class="zoomable border border-[#2ac3de]" /></li>
+      <li><strong>EDGAR Filings Review:</strong> Extracted seven executive names along with age, positions, and start dates.
+        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
+          <source src="OSINT1_EDGAR.mp4" type="video/mp4">
+        </video>  
+        <img src="OSINT1_EDGAR_pic1.png" alt="EDGAR Findings" class="zoomable border border-[#2ac3de] mt-4" />
+      </li>
+    </ol>
 
-
+    <!-- Data Collection -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Data Collection & Results</h3>
     <p>Included raw findings with clear visuals, such as Whois output screenshots, theHarvester results, and SEC filing data snippets.</p>
 
+    <!-- Analysis -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Analysis</h3>
     <ul class="list-disc list-inside space-y-1">
       <li>Potential for phishing campaigns using identified email addresses.</li>
@@ -104,6 +151,7 @@
       <li>Insights into organizational structure useful for social engineering attacks.</li>
     </ul>
 
+    <!-- Recommendations -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Recommendations</h3>
     <ul class="list-disc list-inside space-y-1">
       <li>Implement stricter email protection measures.</li>
@@ -111,10 +159,12 @@
       <li>Conduct regular audits of publicly available data.</li>
     </ul>
 
+    <!-- Conclusion -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Conclusion</h3>
     <p>Continuous monitoring of publicly available information is essential. Proactive OSINT practices help organizations minimize exposure and mitigate risks before they can be exploited by adversaries.</p>
   </section>
 
+  <!-- Footer -->
   <footer class="text-center py-12 text-sm text-[#8b949e]">
     <h2 class="text-xl mb-4">Connect With Me</h2>
     <div class="flex justify-center gap-6">
@@ -140,4 +190,3 @@
   </script>
 </body>
 </html>
-
