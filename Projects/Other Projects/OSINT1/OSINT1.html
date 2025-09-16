@@ -11,10 +11,77 @@
     body { font-family: 'Courier New', monospace; }
     .custom-scrollbar::-webkit-scrollbar { width: 8px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #161b22; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #2ac3de; border-radius: 10px; border: 2px solid #161b22; }
-    .zoomable { max-width: 100%; cursor: zoom-in; display: block; margin: 2rem auto; width: 100%; max-width: 1918px; }
-    .overlay { position: fixed; inset: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 1000; }
-    .overlay img { max-width: 90vw; max-height: 90vh; box-shadow: 0 0 25px #2ac3de; border-radius: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #2ac3de;
+      border-radius: 10px;
+      border: 2px solid #161b22;
+    }
+    .zoomable {
+      max-width: 100%;
+      cursor: zoom-in;
+      display: block;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 1918px;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 0 25px #2ac3de;
+      border-radius: 8px;
+    }
+
+    /* Rhombus styling */
+    .rhombus-container {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      margin: 3rem auto;
+    }
+    .rhombus {
+      background-color: #0d1117;
+      border: 2px solid #2ac3de;
+      transform: rotate(45deg);
+      padding: 3rem;
+      text-align: center;
+      width: 100%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .rhombus-content {
+      transform: rotate(-45deg);
+      color: #c9d1d9;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .rhombus h3 {
+      color: #2ac3de;
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    .rhombus p, .rhombus ul {
+      font-size: 0.9rem;
+      line-height: 1.4rem;
+    }
+    .rhombus ul {
+      text-align: left;
+      margin-top: 0.75rem;
+    }
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#c9d1d9] custom-scrollbar">
@@ -76,38 +143,44 @@
       </div>
     </div>
 
-    <!-- Purpose (Centered) -->
-    <div class="text-center mt-10">
-      <h3 class="text-xl text-[#2ac3de]">Purpose</h3>
-      <p class="mt-2 max-w-2xl mx-auto">
-        The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to identify potential
-        attack vectors and risks. The target company chosen is a publicly traded entity, ensuring legality and transparency.
-      </p>
+    <!-- Purpose inside Rhombus -->
+    <div class="rhombus-container">
+      <div class="rhombus">
+        <div class="rhombus-content">
+          <h3>Purpose</h3>
+          <p>
+            The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to
+            identify potential attack vectors and risks. The target company chosen is a publicly traded entity,
+            ensuring legality and transparency.
+          </p>
+        </div>
+      </div>
     </div>
 
-    <!-- Scope (Centered) -->
-    <div class="text-center mt-10">
-      <h3 class="text-xl text-[#2ac3de]">Scope</h3>
-      <p class="mt-2 max-w-2xl mx-auto">
-        The scope of this project is strictly <strong>passive reconnaissance</strong>. Only publicly available data was collected and analyzed.
-        This includes:
-      </p>
-      <ul class="list-disc list-inside max-w-lg mx-auto text-left mt-4 space-y-1">
-        <li>Reviewing public DNS records</li>
-        <li>Gathering domain registration details via Whois</li>
-        <li>Collecting publicly available email addresses and subdomains using theHarvester</li>
-        <li>Extracting executive information from SEC filings</li>
-        <li>Using search engines to cross-reference and validate data</li>
-      </ul>
-
-      <p class="mt-6 max-w-2xl mx-auto">
-        <strong>Out of Scope:</strong>  
-      </p>
-      <ul class="list-disc list-inside max-w-lg mx-auto text-left mt-2 space-y-1">
-        <li>No network scanning, port scanning, or vulnerability scanning was conducted</li>
-        <li>No attempts were made to exploit systems or gain unauthorized access</li>
-        <li>No social engineering or direct contact with Microsoft personnel</li>
-      </ul>
+    <!-- Scope inside Rhombus -->
+    <div class="rhombus-container">
+      <div class="rhombus">
+        <div class="rhombus-content">
+          <h3>Scope</h3>
+          <p>
+            The scope of this project is strictly <strong>passive reconnaissance</strong>. Only publicly available data was collected
+            and analyzed. This includes:
+          </p>
+          <ul class="list-disc list-inside mt-2">
+            <li>Reviewing public DNS records</li>
+            <li>Gathering domain registration details via Whois</li>
+            <li>Collecting publicly available email addresses and subdomains using theHarvester</li>
+            <li>Extracting executive information from SEC filings</li>
+            <li>Using search engines to cross-reference and validate data</li>
+          </ul>
+          <p class="mt-4"><strong>Out of Scope:</strong></p>
+          <ul class="list-disc list-inside mt-2">
+            <li>No network scanning, port scanning, or vulnerability scanning was conducted</li>
+            <li>No attempts were made to exploit systems or gain unauthorized access</li>
+            <li>No social engineering or direct contact with Microsoft personnel</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Data Sources -->
@@ -118,16 +191,7 @@
       <li>Public DNS records</li>
     </ul>
 
-    <!-- Report Overview -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Report Overview</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Domains and subdomains</li>
-      <li>Key executive names (from EDGAR filings)</li>
-      <li>Publicly available emails found online</li>
-      <li>Risk assessment (phishing, vendor risk, etc.)</li>
-    </ul>
-
-    <!-- Key Findings with Images -->
+    <!-- Key Findings -->
     <h3 class="text-xl text-[#2ac3de] mt-6">Key Findings</h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 text-center">
       <!-- Domains and Subdomains -->
@@ -158,58 +222,6 @@
         <p class="text-sm mt-2">Risk Level: Low / Medium / High - justification provided.</p>
       </div>
     </div>
-
-    <!-- Methodology -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Methodology</h3>
-    <ol class="list-decimal list-inside space-y-4">
-      <li><strong>Whois Enumeration:</strong> Gathered domain registration data including registrant location, email, phone number, and expiration date.
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="OSINT1_whois_command.mp4" type="video/mp4">
-        </video>
-      </li>
-      
-      <li><strong>theHarvester:</strong> Identified public emails and subdomains using Bing and URLscan, then integrated Hunter.io API key to generate verified emails.
-        <img src="OSINT1_theharvester.gif" alt="theHarvester Scan" class="zoomable border border-[#2ac3de] mt-4" />
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="OSINT1_theharvester_hunter.mp4" type="video/mp4">
-        </video>
-      </li>
-      
-      <li>10 verified emails were found, including directors and management team members confirmed via public LinkedIn searches.
-        <img src="OSINT1_theharvester_pic1.png" alt="theHarvester Emails" class="zoomable border border-[#2ac3de] mt-4" />
-      </li>
-      
-      <li><strong>EDGAR Filings Review:</strong> Extracted seven executive names along with age, positions, and start dates.
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="OSINT1_EDGAR.mp4" type="video/mp4">
-        </video>  
-        <img src="OSINT1_EDGAR_pic1.png" alt="EDGAR Findings" class="zoomable border border-[#2ac3de] mt-4" />
-      </li>
-    </ol>
-
-    <!-- Data Collection -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Data Collection & Results</h3>
-    <p>Included raw findings with clear visuals, such as Whois output screenshots, theHarvester results, and SEC filing data snippets.</p>
-
-    <!-- Analysis -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Analysis</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Potential for phishing campaigns using identified email addresses.</li>
-      <li>Vendor risk and third-party exposure mapping.</li>
-      <li>Insights into organizational structure useful for social engineering attacks.</li>
-    </ul>
-
-    <!-- Recommendations -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Recommendations</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Implement stricter email protection measures.</li>
-      <li>Enable DNS security features like DNSSEC.</li>
-      <li>Conduct regular audits of publicly available data.</li>
-    </ul>
-
-    <!-- Conclusion -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Conclusion</h3>
-    <p>Continuous monitoring of publicly available information is essential. Proactive OSINT practices help organizations minimize exposure and mitigate risks before they can be exploited by adversaries.</p>
   </section>
 
   <!-- Footer -->
