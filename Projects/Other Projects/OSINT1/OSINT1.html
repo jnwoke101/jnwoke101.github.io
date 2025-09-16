@@ -42,7 +42,7 @@
       border-radius: 8px;
     }
 
-    /* Slanted box styling */
+    /* Slanted box styling for Purpose and Scope */
     .slanted-box {
       background-color: #0d1117;
       border: 2px solid #2ac3de;
@@ -53,7 +53,7 @@
       position: relative;
     }
     .slanted-content {
-      transform: skew(10deg); /* Reverses the parent skew so text is normal */
+      transform: skew(10deg); /* Normalizes text inside the skew */
       color: #c9d1d9;
       text-align: center;
     }
@@ -209,6 +209,58 @@
         <p class="text-sm mt-2">Risk Level: Low / Medium / High - justification provided.</p>
       </div>
     </div>
+
+    <!-- Methodology -->
+    <h3 class="text-xl text-[#2ac3de] mt-6">Methodology</h3>
+    <ol class="list-decimal list-inside space-y-4">
+      <li><strong>Whois Enumeration:</strong> Gathered domain registration data including registrant location, email, phone number, and expiration date.
+        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
+          <source src="OSINT1_whois_command.mp4" type="video/mp4">
+        </video>
+      </li>
+      
+      <li><strong>theHarvester:</strong> Identified public emails and subdomains using Bing and URLscan, then integrated Hunter.io API key to generate verified emails.
+        <img src="OSINT1_theharvester.gif" alt="theHarvester Scan" class="zoomable border border-[#2ac3de] mt-4" />
+        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
+          <source src="OSINT1_theharvester_hunter.mp4" type="video/mp4">
+        </video>
+      </li>
+      
+      <li>10 verified emails were found, including directors and management team members confirmed via public LinkedIn searches.
+        <img src="OSINT1_theharvester_pic1.png" alt="theHarvester Emails" class="zoomable border border-[#2ac3de] mt-4" />
+      </li>
+      
+      <li><strong>EDGAR Filings Review:</strong> Extracted seven executive names along with age, positions, and start dates.
+        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
+          <source src="OSINT1_EDGAR.mp4" type="video/mp4">
+        </video>  
+        <img src="OSINT1_EDGAR_pic1.png" alt="EDGAR Findings" class="zoomable border border-[#2ac3de] mt-4" />
+      </li>
+    </ol>
+
+    <!-- Data Collection -->
+    <h3 class="text-xl text-[#2ac3de] mt-6">Data Collection & Results</h3>
+    <p>Included raw findings with clear visuals, such as Whois output screenshots, theHarvester results, and SEC filing data snippets.</p>
+
+    <!-- Analysis -->
+    <h3 class="text-xl text-[#2ac3de] mt-6">Analysis</h3>
+    <ul class="list-disc list-inside space-y-1">
+      <li>Potential for phishing campaigns using identified email addresses.</li>
+      <li>Vendor risk and third-party exposure mapping.</li>
+      <li>Insights into organizational structure useful for social engineering attacks.</li>
+    </ul>
+
+    <!-- Recommendations -->
+    <h3 class="text-xl text-[#2ac3de] mt-6">Recommendations</h3>
+    <ul class="list-disc list-inside space-y-1">
+      <li>Implement stricter email protection measures.</li>
+      <li>Enable DNS security features like DNSSEC.</li>
+      <li>Conduct regular audits of publicly available data.</li>
+    </ul>
+
+    <!-- Conclusion -->
+    <h3 class="text-xl text-[#2ac3de] mt-6">Conclusion</h3>
+    <p>Continuous monitoring of publicly available information is essential. Proactive OSINT practices help organizations minimize exposure and mitigate risks before they can be exploited by adversaries.</p>
   </section>
 
   <!-- Footer -->
@@ -221,8 +273,8 @@
     </div>
   </footer>
 
+  <!-- Image Zoom Script -->
   <div id="imgOverlay" class="overlay"><img alt="Zoomed"/></div>
-
   <script>
     const overlay = document.getElementById('imgOverlay');
     const overlayImg = overlay.querySelector('img');
