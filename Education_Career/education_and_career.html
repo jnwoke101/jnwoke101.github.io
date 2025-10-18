@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joseph Nwoke| Education & Career</title>
+  <title>Joseph Nwoke | Education & Career</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -20,18 +20,19 @@
 
     body {
       background: #0d1117; color: #c9d1d9; font-family: 'Courier New', monospace;
+      margin: 0; overflow-x: hidden; transition: background 0.4s, color 0.4s;
     }
 
     .timeline {
       display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; padding: 0 9%;
+      min-height: 85vh; padding: 0 9%;
     }
 
     .timeline .timeline-row { display: flex; column-gap: 64px; flex-wrap: wrap; }
     .timeline-row .timeline-column { flex: 1 1 320px; }
 
     .timeline-column .title {
-      position: relative; display: inline-block; font-size: 28px; margin: 32px 0 16px 30px;
+      position: relative; display: inline-block; font-size: 28px; margin: 24px 0 12px 30px; color: #2ac3de;
     }
 
     .timeline-column .timeline-box { position: relative; border-left: none; }
@@ -39,109 +40,201 @@
     .timeline-box .timeline-content { position: relative; padding-left: 27px; }
 
     .timeline-content .content {
-      padding: 24px; border: none; border-radius: 16px; margin-bottom: 32px;
+      padding: 24px; border: none; border-radius: 16px; margin-bottom: 20px;
       background: rgba(255,255,255,0.05);
       box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       border: 1px solid rgba(255,255,255,0.18);
+      transition: background 0.4s, box-shadow 0.4s;
     }
 
     .timeline-content .content .year { font-size: 16px; color: #0ef; }
-    .timeline-content .content .year i { margin-right: 8px; }
     .timeline-content .content h3 { font-size: 19px; margin: 8px 0; }
     .timeline-content .content p { font-size: 16px; }
 
-    .animate {
-      position: absolute; top: 0; right: 0; width: 105%; height: 100%;
-      background: #1f242d; animation: show-right 1s ease forwards;
-      animation-delay: calc(.5s * var(--i));
-    }
-    @keyframes show-right { 100% { width: 0; } }
-
     /* -------------------------
-       CERTIFICATION FIXES
+       CERTIFICATION SECTION FIX
        ------------------------- */
-    /* Allow larger content boxes like the cert slideshow to expand freely */
-    .timeline.cert-section { min-height: auto !important; }
-    .timeline.cert-section .content { min-height: auto !important; height: auto !important; }
+    .timeline.cert-section {
+      width: 100vw;
+      height: 600px;
+      background: #0d1117;
+      border-top: 2px solid #2ac3de;
+      border-bottom: 2px solid #2ac3de;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      position: relative;
+      box-shadow: 0 0 25px rgba(42,195,222,0.3);
+      transition: background 0.4s, border-color 0.4s;
+    }
 
-    #certSlideshow { height: 560px !important; }
+    #certSlideshow {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .cert-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .cert-slide img {
-      width: 742px !important; height: 460px !important;
-      max-width: 95%; max-height: 95%; object-fit: contain;
+      width: 742px;
+      height: 570px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(42,195,222,0.5);
     }
 
-    /* Responsive tweaks */
-    @media (max-width: 1024px) {
-      #certSlideshow { height: 480px !important; }
-      .cert-slide img { width: 640px !important; height: 400px !important; }
+    #prevBtn, #nextBtn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(13,17,23,0.8);
+      color: #2ac3de;
+      border: 2px solid #2ac3de;
+      border-radius: 50%;
+      padding: 6px;
+      font-size: 28px;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    @media (max-width: 768px) {
-      #certSlideshow { height: 400px !important; }
-      .cert-slide img { width: 520px !important; height: 330px !important; }
+
+    #prevBtn:hover, #nextBtn:hover { color: #58e1ff; border-color: #58e1ff; box-shadow: 0 0 10px #2ac3de; }
+    #prevBtn { left: 50px; }
+    #nextBtn { right: 50px; }
+
+    /* ---------- LIGHT MODE THEME ---------- */
+    body.light-mode {
+      background: #f5f7fa;
+      color: #0d1117;
     }
-    @media (max-width: 480px) {
-      #certSlideshow { height: 320px !important; }
-      .cert-slide img { width: 90% !important; height: auto !important; }
+
+    body.light-mode .timeline-content .content {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .timeline.cert-section {
+      background: #ffffff;
+      border-top: 2px solid #0d1117;
+      border-bottom: 2px solid #0d1117;
+      box-shadow: 0 0 25px rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .title,
+    body.light-mode a,
+    body.light-mode button {
+      color: #005b8f !important;
+      border-color: #005b8f !important;
+    }
+
+    body.light-mode button:hover {
+      background: #005b8f !important;
+      color: #ffffff !important;
+    }
+
+    body.light-mode #prevBtn,
+    body.light-mode #nextBtn {
+      background: rgba(255,255,255,0.9);
+      border-color: #005b8f;
+      color: #005b8f;
+    }
+
+    body.light-mode #prevBtn:hover,
+    body.light-mode #nextBtn:hover {
+      border-color: #007fcc;
+      color: #007fcc;
+    }
+
+    /* Theme Toggle Button */
+    #themeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(42,195,222,0.4);
     }
   </style>
 </head>
 
 <body>
+  <!-- Light/Dark Mode Toggle -->
+  <button id="themeToggle" class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg">
+    🌙 Light Mode
+  </button>
+
   <!-- Header -->
   <section class="text-center py-12">
     <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
     <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
-
-    <a href="/index.html">
-      <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
-        About Me
-      </button>
-    </a>
-    <a href="/Projects/projects.html">
-      <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
-        Projects
-      </button>
-    </a>
-    <a href="/Education_Career/education_and_career.html">
-      <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
-        Education & Career
-      </button>
-    </a>
+    <div class="space-x-4">
+      <a href="/index.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117]">About Me</button></a>
+      <a href="/Projects/projects.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117]">Projects</button></a>
+      <a href="/Education_Career/education_and_career.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117]">Education & Career</button></a>
+    </div>
   </section>
 
-  <!-- Timeline Section -->
-  <section class="timeline">
+  <!-- Education Section -->
+  <section class="timeline pb-2">
     <div class="timeline-row">
       <div class="timeline-column">
-        <h2 class="title">Education<span class="animate" style="--i:1;"></span></h2>
+        <h2 class="title">Education</h2>
         <div class="timeline-box">
           <div class="timeline-content">
             <div class="content">
               <div class="year"><i class='bx bxs-calendar'></i>2022 - 2026</div>
-              <h3>Bachelor of Science in Cybersecurity, University of Maryland Global Campus</h3>
-              <p>I chose to pursue a degree in cybersecurity to combine my passion for technology with my drive to protect digital systems from evolving threats. This program has strengthened my skills in threat analysis, vulnerability assessment, and incident respons</p>
+              <h3>Bachelor of Science in Cybersecurity, UMGC</h3>
+              <p>Pursuing a degree to combine passion for technology and defense, enhancing threat analysis and vulnerability management skills.</p>
             </div>
           </div>
           <div class="timeline-content">
             <div class="content">
               <div class="year"><i class='bx bxs-calendar'></i>2015 - 2019</div>
               <h3>High School Diploma, Perry Hall High School</h3>
-              <p>During my time at Perry Hall, I developed a strong foundation in analytical thinking and problem-solving, which later inspired my interest in IT and cybersecurity.</p>
+              <p>Developed problem-solving and analytical skills, building the foundation for cybersecurity interest.</p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="timeline-column">
-            <h2 class="title">Job Experience<span class="animate" style="--i:4;"></span></h2>
-            <div class="timeline-box">
-              <div class="timeline-content">
-                <div class="content">
-                  <div class="year"><i class='bx bxs-calendar'></i>2024 - Current</div>
-                  <h3>IT Technician, Applied Technology Services</h3>
-                  <p>Currently working as an IT technician, I provide technical support for enterprise clients by troubleshooting hardware and software issues, imaging and deploying systems, managing tickets, and ensuring proper disposal of outdated devices. I also assist with routine maintenance and system updates to ensure optimal performance and security.</p>
-                </div>
-              </div>
-              <div class="timeline-content">
+  <!-- Job Experience Section -->
+  <section class="timeline pt-0 mt-[-40px]">
+    <div class="timeline-row">
+      <div class="timeline-column">
+        <h2 class="title">Job Experience</h2>
+        <div class="timeline-box">
+          <div class="timeline-content">
+            <div class="content">
+              <div class="year"><i class='bx bxs-calendar'></i>2024 - Current</div>
+              <h3>IT Technician, Applied Technology Services</h3>
+              <p>Provide technical support for enterprise clients, imaging and deploying systems, managing tickets, and ensuring secure operations.</p>
+            </div>
+          </div>
+                        <div class="timeline-content">
                 <div class="content">
                   <div class="year"><i class='bx bxs-calendar'></i>2022 - 2025</div>
                   <h3>(Part-Time) Sales Associate & Fulfillment, Lowe’s</h3>
@@ -162,128 +255,41 @@
                   <p>At Walgreens, I developed strong customer service and communication skills by assisting a diverse range of customers in a fast-paced retail environment. My responsibilities included managing sales transactions, restocking merchandise, handling returns and inquiries, and helping customers locate products quickly and efficiently. I also supported store operations by maintaining clean and organized aisles and ensuring a positive shopping experience.</p>
                 </div>
               </div>
-              <span class="animate" style="--i:5;"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  <!-- Certifications -->
-  <section class="timeline cert-section">
-    <div class="timeline-row">
-      <div class="timeline-column">
-        <h2 class="title">Certifications<span class="animate" style="--i:6;"></span></h2>
-        <div class="timeline-box">
-          <div class="timeline-content">
-            <div class="content bg-[#0d1117] p-8 rounded-2xl relative overflow-hidden shadow-lg border border-[#2ac3de]/30">
-
-              <!-- Slideshow Wrapper (single, no duplicates) -->
-              <div id="certSlideshow" class="relative w-full flex items-center justify-center overflow-hidden">
-
-                <!-- Slides (one image per slide) -->
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/Security+.pdf" target="_blank">
-                    <img src="/Logos/security+.png" alt="CompTIA Security+" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/CompT.pdf" target="_blank">
-                    <img src="/Logos/cysa+.png" alt="CompTIA CySA+" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/THM_PT1.pdf" target="_blank">
-                    <img src="/Logos/thm-pn1.png" alt="TryHackMe Junior Pentester" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/THM_SOC_1.pdf" target="_blank">
-                    <img src="/Logos/thm_soc1.png" alt="TryHackMe SOC 1" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/THM_SOC_2.pdf" target="_blank">
-                    <img src="/Logos/thm_soc2.png" alt="TryHackMe SOC 2" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/THM_DEFEND_AZURE.pdf" target="_blank">
-                    <img src="/Logos/thm_defend_azure.png" alt="TryHackMe Defending Azure" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/HTB_CPTS.pdf" target="_blank">
-                    <img src="/Logos/htb-cpts.png" alt="HTB CPTS" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/AZ_500.pdf" target="_blank">
-                    <img src="/Logos/az-500-logo.png" alt="Azure Security Engineer" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/az-900-cert.pdf" target="_blank">
-                    <img src="/Logos/az-900-logo.png" alt="Azure Fundamentals" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/GoogleCyberSec.pdf" target="_blank">
-                    <img src="/Logos/Google_cybersec.png" alt="Google Cybersecurity" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-                <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
-                  <a href="/Certifications/GoogleCloudCyberSec.pdf" target="_blank">
-                    <img src="/Logos/Google_cloud_cybersec.png" alt="Google Cloud Cybersecurity" class="rounded-lg shadow-lg">
-                  </a>
-                </div>
-              </div>
-
-              <!-- Arrows (outside fading slides) -->
-              <button id="prevBtn"
-                class="absolute left-6 top-1/2 -translate-y-1/2 text-[#2ac3de] hover:text-[#58e1ff] text-5xl bg-[#0d1117]/80 p-3 rounded-full border border-[#2ac3de] z-20 transition">
-                <i class='bx bx-chevron-left'></i>
-              </button>
-              <button id="nextBtn"
-                class="absolute right-6 top-1/2 -translate-y-1/2 text-[#2ac3de] hover:text-[#58e1ff] text-5xl bg-[#0d1117]/80 p-3 rounded-full border border-[#2ac3de] z-20 transition">
-                <i class='bx bx-chevron-right'></i>
-              </button>
-
-            </div>
-          </div>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- Certifications Section -->
+  <section class="timeline cert-section">
+    <div id="certSlideshow">
+      <div class="cert-slide"><a href="/Certifications/Security+.pdf" target="_blank"><img src="/Logos/security+.png" alt="Security+"></a></div>
+      <div class="cert-slide"><a href="/Certifications/CompT.pdf" target="_blank"><img src="/Logos/cysa+.png" alt="CySA+"></a></div>
+      <div class="cert-slide"><a href="/Certifications/THM_PT1.pdf" target="_blank"><img src="/Logos/thm-pn1.png" alt="THM Pentester"></a></div>
+      <div class="cert-slide"><a href="/Certifications/HTB_CPTS.pdf" target="_blank"><img src="/Logos/htb-cpts.png" alt="HTB CPTS"></a></div>
+      <div class="cert-slide"><a href="/Certifications/AZ_500.pdf" target="_blank"><img src="/Logos/az-500-logo.png" alt="AZ-500"></a></div>
+    </div>
+
+    <button id="prevBtn"><i class='bx bx-chevron-left'></i></button>
+    <button id="nextBtn"><i class='bx bx-chevron-right'></i></button>
   </section>
 
   <!-- Continuing Education -->
   <section class="timeline">
     <div class="timeline-row">
       <div class="timeline-column">
-        <h2 class="title">Continuing Education<span class="animate" style="--i:7;"></span></h2>
+        <h2 class="title">Continuing Education</h2>
         <div class="timeline-box">
           <div class="timeline-content">
             <div class="content">
-              <h3><a href="https://tryhackme.com/p/BlueKnight" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">TryHackMe</a></h3>
-              <p>I actively use TryHackMe to enhance my cybersecurity knowledge through hands-on labs and guided learning paths. It has helped me strengthen core skills in penetration testing, network security, and threat detection. I’ve completed multiple rooms and paths that simulate real-world scenarios, which have sharpened both my offensive and defensive skill sets.</p>
+              <h3><a href="https://tryhackme.com/p/BlueKnight" target="_blank" class="text-[#2ac3de]">TryHackMe</a></h3>
+              <p>Hands-on cybersecurity labs covering penetration testing, SOC analysis, and blue-team operations.</p>
             </div>
           </div>
           <div class="timeline-content">
             <div class="content">
-              <h3><a href="https://app.hackthebox.com/profile/2451076" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">Hack The Box</a></h3>
-              <p>Hack The Box is a key part of my skills development, especially in offensive security. I regularly engage with intentionally vulnerable machines and realistic enterprise networks to practice advanced exploitation techniques. This platform challenges me to think like a hacker, helping refine my enumeration, privilege escalation, and post-exploitation skills.</p>
-            </div>
-          </div>
-          <div class="timeline-content">
-            <div class="content">
-              <h3><a href="https://cyberdefenders.org/p/Blue_Knight_Nwoke" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">Cyber Defenders</a></h3>
-              <p>On CyberDefenders, I focus on defensive blue team skills through forensic challenges, log analysis, and detection engineering. The platform allows me to dive deep into real-world security incidents, helping me better understand threat behavior and how to respond to them effectively. It's been essential in improving my analytical thinking and incident response capabilities.</p>
-            </div>
-          </div>
-          <div class="timeline-content">
-            <div class="content">
-              <h3><a href="https://app.letsdefend.io/user/jnwoke1" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">LetsDefend</a></h3>
-              <p>LetsDefend complements my SOC training by offering practical simulations of day-to-day blue team tasks. I’ve worked on detecting malicious activity, analyzing alerts, and responding to incidents in a live environment. It provides valuable experience using tools and techniques found in a Security Operations Center, building confidence in handling real-time threats.</p>
+              <h3><a href="https://app.hackthebox.com/profile/2451076" target="_blank" class="text-[#2ac3de]">Hack The Box</a></h3>
+              <p>Advanced offensive security challenges with real-world infrastructure simulation and exploitation techniques.</p>
             </div>
           </div>
         </div>
@@ -292,7 +298,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="text-center py-12 text-sm text-[#8b949e]">
+  <footer class="text-center py-12 text-[#8b949e]">
     <h2 class="text-xl mb-4">Connect With Me</h2>
     <div class="flex justify-center gap-6">
       <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
@@ -304,26 +310,30 @@
   <!-- Slideshow Script -->
   <script>
     const slides = document.querySelectorAll(".cert-slide");
-    let currentIndex = 0;
-    let interval = setInterval(nextSlide, 5000);
+    let index = 0;
+    function showSlide(i) { slides.forEach((s, idx) => s.style.opacity = idx === i ? "1" : "0"); }
+    function nextSlide() { index = (index + 1) % slides.length; showSlide(index); }
+    function prevSlide() { index = (index - 1 + slides.length) % slides.length; showSlide(index); }
+    document.getElementById("nextBtn").addEventListener("click", nextSlide);
+    document.getElementById("prevBtn").addEventListener("click", prevSlide);
+    setInterval(nextSlide, 5000);
+    showSlide(index);
 
-    function showSlide(index) {
-      slides.forEach((slide, i) => {
-        slide.style.opacity = i === index ? "1" : "0";
-        slide.style.zIndex = i === index ? "1" : "0";
-      });
+    // Theme toggle logic
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('theme') === 'light') {
+      body.classList.add('light-mode');
+      toggleButton.textContent = '🌚 Dark Mode';
     }
-    function nextSlide() { currentIndex = (currentIndex + 1) % slides.length; showSlide(currentIndex); }
-    function prevSlide() { currentIndex = (currentIndex - 1 + slides.length) % slides.length; showSlide(currentIndex); }
 
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      clearInterval(interval); nextSlide(); interval = setInterval(nextSlide, 5000);
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
-    document.getElementById("prevBtn").addEventListener("click", () => {
-      clearInterval(interval); prevSlide(); interval = setInterval(nextSlide, 5000);
-    });
-
-    showSlide(currentIndex);
   </script>
 </body>
 </html>
