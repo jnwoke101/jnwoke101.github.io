@@ -6,141 +6,83 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joseph Nwoke | Education & Career</title>
+  <title>Joseph Nwoke| Education & Career</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
   <style>
-    /* Scrollbar Styling */
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 8px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #161b22;
-    }
+    /* Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #161b22; }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de;
-      border-radius: 10px;
-      border: 2px solid #161b22;
+      background-color: #2ac3de; border-radius: 10px; border: 2px solid #161b22;
     }
 
     body {
-      background: #0d1117;
-      color: #c9d1d9;
-      font-family: 'Courier New', monospace;
+      background: #0d1117; color: #c9d1d9; font-family: 'Courier New', monospace;
     }
 
     .timeline {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0 9%;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 0 9%;
     }
 
-    .timeline .timeline-row {
-      display: flex;
-      column-gap: 64px;
-      flex-wrap: wrap;
-    }
-
-    .timeline-row .timeline-column {
-      flex: 1 1 320px;
-    }
+    .timeline .timeline-row { display: flex; column-gap: 64px; flex-wrap: wrap; }
+    .timeline-row .timeline-column { flex: 1 1 320px; }
 
     .timeline-column .title {
-      position: relative;
-      display: inline-block;
-      font-size: 28px;
-      margin: 32px 0 16px 30px;
+      position: relative; display: inline-block; font-size: 28px; margin: 32px 0 16px 30px;
     }
 
-    .timeline-column .timeline-box {
-      position: relative;
-      border-left: none;
-    }
-
-    .timeline-box .timeline-content::before {
-      display: none;
-    }
-
-    .timeline-box .timeline-content {
-      position: relative;
-      padding-left: 27px;
-    }
+    .timeline-column .timeline-box { position: relative; border-left: none; }
+    .timeline-box .timeline-content::before { display: none; }
+    .timeline-box .timeline-content { position: relative; padding-left: 27px; }
 
     .timeline-content .content {
-      padding: 24px;
-      border-radius: 16px;
-      margin-bottom: 32px;
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 24px; border: none; border-radius: 16px; margin-bottom: 32px;
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.18);
     }
 
-    .timeline-content .content .year {
-      font-size: 16px;
-      color: #0ef;
-    }
+    .timeline-content .content .year { font-size: 16px; color: #0ef; }
+    .timeline-content .content .year i { margin-right: 8px; }
+    .timeline-content .content h3 { font-size: 19px; margin: 8px 0; }
+    .timeline-content .content p { font-size: 16px; }
 
-    .timeline-content .content h3 {
-      font-size: 19px;
-      margin: 8px 0;
+    .animate {
+      position: absolute; top: 0; right: 0; width: 105%; height: 100%;
+      background: #1f242d; animation: show-right 1s ease forwards;
+      animation-delay: calc(.5s * var(--i));
     }
+    @keyframes show-right { 100% { width: 0; } }
 
-    .timeline-content .content p {
-      font-size: 16px;
-    }
+    /* -------------------------
+       CERTIFICATION FIXES
+       ------------------------- */
+    /* Allow larger content boxes like the cert slideshow to expand freely */
+    .timeline.cert-section { min-height: auto !important; }
+    .timeline.cert-section .content { min-height: auto !important; height: auto !important; }
 
-    /* ==============================
-       Certification Fix Styles
-       ============================== */
-    .timeline .content {
-      min-height: auto !important;
-      height: auto !important;
-    }
-
-    #certSlideshow {
-      height: 720px !important;
-    }
-
+    #certSlideshow { height: 560px !important; }
     .cert-slide img {
-      width: 1100px !important;
-      height: 620px !important;
-      max-width: 95%;
-      max-height: 95%;
-      object-fit: contain;
+      width: 742px !important; height: 460px !important;
+      max-width: 95%; max-height: 95%; object-fit: contain;
     }
 
-    /* Responsive adjustments */
+    /* Responsive tweaks */
     @media (max-width: 1024px) {
-      #certSlideshow {
-        height: 500px !important;
-      }
-      .cert-slide img {
-        width: 850px !important;
-        height: 480px !important;
-      }
+      #certSlideshow { height: 480px !important; }
+      .cert-slide img { width: 640px !important; height: 400px !important; }
     }
-
     @media (max-width: 768px) {
-      #certSlideshow {
-        height: 400px !important;
-      }
-      .cert-slide img {
-        width: 700px !important;
-        height: 400px !important;
-      }
+      #certSlideshow { height: 400px !important; }
+      .cert-slide img { width: 520px !important; height: 330px !important; }
     }
-
     @media (max-width: 480px) {
-      #certSlideshow {
-        height: 300px !important;
-      }
-      .cert-slide img {
-        width: 90% !important;
-        height: auto !important;
-      }
+      #certSlideshow { height: 320px !important; }
+      .cert-slide img { width: 90% !important; height: auto !important; }
     }
   </style>
 </head>
@@ -168,79 +110,128 @@
     </a>
   </section>
 
-  <!-- Certifications -->
+  <!-- Timeline Section -->
   <section class="timeline">
+    <div class="timeline-row">
+      <div class="timeline-column">
+        <h2 class="title">Education<span class="animate" style="--i:1;"></span></h2>
+        <div class="timeline-box">
+          <div class="timeline-content">
+            <div class="content">
+              <div class="year"><i class='bx bxs-calendar'></i>2022 - 2026</div>
+              <h3>Bachelor of Science in Cybersecurity, University of Maryland Global Campus</h3>
+              <p>I chose to pursue a degree in cybersecurity to combine my passion for technology with my drive to protect digital systems from evolving threats. This program has strengthened my skills in threat analysis, vulnerability assessment, and incident respons</p>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <div class="content">
+              <div class="year"><i class='bx bxs-calendar'></i>2015 - 2019</div>
+              <h3>High School Diploma, Perry Hall High School</h3>
+              <p>During my time at Perry Hall, I developed a strong foundation in analytical thinking and problem-solving, which later inspired my interest in IT and cybersecurity.</p>
+            </div>
+          </div>
+
+          <div class="timeline-column">
+            <h2 class="title">Job Experience<span class="animate" style="--i:4;"></span></h2>
+            <div class="timeline-box">
+              <div class="timeline-content">
+                <div class="content">
+                  <div class="year"><i class='bx bxs-calendar'></i>2024 - Current</div>
+                  <h3>IT Technician, Applied Technology Services</h3>
+                  <p>Currently working as an IT technician, I provide technical support for enterprise clients by troubleshooting hardware and software issues, imaging and deploying systems, managing tickets, and ensuring proper disposal of outdated devices. I also assist with routine maintenance and system updates to ensure optimal performance and security.</p>
+                </div>
+              </div>
+              <div class="timeline-content">
+                <div class="content">
+                  <div class="year"><i class='bx bxs-calendar'></i>2022 - 2025</div>
+                  <h3>(Part-Time) Sales Associate & Fulfillment, Lowe’s</h3>
+                  <p>I supported both customer-facing sales and back-end fulfillment operations, building skills in teamwork, inventory systems, and hands-on product knowledge across home improvement categories.</p>
+                </div>
+              </div>
+              <div class="timeline-content">
+                <div class="content">
+                  <div class="year"><i class='bx bxs-calendar'></i>2021 - 2022</div>
+                  <h3>Fulfillment Associate, Macy’s</h3>
+                  <p>Responsibilities included ensuring timely and accurate order fulfillment by organizing inventory, processing online and in-store pickup orders, and maintaining efficient stockroom operations, especially during peak retail seasons to support high customer demand.</p>
+                </div>
+              </div>
+              <div class="timeline-content">
+                <div class="content">
+                  <div class="year"><i class='bx bxs-calendar'></i>2019 - 2020</div>
+                  <h3>Sales Representative, Walgreens</h3>
+                  <p>At Walgreens, I developed strong customer service and communication skills by assisting a diverse range of customers in a fast-paced retail environment. My responsibilities included managing sales transactions, restocking merchandise, handling returns and inquiries, and helping customers locate products quickly and efficiently. I also supported store operations by maintaining clean and organized aisles and ensuring a positive shopping experience.</p>
+                </div>
+              </div>
+              <span class="animate" style="--i:5;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Certifications -->
+  <section class="timeline cert-section">
     <div class="timeline-row">
       <div class="timeline-column">
         <h2 class="title">Certifications<span class="animate" style="--i:6;"></span></h2>
         <div class="timeline-box">
           <div class="timeline-content">
             <div class="content bg-[#0d1117] p-8 rounded-2xl relative overflow-hidden shadow-lg border border-[#2ac3de]/30">
-              
-              <!-- Slideshow -->
+
+              <!-- Slideshow Wrapper (single, no duplicates) -->
               <div id="certSlideshow" class="relative w-full flex items-center justify-center overflow-hidden">
 
-                <!-- Slides -->
+                <!-- Slides (one image per slide) -->
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/Security+.pdf" target="_blank">
                     <img src="/Logos/security+.png" alt="CompTIA Security+" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/CompT.pdf" target="_blank">
                     <img src="/Logos/cysa+.png" alt="CompTIA CySA+" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/THM_PT1.pdf" target="_blank">
                     <img src="/Logos/thm-pn1.png" alt="TryHackMe Junior Pentester" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/THM_SOC_1.pdf" target="_blank">
                     <img src="/Logos/thm_soc1.png" alt="TryHackMe SOC 1" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/THM_SOC_2.pdf" target="_blank">
                     <img src="/Logos/thm_soc2.png" alt="TryHackMe SOC 2" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/THM_DEFEND_AZURE.pdf" target="_blank">
                     <img src="/Logos/thm_defend_azure.png" alt="TryHackMe Defending Azure" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/HTB_CPTS.pdf" target="_blank">
                     <img src="/Logos/htb-cpts.png" alt="HTB CPTS" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/AZ_500.pdf" target="_blank">
                     <img src="/Logos/az-500-logo.png" alt="Azure Security Engineer" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/az-900-cert.pdf" target="_blank">
                     <img src="/Logos/az-900-logo.png" alt="Azure Fundamentals" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/GoogleCyberSec.pdf" target="_blank">
                     <img src="/Logos/Google_cybersec.png" alt="Google Cybersecurity" class="rounded-lg shadow-lg">
                   </a>
                 </div>
-
                 <div class="cert-slide absolute inset-0 opacity-0 transition-opacity duration-1000 flex items-center justify-center">
                   <a href="/Certifications/GoogleCloudCyberSec.pdf" target="_blank">
                     <img src="/Logos/Google_cloud_cybersec.png" alt="Google Cloud Cybersecurity" class="rounded-lg shadow-lg">
@@ -248,7 +239,7 @@
                 </div>
               </div>
 
-              <!-- Navigation Arrows -->
+              <!-- Arrows (outside fading slides) -->
               <button id="prevBtn"
                 class="absolute left-6 top-1/2 -translate-y-1/2 text-[#2ac3de] hover:text-[#58e1ff] text-5xl bg-[#0d1117]/80 p-3 rounded-full border border-[#2ac3de] z-20 transition">
                 <i class='bx bx-chevron-left'></i>
@@ -265,6 +256,51 @@
     </div>
   </section>
 
+  <!-- Continuing Education -->
+  <section class="timeline">
+    <div class="timeline-row">
+      <div class="timeline-column">
+        <h2 class="title">Continuing Education<span class="animate" style="--i:7;"></span></h2>
+        <div class="timeline-box">
+          <div class="timeline-content">
+            <div class="content">
+              <h3><a href="https://tryhackme.com/p/BlueKnight" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">TryHackMe</a></h3>
+              <p>I actively use TryHackMe to enhance my cybersecurity knowledge through hands-on labs and guided learning paths. It has helped me strengthen core skills in penetration testing, network security, and threat detection. I’ve completed multiple rooms and paths that simulate real-world scenarios, which have sharpened both my offensive and defensive skill sets.</p>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <div class="content">
+              <h3><a href="https://app.hackthebox.com/profile/2451076" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">Hack The Box</a></h3>
+              <p>Hack The Box is a key part of my skills development, especially in offensive security. I regularly engage with intentionally vulnerable machines and realistic enterprise networks to practice advanced exploitation techniques. This platform challenges me to think like a hacker, helping refine my enumeration, privilege escalation, and post-exploitation skills.</p>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <div class="content">
+              <h3><a href="https://cyberdefenders.org/p/Blue_Knight_Nwoke" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">Cyber Defenders</a></h3>
+              <p>On CyberDefenders, I focus on defensive blue team skills through forensic challenges, log analysis, and detection engineering. The platform allows me to dive deep into real-world security incidents, helping me better understand threat behavior and how to respond to them effectively. It's been essential in improving my analytical thinking and incident response capabilities.</p>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <div class="content">
+              <h3><a href="https://app.letsdefend.io/user/jnwoke1" target="_blank" class="text-[#2ac3de] no-underline hover:text-[#58e1ff]">LetsDefend</a></h3>
+              <p>LetsDefend complements my SOC training by offering practical simulations of day-to-day blue team tasks. I’ve worked on detecting malicious activity, analyzing alerts, and responding to incidents in a live environment. It provides valuable experience using tools and techniques found in a Security Operations Center, building confidence in handling real-time threats.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-12 text-sm text-[#8b949e]">
+    <h2 class="text-xl mb-4">Connect With Me</h2>
+    <div class="flex justify-center gap-6">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
+        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
+      </a>
+    </div>
+  </footer>
+
   <!-- Slideshow Script -->
   <script>
     const slides = document.querySelectorAll(".cert-slide");
@@ -277,27 +313,14 @@
         slide.style.zIndex = i === index ? "1" : "0";
       });
     }
-
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % slides.length;
-      showSlide(currentIndex);
-    }
-
-    function prevSlide() {
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-      showSlide(currentIndex);
-    }
+    function nextSlide() { currentIndex = (currentIndex + 1) % slides.length; showSlide(currentIndex); }
+    function prevSlide() { currentIndex = (currentIndex - 1 + slides.length) % slides.length; showSlide(currentIndex); }
 
     document.getElementById("nextBtn").addEventListener("click", () => {
-      clearInterval(interval);
-      nextSlide();
-      interval = setInterval(nextSlide, 5000);
+      clearInterval(interval); nextSlide(); interval = setInterval(nextSlide, 5000);
     });
-
     document.getElementById("prevBtn").addEventListener("click", () => {
-      clearInterval(interval);
-      prevSlide();
-      interval = setInterval(nextSlide, 5000);
+      clearInterval(interval); prevSlide(); interval = setInterval(nextSlide, 5000);
     });
 
     showSlide(currentIndex);
