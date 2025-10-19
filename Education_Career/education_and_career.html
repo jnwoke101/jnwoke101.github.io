@@ -123,54 +123,78 @@
     #prevBtn { left: 50px; }
     #nextBtn { right: 50px; }
 
-    /* ---------- LIGHT MODE THEME ---------- */
- body.light-mode .timeline.cert-section {
-  background: transparent;
-  border: none;
-  box-shadow: none;
+ /* ---------- FIXED LIGHT MODE ---------- */
+body.light-mode {
+  background: #ffffff !important; /* full white background */
+  color: #000000 !important;
 }
 
-    body.light-mode .timeline-content .content {
-      background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-color: rgba(0,0,0,0.1);
-    }
-
-    body.light-mode .timeline.cert-section {
-      background: #ffffff;
-      border-top: 2px solid #0d1117;
-      border-bottom: 2px solid #0d1117;
-      box-shadow: 0 0 25px rgba(0,0,0,0.1);
-    }
-
-    body.light-mode h1,
-    body.light-mode p {
-    color: #000000 !important;
+/* text (name + titles) */
+body.light-mode h1,
+body.light-mode p,
+body.light-mode .title,
+body.light-mode .year {
+  color: #000000 !important;
 }
-    body.light-mode .title,
-    body.light-mode a,
-    body.light-mode button {
-      color: #000000 !important;
-      border-color: #000000 !important;
-    }
 
-    body.light-mode button:hover {
-      background: #000000 !important;
-      color: #ffffff !important;
-    }
+/* links and buttons */
+body.light-mode a,
+body.light-mode button {
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
 
-    body.light-mode #prevBtn,
-    body.light-mode #nextBtn {
-      background: rgba(255,255,255,0.9);
-      border-color: #005b8f;
-      color: #005b8f;
-    }
+body.light-mode button:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
 
-    body.light-mode #prevBtn:hover,
-    body.light-mode #nextBtn:hover {
-      border-color: #007fcc;
-      color: #007fcc;
-    }
+/* content boxes (education, experience, etc.) */
+body.light-mode .timeline-content .content {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* certification section */
+body.light-mode .timeline.cert-section {
+  background: transparent !important; /* remove white box */
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* certification images (no turquoise glow or box) */
+body.light-mode .cert-slide img {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* navigation arrows */
+body.light-mode #prevBtn,
+body.light-mode #nextBtn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #000000;
+  color: #000000;
+}
+
+body.light-mode #prevBtn:hover,
+body.light-mode #nextBtn:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+/* toggle button */
+body.light-mode #themeToggle {
+  border-color: #000000;
+  color: #000000;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+body.light-mode #themeToggle:hover {
+  background: #000000;
+  color: #ffffff;
+}
 
     /* Theme Toggle Button */
     #themeToggle {
