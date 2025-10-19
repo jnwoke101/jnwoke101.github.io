@@ -68,6 +68,7 @@
       position: relative;
       box-shadow: 0 0 25px rgba(42,195,222,0.3);
       transition: background 0.4s, border-color 0.4s;
+      margin-top: -20px;
     }
 
     #certSlideshow {
@@ -90,14 +91,14 @@
       align-items: center;
     }
 
-.cert-slide img {
-  width: 742px;
-  height: 570px;
-  object-fit: contain;
-  border-radius: 16px;
-  box-shadow: none; /* Removes turquoise glow */
-  background: transparent; /* Ensures no white box behind image */
-}
+    .cert-slide img {
+      width: 742px;
+      height: 570px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: none;
+      background: transparent;
+    }
 
     #prevBtn, #nextBtn {
       position: absolute;
@@ -125,11 +126,10 @@
 
  /* ---------- FIXED LIGHT MODE ---------- */
 body.light-mode {
-  background: #ffffff !important; /* full white background */
+  background: #ffffff !important;
   color: #000000 !important;
 }
 
-/* text (name + titles) */
 body.light-mode h1,
 body.light-mode p,
 body.light-mode .title,
@@ -137,7 +137,6 @@ body.light-mode .year {
   color: #000000 !important;
 }
 
-/* links and buttons */
 body.light-mode a,
 body.light-mode button {
   color: #000000 !important;
@@ -149,27 +148,23 @@ body.light-mode button:hover {
   color: #ffffff !important;
 }
 
-/* content boxes (education, experience, etc.) */
 body.light-mode .timeline-content .content {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid #ccc;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* certification section */
 body.light-mode .timeline.cert-section {
-  background: transparent !important; /* remove white box */
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
 
-/* certification images (no turquoise glow or box) */
 body.light-mode .cert-slide img {
   box-shadow: none !important;
   background: transparent !important;
 }
 
-/* navigation arrows */
 body.light-mode #prevBtn,
 body.light-mode #nextBtn {
   background: rgba(255, 255, 255, 0.9);
@@ -184,7 +179,6 @@ body.light-mode #nextBtn:hover {
   border-color: #000000;
 }
 
-/* toggle button */
 body.light-mode #themeToggle {
   border-color: #000000;
   color: #000000;
@@ -196,7 +190,6 @@ body.light-mode #themeToggle:hover {
   color: #ffffff;
 }
 
-    /* Theme Toggle Button */
     #themeToggle {
       position: fixed;
       top: 20px;
@@ -264,45 +257,52 @@ body.light-mode #themeToggle:hover {
               <p>Provide technical support for enterprise clients, imaging and deploying systems, managing tickets, and ensuring secure operations.</p>
             </div>
           </div>
-                        <div class="timeline-content">
-                <div class="content">
-                  <div class="year"><i class='bx bxs-calendar'></i>2022 - 2025</div>
-                  <h3>(Part-Time) Sales Associate & Fulfillment, Lowe’s</h3>
-                  <p>I supported both customer-facing sales and back-end fulfillment operations, building skills in teamwork, inventory systems, and hands-on product knowledge across home improvement categories.</p>
-                </div>
-              </div>
-              <div class="timeline-content">
-                <div class="content">
-                  <div class="year"><i class='bx bxs-calendar'></i>2021 - 2022</div>
-                  <h3>Fulfillment Associate, Macy’s</h3>
-                  <p>Responsibilities included ensuring timely and accurate order fulfillment by organizing inventory, processing online and in-store pickup orders, and maintaining efficient stockroom operations, especially during peak retail seasons to support high customer demand.</p>
-                </div>
-              </div>
-              <div class="timeline-content">
-                <div class="content">
-                  <div class="year"><i class='bx bxs-calendar'></i>2019 - 2020</div>
-                  <h3>Sales Representative, Walgreens</h3>
-                  <p>At Walgreens, I developed strong customer service and communication skills by assisting a diverse range of customers in a fast-paced retail environment. My responsibilities included managing sales transactions, restocking merchandise, handling returns and inquiries, and helping customers locate products quickly and efficiently. I also supported store operations by maintaining clean and organized aisles and ensuring a positive shopping experience.</p>
-                </div>
-              </div>
+          <div class="timeline-content">
+            <div class="content">
+              <div class="year"><i class='bx bxs-calendar'></i>2022 - 2025</div>
+              <h3>(Part-Time) Sales Associate & Fulfillment, Lowe’s</h3>
+              <p>I supported both customer-facing sales and back-end fulfillment operations, building skills in teamwork, inventory systems, and hands-on product knowledge across home improvement categories.</p>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <div class="content">
+              <div class="year"><i class='bx bxs-calendar'></i>2021 - 2022</div>
+              <h3>Fulfillment Associate, Macy’s</h3>
+              <p>Responsibilities included ensuring timely and accurate order fulfillment by organizing inventory, processing online and in-store pickup orders, and maintaining efficient stockroom operations, especially during peak retail seasons to support high customer demand.</p>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <div class="content">
+              <div class="year"><i class='bx bxs-calendar'></i>2019 - 2020</div>
+              <h3>Sales Representative, Walgreens</h3>
+              <p>At Walgreens, I developed strong customer service and communication skills by assisting a diverse range of customers in a fast-paced retail environment. My responsibilities included managing sales transactions, restocking merchandise, handling returns and inquiries, and helping customers locate products quickly and efficiently. I also supported store operations by maintaining clean and organized aisles and ensuring a positive shopping experience.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Certifications Section -->
+  <!-- Certifications Title -->
+  <section class="timeline">
+    <div class="timeline-row">
+      <div class="timeline-column">
+        <h2 class="title">Certifications</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications Slideshow -->
   <section class="timeline cert-section">
-    <h2 class="title">Certifications</h2>
     <div id="certSlideshow">
       <div class="cert-slide"><a href="/Certifications/Security+.pdf" target="_blank"><img src="/Logos/security+.png" alt="Security+"></a></div>
-      <div class="cert-slide"><a href="/Certifications/.pdf" target="_blank"><img src="/Logos/cysa+.png" alt="CySA+"></a></div>
+      <div class="cert-slide"><a href="/Certifications/CompT.pdf" target="_blank"><img src="/Logos/cysa+.png" alt="CySA+"></a></div>
       <div class="cert-slide"><a href="/Certifications/THM-PT1.pdf" target="_blank"><img src="/Logos/thm-pt1.png" alt="THM Pentester"></a></div>
       <div class="cert-slide"><a href="/Certifications/HTB_CPTS.pdf" target="_blank"><img src="/Logos/htb-cpts.png" alt="HTB CPTS"></a></div>
       <div class="cert-slide"><a href="/Certifications/AZ_500.pdf" target="_blank"><img src="/Logos/az-500-logo.png" alt="AZ-500"></a></div>
       <div class="cert-slide"><a href="/Certifications/AZ_900.pdf" target="_blank"><img src="/Logos/az-900-logo.png" alt="AZ-900"></a></div>
       <div class="cert-slide"><a href="/Certifications/Google_cloud_cybersec.pdf" target="_blank"><img src="/Logos/Google_cloud_cybersec.png" alt="Google Cloud Cybersecurity"></a></div>
       <div class="cert-slide"><a href="/Certifications/GoogleCyberSec.pdf" target="_blank"><img src="/Logos/Google_cybersec.png" alt="Google Cybersecurity Professional"></a></div>
-
     </div>
 
     <button id="prevBtn"><i class='bx bx-chevron-left'></i></button>
@@ -346,9 +346,24 @@ body.light-mode #themeToggle:hover {
   <script>
     const slides = document.querySelectorAll(".cert-slide");
     let index = 0;
-    function showSlide(i) { slides.forEach((s, idx) => s.style.opacity = idx === i ? "1" : "0"); }
+
+    function showSlide(i) {
+      slides.forEach((s, idx) => {
+        if (idx === i) {
+          s.style.opacity = "1";
+          s.style.zIndex = "1";
+          s.style.pointerEvents = "auto";
+        } else {
+          s.style.opacity = "0";
+          s.style.zIndex = "0";
+          s.style.pointerEvents = "none";
+        }
+      });
+    }
+
     function nextSlide() { index = (index + 1) % slides.length; showSlide(index); }
     function prevSlide() { index = (index - 1 + slides.length) % slides.length; showSlide(index); }
+
     document.getElementById("nextBtn").addEventListener("click", nextSlide);
     document.getElementById("prevBtn").addEventListener("click", prevSlide);
     setInterval(nextSlide, 60000);
