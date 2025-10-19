@@ -90,13 +90,14 @@
       align-items: center;
     }
 
-    .cert-slide img {
-      width: 742px;
-      height: 570px;
-      object-fit: contain;
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(42,195,222,0.5);
-    }
+.cert-slide img {
+  width: 742px;
+  height: 570px;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: none; /* Removes turquoise glow */
+  background: transparent; /* Ensures no white box behind image */
+}
 
     #prevBtn, #nextBtn {
       position: absolute;
@@ -123,10 +124,11 @@
     #nextBtn { right: 50px; }
 
     /* ---------- LIGHT MODE THEME ---------- */
-    body.light-mode {
-      background: #f5f7fa;
-      color: #0d1117;
-    }
+ body.light-mode .timeline.cert-section {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
 
     body.light-mode .timeline-content .content {
       background: rgba(255, 255, 255, 0.85);
@@ -141,6 +143,10 @@
       box-shadow: 0 0 25px rgba(0,0,0,0.1);
     }
 
+    body.light-mode h1,
+    body.light-mode p {
+    color: #000000 !important;
+}
     body.light-mode .title,
     body.light-mode a,
     body.light-mode button {
@@ -321,7 +327,7 @@
     function prevSlide() { index = (index - 1 + slides.length) % slides.length; showSlide(index); }
     document.getElementById("nextBtn").addEventListener("click", nextSlide);
     document.getElementById("prevBtn").addEventListener("click", prevSlide);
-    setInterval(nextSlide, 5000);
+    setInterval(nextSlide, 60000);
     showSlide(index);
 
     // Theme toggle logic
