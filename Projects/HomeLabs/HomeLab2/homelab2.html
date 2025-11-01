@@ -4,7 +4,7 @@
   <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64"/> 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Joseph Nwoke | Secure Cloud Storage with Azure</title>
+  <title>Joseph Nwoke|Azure Multi-Department Network Automation</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: 'Courier New', monospace; }
@@ -25,6 +25,11 @@
       align-items: center; justify-content: center; z-index: 1000;
     }
     .overlay img { max-width: 90vw; max-height: 90vh; box-shadow: 0 0 25px #2ac3de; border-radius: 8px; }
+
+    .shrink-auto {
+  max-width: 300px; /* adjust the size you want */
+  height: auto;     /* keeps original proportions */
+}
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#c9d1d9]">
@@ -39,151 +44,181 @@
     </div>
   </section>
 
+
+<!-- Project Overview -->
+    <h3 class="text-xl text-[#2ac3de] mt-6">Infrastructure as Code (IaC)</h3>
+    <h3 class="text-xl text-[#2ac3de] mt-6">Azure Multi-Department Network Automation</h3>
+    <p class="mb-4">I completed a cloud automation project in Microsoft Azure where I built an entire IT environment using scripts instead of manual setup. This approach ensures that a company can create secure systems quickly, consistently, and with fewer errors. The design included a protected network and a virtual computer that employees can safely access without exposing the system to outside threats. By automating the process, businesses save time, reduce operational costs, and can easily duplicate or scale the environment as they grow. This type of setup is commonly used by organizations to support remote work, securely host internal applications, and ensure they can recover systems faster in the event of outages or changes in business needs.</p>
+
+  
   <!-- Network Architecture -->
+<h3>Network Design</h3>
 <img src="architecture.png" alt="Architecture Diagram">
 
-
-
-    <h3 class="text-xl text-[#2ac3de] mt-6">Tools Used</h3>
-    <ul class="list-disc list-inside">
-<ul>
-<li><strong>Azure Active Directory:</strong> Used to manage user identities and access by creating and assigning users to security groups. This enabled enforcement of least privilege through Role-Based Access Control (RBAC).</li>
-      <li><strong>Azure Monitor:</strong> Provided real-time observability into resource behavior. It was crucial for tracking unusual or denied access attempts and issuing immediate alerts.</li>
-      <li><strong>Azure Log Analytics:</strong> Centralized logging service where diagnostic logs from Key Vault and Storage Account were sent for monitoring and analysis. It enabled deep visibility into audit trails and operational metrics.</li>
-      <li><strong>Kusto Query Language (KQL):</strong> The language used to query logs stored in Azure Log Analytics. It enabled crafting of precise alert conditions and detection of anomalies.</li>
-      <li><strong>Azure Managed Identity:</strong> Allowed the secure binding of services like Storage Account to Key Vault without needing to store credentials, supporting passwordless authentication.</li>
-      <li><strong>Azure Role-Based Access Control (RBAC):</strong> Allowed secure role assignment for groups and users to define their access levels to specific Azure resources, promoting a secure and manageable access control model.</li>
-    </ul>
-
-
-<!-- Logos Section -->
-<div class="flex justify-center gap-8 mt-4 flex-wrap">
+  <!-- Design Highlights -->
+  <div class="flex justify-center gap-8 mt-4 flex-wrap">
 
   <div class="flex flex-col items-center">
-    <img src="/Logos/azure_monitor_logo.png" alt="Azure Monitor" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Monitor</figcaption>
+    <img src="hub_network_topology.png" alt="Hub-and-spoke network topology" class="shrink.auto">
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Hub-and-spoke network topology</figcaption>
   </div>
 
   <div class="flex flex-col items-center">
-    <img src="/Logos/azure-kql-logo.png" alt="Azure KQL" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure KQL</figcaption>
+    <img src="Least-privilege restricted lateral access.png" alt="lateral access" class="shrink.auto" />
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Least-privilege restricted lateral access</figcaption>
   </div>
 
   <div class="flex flex-col items-center">
-    <img src="/Logos/azure-managed-identity.png" alt="Azure Managed Identity" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Managed Identity</figcaption>
+    <img src="Private shared service access only.png" alt="shared access" class="shrink.auto" />
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Private shared service access only</figcaption>
   </div>
 
   <div class="flex flex-col items-center">
-    <img src="/Logos/azure-active-directory.png" alt="azure-active-directory" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">azure-active-directory/Entra ID</figcaption>
+    <img src="Everything deployed with Terraform automation.png" alt="azure-active-directory" class="shrink.auto" />
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Everything deployed with Terraform automation</figcaption>
   </div>
 
 
-  <div class="flex flex-col items-center">
-    <img src="/Logos/azure_log_analytics.png" alt="azure_log_analytics" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Log Analytics</figcaption>
-  </div>
+    <!-- Video Section-->
 
-    <div class="flex flex-col items-center">
-    <img src="/Logos/azure-rbac.png" alt="Azure RBAC" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure RBAC</figcaption>
-  </div>
-</div>   
-    <h3 class="text-xl text-[#2ac3de] mt-6">Steps Taken</h3>
-    <ol class="list-decimal list-inside space-y-4">
-      <li><strong>User and Identity Setup:</strong> Established user accounts and groups in Azure Active Directory to mirror department roles. These were essential for applying granular access controls through RBAC, ensuring that each user only had access to the resources required for their role. This segmentation minimizes insider threats and strengthens identity governance.</li>
-      <li><strong>Key Vault Configuration:</strong> Created a Key Vault with soft-delete and purge protection to ensure recoverability and compliance. Within it, a Customer-Managed Key (CMK) named StorageEncryptionKey was generated to control storage encryption. Giving encryption control to the organization enhances regulatory compliance and auditing capability.</li>
-      <li><strong>Managed Identity Deployment:</strong> Set up a user-assigned managed identity named StorageEncryptionIdentity. This identity was given key permissions in Key Vault, enabling secure, passwordless interaction with encryption services. It streamlines access management while maintaining tight security standards.</li>
-      <li><strong>Storage Account Setup:</strong> Deployed a secure Azure Storage Account configured with encryption using the CMK. Network access was restricted to HTTPS only, enforcing data protection in transit. Binding the managed identity to the account ensured encryption activities were securely authorized by identity.</li>
-      <li><strong>Logging and Monitoring:</strong> Diagnostic settings were applied to both the storage account and Key Vault to forward logs to a Log Analytics Workspace. This centralization of logs allows for historical queries, security auditing, and correlation of access patterns or anomalies. It builds a foundation for observability.</li>
-      <li><strong>Alerting:</strong> Azure Monitor was used to create alerts for abnormal activities such as failed key access or repeated operations. Alerts were configured to trigger emails via Action Groups. These real-time notifications allow for rapid incident response and monitoring of sensitive operations.</li>
-    </ol>
-
-    <h3 class="text-xl text-[#2ac3de] mt-6">Outcome</h3>
-    <p>The project successfully demonstrated how to implement secure, monitored, and compliant cloud storage using native Azure capabilities. All configurations adhered to best practices for encryption, identity management, and alerting.</p>
-
-    <h3 class="text-xl text-[#2ac3de] mt-6">Takeaway</h3>
-    <p>This project showcases real-world skills in implementing defense-in-depth security using the Azure ecosystem. It emphasizes identity-based access, managed encryption, monitoring, and alerting—critical components of enterprise cloud security solutions.</p>
-  </section>
-
-  <!-- Video Sections -->
-  <section class="max-w-6xl mx-auto mt-12 space-y-12">
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">User Account Creation</h3>
-      <p class="mb-4">This video demonstrates the creation of user accounts to establish a secure foundation for identity and access management in the Azure environment.</p>
-      <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="User Account Creation Gif.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Secure Storage Resource Group Creation</h3>
-      <p class="mb-4">Watch how the resource group for the secure storage solution is set up, ensuring that all resources are logically grouped for management and security policies.</p>
-      <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="Secure Storage Resource Group Creation.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Key Vault Creation</h3>
-      <p class="mb-4">This video shows the creation of the Azure Key Vault, a critical component for securely managing encryption keys.</p>
-      <img src="Key Vault Creation.png" alt="Key Vault Creation" />
-      
-    </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Assign Access Permissions to Key Vault</h3>
-      <p class="mb-4">Learn how specific access policies are configured in Key Vault to enforce least privilege and secure key operations.</p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Assign Access Permissions to Key Vault.gif"
-         alt="Assign Access Permissions to Key Vault"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Storage Encryption Key Creation</h3>
-      <p class="mb-4">This video walks through the creation of a customer-managed key used to encrypt storage account data, ensuring compliance and security ownership.</p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Storage Encryption Key Creation.gif"
-         alt="Storage Encryption Key Creation"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-      
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Assign Roles to Groups for Storage Account</h3>
-      <p class="mb-4">Observe how role assignments are applied to Azure AD groups to control access to the secure storage account.</p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Assign Roles to Groups for Storage Account.gif"
-         alt="Assign Roles to Groups for Storage Account"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-
-      <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Assign Roles to Groups for Key Vault</h3>
-      <p class="mb-4">This section explains how roles are assigned to groups to control who can interact with encryption keys securely.</p>
-      <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Assign Roles to Groups for Key Vault.gif"
-         alt="Assign Roles to Groups for Key Vault"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
     
-<div class="bg-[#161b22] p-8 rounded-xl shadow-lg">
-  <h3 class="text-2xl text-[#2ac3de] mb-4">Creating a Log Analytics Workspace</h3>
-  <p class="mb-4 max-w-2xl text-white">
-    Here, you'll see the creation of a Log Analytics Workspace, a core component for centralized logging and monitoring in Azure.
-  </p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Creating a Log Analytics Workspace.gif"
-         alt="Creating a Log Analytics Workspace"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-</div>
+    <!-- Tools and Skills Demonstrated-->
+    
+    <!-- Tools-->
+     <div class="flex justify-center gap-8 mt-4 flex-wrap">
 
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Create an Action Group for Your Alert</h3>
-      <p class="mb-4">This final video shows how to configure an Action Group in Azure Monitor to deliver alert notifications via email or other channels.</p>
-    <img src="/Projects/HomeLabs/HomeLab1/Create an Action Group for Your Alert.gif"
-         alt="Create an Action Group for Your Alert"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
+  <div class="flex flex-col items-center">
+    <img src="azure vnet.png" alt="vnet" class="shrink.auto">
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Virtual Network (VNet)</figcaption>
   </div>
-  </section>
+
+  <div class="flex flex-col items-center">
+    <img src="nsg.png" alt="nsg" class="shrink.auto" />
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Subnets & Network Security Groups</figcaption>
+  </div>
+
+  <div class="flex flex-col items-center">
+    <img src="bastion.png" alt="bastion" class="shrink.auto" />
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Bastion For Secure Access)</figcaption>
+  </div>
+
+  <div class="flex flex-col items-center">
+    <img src="terraform.png" alt="terraform" class="shrink.auto" />
+    <figcaption class="text-sm text-center text-[#c9d1d9]">Terraform</figcaption>
+  </div>
+
+  <!-- Skills -->
+<section class="py-20 bg-gray-900 text-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-center mb-12">Secure Cloud Architecture Capabilities</h2>
+
+    <div class="grid gap-10 lg:grid-cols-3">
+
+      <!-- Security Controls -->
+      <div class="space-y-6">
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-shield-alt-2 text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Restricted Lateral Movement</h3>
+            <p class="text-gray-300">Least-privilege access modeled around Zero Trust segmentation.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-lock-alt text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Zero Trust Controls</h3>
+            <p class="text-gray-300">Identity-driven access enforcement with continuous validation.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-desktop text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Secure Remote Admin</h3>
+            <p class="text-gray-300">Break-glass access only. No public RDP or SSH endpoints.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Network Architecture -->
+      <div class="space-y-6">
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-network-chart text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Secure Network Design</h3>
+            <p class="text-gray-300">Defense-in-depth filtering and traffic isolation using Azure policy.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-layer text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Private Service Access</h3>
+            <p class="text-gray-300">No internet-facing components; private endpoints only.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cloud Operations -->
+      <div class="space-y-6">
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-repeat text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Scalable Patterns</h3>
+            <p class="text-gray-300">Reusable IaC deployments ensure consistent cloud environments.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-cog text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Configuration Management</h3>
+            <p class="text-gray-300">Automated state enforcement and continuous compliance.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-dollar-circle text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Governance & Cost Control</h3>
+            <p class="text-gray-300">Azure policy and budget guardrails limit over-provisioning.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
+          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
+            <i class="bx bx-book-alt text-3xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">Architecture Documentation</h3>
+            <p class="text-gray-300">Clear visuals to support stakeholder understanding and adoption.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+<!--End of skills section-->
+
 
   <footer class="text-center py-12 text-sm text-[#8b949e]">
     <h2 class="text-xl mb-4">Connect With Me</h2>
