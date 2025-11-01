@@ -30,6 +30,13 @@
   max-width: 300px; /* adjust the size you want */
   height: auto;     /* keeps original proportions */
 }
+     @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0) }
+    50% { transform: translateY(-10px) }
+  }
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#c9d1d9]">
@@ -54,29 +61,6 @@
   <!-- Network Architecture -->
 <h3>Network Design</h3>
 <img src="architecture.png" alt="Architecture Diagram">
-
-  <!-- Design Highlights -->
-  <div class="flex justify-center gap-8 mt-4 flex-wrap">
-
-  <div class="flex flex-col items-center">
-    <img src="hub_network_topology.png" alt="Hub-and-spoke network topology" class="w-25.6 h-25.6 mb-1">
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Hub-and-spoke network topology</figcaption>
-  </div>
-
-  <div class="flex flex-col items-center">
-    <img src="Least-privilege restricted lateral access.png" alt="lateral access" class="w-25.6 h-25.6 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Least-privilege restricted lateral access</figcaption>
-  </div>
-
-  <div class="flex flex-col items-center">
-    <img src="Private shared service access only.png" alt="shared access" class="w-25.6 h-25.6 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Private shared service access only</figcaption>
-  </div>
-
-  <div class="flex flex-col items-center">
-    <img src="Everything deployed with Terraform automation.png" alt="azure-active-directory" class="w-25.6 h-25.6 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Everything deployed with Terraform automation</figcaption>
-  </div>
 
 
     <!-- Video Section-->
@@ -283,6 +267,62 @@
 </section>
 <!--End of skills section-->
 
+<!-- Code Summary section -->
+<section class="py-20 bg-gray-900 text-white text-center">
+  <div class="max-w-7xl mx-auto px-6">
+    
+    <h2 class="text-3xl font-bold mb-3">View Code Implementation</h2>
+    <p class="text-gray-300 mb-12">Click each box to view the code</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
+
+      <!-- Card Template -->
+      <template id="codeCardTemplate">
+        <div class="relative cursor-pointer group p-6 bg-gray-800 rounded-xl 
+                    transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40 
+                    animate-bounce-slow"
+             onclick="openModal(this)">
+          <img src="" alt="" class="w-20 mx-auto mb-4 drop-shadow-lg">
+          <h3 class="text-lg font-semibold mb-2"></h3>
+          <p class="text-gray-400 text-sm"></p>
+        </div>
+      </template>
+
+      <!-- Individual Cards -->
+      <div data-img="providers.png" data-title="providers.tf"
+           data-desc="Authenticates Azure and sets Terraform versioning"
+           class="code-card"></div>
+      
+      <div data-img="main.png" data-title="main.tf"
+           data-desc="Defines network infrastructure (VNets, NSGs, Peerings)"
+           class="code-card"></div>
+
+      <div data-img="variables.png" data-title="variables.tf"
+           data-desc="Makes configuration reusable"
+           class="code-card"></div>
+
+      <div data-img="outputs.png" data-title="outputs.tf"
+           data-desc="Provides deployment state results"
+           class="code-card"></div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center">
+    <div class="relative p-4 max-w-3xl mx-auto">
+      <img id="modalImg" src="" class="rounded-lg shadow-2xl max-h-[80vh] mx-auto">
+      <button onclick="closeModal()" 
+              class="absolute -top-4 -right-4 bg-purple-700 hover:bg-purple-600 
+                     text-white w-10 h-10 rounded-full text-xl font-bold">
+        ×
+      </button>
+    </div>
+  </div>
+</section>
+
+  <!-- End of code summary -->
+
 
   <footer class="text-center py-12 text-sm text-[#8b949e]">
     <h2 class="text-xl mb-4">Connect With Me</h2>
@@ -301,6 +341,27 @@
         overlay.innerHTML = `<img src="${img.src}" alt="zoomed image" />`;
         document.body.appendChild(overlay);
         overlay.addEventListener('click', () => overlay.remove());
+
+        // Floating animation class
+  document.querySelectorAll('.code-card').forEach(card => {
+    const t = document.getElementById('codeCardTemplate');
+    const clone = t.content.cloneNode(true);
+
+    clone.querySelector('img').src = card.dataset.img;
+    clone.querySelector('h3').textContent = card.dataset.title;
+    clone.querySelector('p').textContent = card.dataset.desc;
+
+    card.replaceWith(clone.children[0]);
+  });
+
+  function openModal(card) {
+    document.getElementById('modalImg').src = card.querySelector('img').src;
+    document.getElementById('modal').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.add('hidden');
+  }
       });
     });
   </script>
