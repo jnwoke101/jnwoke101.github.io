@@ -37,9 +37,54 @@
   .animate-bounce-slow {
     animation: bounce-slow 3s ease-in-out infinite;
   }
+  /* LIGHT MODE OVERRIDES */
+body.light-mode { background: #ffffff !important; color: #000000 !important; }
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode p {
+  color: #000000 !important;
+}
+
+body.light-mode section,
+body.light-mode footer {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode button,
+body.light-mode a {
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+body.light-mode button:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-mode #themeToggle {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+body.light-mode #themeToggle:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#c9d1d9]">
+  <!-- Light/Dark Mode Toggle -->
+<button id="themeToggle"
+  class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 
+         hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg 
+         fixed top-6 right-6 z-50">
+  🌙 Light Mode
+</button>
+  
   <!-- Header -->
   <section class="text-center py-12">
     <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
@@ -486,6 +531,22 @@ az login --use-device-code
   function closeModal() {
     document.getElementById('modal').classList.add('hidden');
   }
+  // ✅ Light/Dark mode script
+const toggleButton = document.getElementById('themeToggle');
+const body = document.body;
+
+// Load preference
+if (localStorage.getItem('theme') === 'light') {
+  body.classList.add('light-mode');
+  toggleButton.textContent = '🌚 Dark Mode';
+}
+
+toggleButton.addEventListener('click', () => {
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+  toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+});
 </script>
 </body>
 </html>
