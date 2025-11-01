@@ -9,6 +9,17 @@
   <style>
 
 /* ---------- LIGHT MODE SUPPORT FOR PROJECTS PAGE ---------- */
+/* Make filter label text black in light mode */
+body.light-mode #filterContainer label span {
+  color: #000000 !important;
+}
+
+/* Make filter checkboxes match theme */
+body.light-mode #filterContainer input[type='checkbox'] {
+  accent-color: #000000 !important;
+}
+
+      
 body.light-mode {
   background: #ffffff !important;
   color: #000000 !important;
