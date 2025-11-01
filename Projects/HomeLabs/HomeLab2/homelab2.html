@@ -38,6 +38,18 @@
     animation: bounce-slow 3s ease-in-out infinite;
   }
   /* LIGHT MODE OVERRIDES */
+
+/* Light Mode Overrides for h3 Banner Headers */
+body.light-mode h3.bg-black {
+  background: #e5e7eb !important; /* Light gray */
+  color: #000000 !important; /* Ensure text stays black */
+  border-color: transparent !important;
+}
+
+/*  Optional: Remove the dark text-shadow/glow effect in light mode */
+body.light-mode h3 {
+  text-shadow: none !important;
+}
 body.light-mode { background: #ffffff !important; color: #000000 !important; }
 
 body.light-mode h1,
@@ -109,8 +121,10 @@ body.light-mode #themeToggle:hover {
 
   
   <!-- Network Architecture -->
-<h3>Network Design</h3><h3 class="text-3xl font-bold text-white bg-black py-4 text-center mt-10">
+<h3 class="text-3xl font-bold text-white bg-black py-4 text-center mt-10">
   Network Design
+</h3>
+  
 </h3><img src="architecture.png" alt="Architecture Diagram">
 
 
