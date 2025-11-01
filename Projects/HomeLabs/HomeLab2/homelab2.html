@@ -329,6 +329,120 @@
 
   <!-- End of code summary -->
 
+  <!-- Screenshot Section -->
+
+  <section class="py-20 bg-gray-950 text-white text-center">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold mb-3">Azure Deployment Screenshots</h2>
+    <p class="text-gray-300 mb-12">
+      These screenshots highlight deployed resources in Azure used for the secure network architecture.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+
+      <!-- Resource Group Screenshot -->
+      <div class="p-6 bg-gray-800 rounded-xl cursor-pointer animate-bounce-slow
+                  transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40"
+           onclick="openModal('rg-iaglab1-network.png')">
+        <h3 class="text-xl font-semibold mb-2">Azure Resource Group</h3>
+        <p class="text-gray-400 text-sm">Logical grouping of resources for lifecycle, policy, and cost control.</p>
+      </div>
+
+      <!-- NSG Screenshot -->
+      <div class="p-6 bg-gray-800 rounded-xl cursor-pointer animate-bounce-slow
+                  transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40"
+           onclick="openModal('nsg-fin-subnet-vnet-fin.png')">
+        <h3 class="text-xl font-semibold mb-2">Network Security Group</h3>
+        <p class="text-gray-400 text-sm">Controls allowed inbound/outbound network traffic for subnets.</p>
+      </div>
+
+      <!-- VNet Screenshot -->
+      <div class="p-6 bg-gray-800 rounded-xl cursor-pointer animate-bounce-slow
+                  transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40"
+           onclick="openModal('it-vnet.png')">
+        <h3 class="text-xl font-semibold mb-2">Virtual Network</h3>
+        <p class="text-gray-400 text-sm">Private cloud network enabling secure workload communication.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center">
+    <div class="relative p-4 max-w-4xl mx-auto">
+      <img id="modalImg" src="" class="rounded-lg shadow-2xl max-h-[85vh] mx-auto">
+      <button onclick="closeModal()" 
+              class="absolute -top-4 -right-4 bg-purple-700 hover:bg-purple-600 
+                     text-white w-10 h-10 rounded-full text-xl font-bold">
+        ×
+      </button>
+    </div>
+  </div>
+</section>
+  <!-- End of Screenshot Section -->
+
+
+  <section class="py-20 bg-gray-900 text-white">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold mb-8 text-center">Challenges, Causes & Fixes</h2>
+
+    <!-- Challenges Faced Section -->
+    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-purple-700/30 
+                hover:shadow-purple-700/40 transition duration-300">
+
+      <h3 class="text-2xl font-semibold text-purple-400 mb-4">
+        Terraform Authentication Failure
+      </h3>
+
+      <div class="space-y-4 text-gray-300 leading-relaxed">
+
+        <p>
+          <strong class="text-white">Challenge:</strong><br>
+          Terraform couldn’t find the Azure subscription and displayed:
+        </p>
+
+        <pre class="bg-black/40 p-3 rounded-lg text-sm border border-purple-700/30">
+subscription ID could not be determined
+        </pre>
+
+        <p>
+          <strong class="text-white">Why it happened:</strong><br>
+          Azure CLI wasn’t fully authenticated in Cloud Shell for Terraform’s API calls.
+        </p>
+
+        <p>
+          <strong class="text-white">Fix:</strong><br>
+          Logged in again with correct authentication scope:
+        </p>
+
+        <pre class="bg-black/40 p-3 rounded-lg text-sm border border-purple-700/30">
+az login --use-device-code
+        </pre>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Clean-Up Section -->
+
+<section class="py-16 bg-gray-950 text-white text-center">
+  <div class="max-w-4xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold mb-6">Cleanup Strategy</h2>
+
+    <p class="text-gray-300 text-lg">
+      Destroy deployed resources using 
+      <span class="text-purple-400 font-semibold">terraform destroy</span> 
+      to prevent Azure billing once validation is complete.
+    </p>
+
+  </div>
+</section>
+
 
   <footer class="text-center py-12 text-sm text-[#8b949e]">
     <h2 class="text-xl mb-4">Connect With Me</h2>
