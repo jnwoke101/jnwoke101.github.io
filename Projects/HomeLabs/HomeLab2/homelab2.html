@@ -478,10 +478,10 @@ az login --use-device-code
   });
 
   // Modal handling
-  function openModal(card) {
-    document.getElementById('modalImg').src = card.querySelector('img').src;
-    document.getElementById('modal').classList.remove('hidden');
-  }
+  function openModal(imgSrc) {
+  document.getElementById('modalImg').src = imgSrc;
+  document.getElementById('modal').classList.remove('hidden');
+}
 
   function closeModal() {
     document.getElementById('modal').classList.add('hidden');
