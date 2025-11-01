@@ -39,6 +39,30 @@
   }
   /* LIGHT MODE OVERRIDES */
 
+/* ✅ Light Mode Overrides for dark content boxes */
+body.light-mode .bg-gray-800,
+body.light-mode .bg-gray-900,
+body.light-mode .bg-gray-950 {
+  background-color: #e5e7eb !important;  /* light gray */
+  color: #000000 !important;
+  border-color: rgba(0,0,0,0.2) !important;
+}
+
+/* ✅ Fix dark text inside boxes */
+body.light-mode .text-gray-300,
+body.light-mode .text-white,
+body.light-mode strong {
+  color: #000000 !important;
+}
+
+/* ✅ Fix dark code blocks in light mode */
+body.light-mode pre {
+  background-color: #d1d5db !important; /* medium gray */
+  color: #000000 !important;
+  border-color: rgba(0,0,0,0.3) !important;
+}
+
+
 /* Light Mode Overrides for h3 Banner Headers */
 body.light-mode h3.bg-black {
   background: #e5e7eb !important; /* Light gray */
