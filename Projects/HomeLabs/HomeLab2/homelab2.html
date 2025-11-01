@@ -333,16 +333,19 @@
     </div>
   </footer>
 
-  <script>
-    document.querySelectorAll('.zoomable').forEach(img => {
-      img.addEventListener('click', () => {
-        const overlay = document.createElement('div');
-        overlay.className = 'overlay';
-        overlay.innerHTML = `<img src="${img.src}" alt="zoomed image" />`;
-        document.body.appendChild(overlay);
-        overlay.addEventListener('click', () => overlay.remove());
+<script>
+  // Zoomable image click behavior
+  document.querySelectorAll('.zoomable').forEach(img => {
+    img.addEventListener('click', () => {
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      overlay.innerHTML = `<img src="${img.src}" alt="zoomed image" />`;
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', () => overlay.remove());
+    });
+  });
 
-        // Floating animation class
+  // Replace code-card elements with template content
   document.querySelectorAll('.code-card').forEach(card => {
     const t = document.getElementById('codeCardTemplate');
     const clone = t.content.cloneNode(true);
@@ -354,6 +357,7 @@
     card.replaceWith(clone.children[0]);
   });
 
+  // Modal handling
   function openModal(card) {
     document.getElementById('modalImg').src = card.querySelector('img').src;
     document.getElementById('modal').classList.remove('hidden');
@@ -362,8 +366,6 @@
   function closeModal() {
     document.getElementById('modal').classList.add('hidden');
   }
-      });
-    });
-  </script>
+</script>
 </body>
 </html>
