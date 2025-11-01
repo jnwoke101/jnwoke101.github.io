@@ -7,6 +7,62 @@
   <title>Joseph Nwoke | Projects</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+
+/* ---------- LIGHT MODE SUPPORT FOR PROJECTS PAGE ---------- */
+body.light-mode {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode h1,
+body.light-mode p,
+body.light-mode h2,
+body.light-mode figcaption {
+  color: #000000 !important;
+}
+
+body.light-mode button,
+body.light-mode a {
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+body.light-mode button:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-mode .circle-grid img {
+  border: 2px solid #000000;
+}
+
+body.light-mode #projectSearch,
+body.light-mode #filterContainer,
+body.light-mode #suggestions {
+  background: #f1f1f1 !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+body.light-mode .carousel-arrow {
+  color: #000000 !important;
+}
+
+body.light-mode .carousel-wrapper {
+  background: transparent !important;
+}
+
+body.light-mode .circle {
+  color: #000000 !important;
+}
+
+/* ✅ Make project category section backgrounds light gray */
+body.light-mode h2 {
+  background: #e5e5e5;
+  padding: 10px 0;
+  border-radius: 10px;
+}
+
     body {
       font-family: 'Courier New', monospace;
       background-color: #0d1117;
@@ -126,8 +182,14 @@
 
   </style>
 </head>
+
 <body class="bg-[#0d1117] text-[#c9d1d9]">
-  <!-- Header -->
+    
+<button id="themeToggle" class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-6 right-6 z-50">
+  🌙 Light Mode
+</button>
+    
+    <!-- Header -->
   <section class="text-center py-12">
     <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
     <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
@@ -372,6 +434,28 @@
 
   <!-- JavaScript -->
 <script>
+
+
+// === LIGHT / DARK MODE ===
+const toggleButton = document.getElementById('themeToggle');
+const body = document.body;
+
+// Load saved theme
+if (localStorage.getItem('theme') === 'light') {
+  body.classList.add('light-mode');
+  toggleButton.textContent = '🌚 Dark Mode';
+}
+
+// Click to switch theme
+toggleButton.addEventListener('click', () => {
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+
+  toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+});
+
+
   // --- Project Search Logic ---
   const searchInput = document.getElementById("projectSearch");
   const suggestionBox = document.getElementById("suggestions");
