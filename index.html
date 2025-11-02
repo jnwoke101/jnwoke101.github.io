@@ -7,6 +7,12 @@
   <title>Joseph Nwoke | About Me</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+
+    /* Light Mode: Profile image border turns black */
+body.light-mode .profile-image {
+  border-color: #000000 !important;
+}
+
     body {
       font-family: 'Courier New', monospace;
       transition: background 0.3s, color 0.3s;
@@ -129,7 +135,9 @@ hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right
 
   <!-- About Me -->
 <section class="max-w-4xl mx-auto p-6 rounded-lg flex items-center gap-6 content-box">
-    <img src="profile.png" alt="Profile" class="w-28 h-28 rounded-full border-4 border-[#2ac3de]" />
+<img src="profile.png" 
+     alt="Profile" 
+     class="profile-image w-28 h-28 rounded-full border-4 border-[#2ac3de]" />
     <div>
       <h2 class="text-2xl text-[#2ac3de] mb-2">ABOUT ME</h2>
       <p>
@@ -305,6 +313,7 @@ hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right
 
 </body>
 </html>
+
 
 
 
