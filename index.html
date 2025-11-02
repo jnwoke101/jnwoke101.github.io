@@ -9,6 +9,7 @@
   <style>
     body {
       font-family: 'Courier New', monospace;
+      transition: background 0.3s, color 0.3s;
     }
     /* Custom scroll bar styling */
     .custom-scrollbar::-webkit-scrollbar {
@@ -44,75 +45,55 @@
             transition: opacity 0.3s;
         }
 
+    /* ✅ FIXED: Proper closing brace */
     .social-icons img:hover {
-    opacity: 0.7;
-}
-/* ✅ Light Mode Global Theme */
-body.light-mode {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
+      opacity: 0.7;
+    }
 
+    /* ✅ Light Mode Global Theme */
+    body.light-mode {
+      background: #ffffff !important;
+      color: #000000 !important;
+    }
 
-body.light-mode h1,
-body.light-mode h2,
-body.light-mode p,
-body.light-mode figcaption {
-  color: #000000 !important;
-}
+    body.light-mode h1,
+    body.light-mode h2,
+    body.light-mode h3,
+    body.light-mode p,
+    body.light-mode figcaption {
+      color: #000000 !important;
+    }
 
-/* ✅ Cards / Boxes */
-body.light-mode section > div,
-body.light-mode .bg-[#161b22] {
-  background: #e6e6e6 !important;
-  color: #000000 !important;
-}
+    /* ✅ Background content box lightening */
+    body.light-mode .content-box {
+      background-color: #e6e6e6 !important;
+      color: #000000 !important;
+    }
 
-/* ✅ Light Mode - Lighten all content boxes */
-body.light-mode .bg-[#161b22],
-body.light-mode section > div {
-  background-color: #e6e6e6 !important; /* Soft light gray */
-  color: #000000 !important;
-}
+    /* ✅ Light Mode button styling */
+    body.light-mode #themeToggle {
+      background: #ffffff !important;
+      border-color: #000000 !important;
+      color: #000000 !important;
+    }
 
-/* ✅ Light Mode heading + label visibility */
-body.light-mode h1,
-body.light-mode h2,
-body.light-mode h3,
-body.light-mode p,
-body.light-mode figcaption {
-  color: #000000 !important;
-}
+    body.light-mode #themeToggle:hover {
+      background: #000000 !important;
+      color: #ffffff !important;
+    }
 
-body.light-mode #themeToggle {
-  background: #ffffff;
-  border-color: #000000;
-  color: #000000;
-}
+    body.light-mode button {
+      border-color: #000000 !important;
+      color: #000000 !important;
+    }
 
+    body.light-mode button:hover {
+      background: #000000 !important;
+      color: #ffffff !important;
+    }
 
-/* ✅ Buttons */
-body.light-mode button {
-  border-color: #000000 !important;
-  color: #000000 !important;
-}
-
-body.light-mode button:hover {
-  background: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* ✅ Icons / Footer Color */
-body.light-mode footer {
-  color: #000000 !important;
-}
-
-body.light-mode img {
-  filter: none !important;
-}
-
-body {
-  transition: background 0.3s, color 0.3s;
+    body.light-mode footer {
+      color: #000000 !important;
 }
   </style>
 </head>
@@ -305,26 +286,27 @@ hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right
     </div>
   </footer>
 
+  <!-- ✅ Theme Toggle Script -->
   <script>
-  const toggleButton = document.getElementById('themeToggle');
-  const body = document.body;
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
 
-  // Load saved theme
-  if (localStorage.getItem('theme') === 'light') {
-    body.classList.add('light-mode');
-    toggleButton.textContent = '🌚 Dark Mode';
-  }
+    if (localStorage.getItem('theme') === 'light') {
+      body.classList.add('light-mode');
+      toggleButton.textContent = '🌚 Dark Mode';
+    }
 
-  toggleButton.addEventListener('click', () => {
-    body.classList.toggle('light-mode');
-    const isLight = body.classList.contains('light-mode');
-    toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-  });
-</script>
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+  </script>
 
 </body>
 </html>
+
 
 
 
