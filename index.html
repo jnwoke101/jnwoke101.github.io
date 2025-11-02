@@ -45,9 +45,54 @@
         }
         .social-icons img:hover {
             opacity: 0.7;
+      /* ✅ Light Mode Global Theme */
+body.light-mode {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode p,
+body.light-mode figcaption {
+  color: #000000 !important;
+}
+
+/* ✅ Cards / Boxes */
+body.light-mode section > div,
+body.light-mode .bg-[#161b22] {
+  background: #e6e6e6 !important;
+  color: #000000 !important;
+}
+
+/* ✅ Buttons */
+body.light-mode button {
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+body.light-mode button:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* ✅ Icons / Footer Color */
+body.light-mode footer {
+  color: #000000 !important;
+}
+
+body.light-mode img {
+  filter: none !important;
+}
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#c9d1d9]">
+
+  <button id="themeToggle" class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 
+hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right-5 z-50">
+  🌙 Light Mode
+</button>
+
   <!-- Header -->
   <section class="text-center py-12">
     <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
@@ -229,5 +274,25 @@
       </a>
     </div>
   </footer>
+
+  <script>
+  const toggleButton = document.getElementById('themeToggle');
+  const body = document.body;
+
+  // Load saved theme
+  if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-mode');
+    toggleButton.textContent = '🌚 Dark Mode';
+  }
+
+  toggleButton.addEventListener('click', () => {
+    body.classList.toggle('light-mode');
+    const isLight = body.classList.contains('light-mode');
+    toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>
+
 </body>
 </html>
+
