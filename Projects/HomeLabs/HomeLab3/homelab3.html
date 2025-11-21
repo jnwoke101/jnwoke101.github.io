@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joseph Nwoke | Education & Career</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <style>
+    /* Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #161b22;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #2ac3de;
+      border-radius: 10px;
+      border: 2px solid #161b22;
+    }
+
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* ---------- LIGHT MODE ---------- */
+    body.light-mode {
+      background: #ffffff !important;
+      color: #000000 !important;
+    }
+
+    /* Only elements tagged as "on-light" flip to black in light mode */
+    body.light-mode .on-light {
+      color: #000000 !important;
+    }
+
+    /* Accent helpers so light mode can flip blue → black */
+    .accent-text,
+    .section-title,
+    .btn-accent,
+    .tag-pill,
+    .code-tab-button {
+      transition: color 0.4s ease, border-color 0.4s ease, background-color 0.4s ease;
+    }
+
+    body.light-mode .accent-text,
+    body.light-mode .section-title {
+      color: #000000 !important;
+    }
+
+    body.light-mode .tag-pill {
+      color: #000000 !important;
+      border-color: #000000 !important;
+      background-color: #ffffff !important;
+    }
+
+    body.light-mode .btn-accent {
+      color: #000000 !important;
+      border-color: #000000 !important;
+      background: transparent !important;
+    }
+
+    body.light-mode .btn-accent:hover {
+      background: #000000 !important;
+      color: #ffffff !important;
+    }
+
+    /* Code tabs in light mode */
+    body.light-mode .code-tab-button {
+      border-color: #000000 !important;
+      color: #000000 !important;
+      background-color: #e5e7eb !important;
+    }
+
+    body.light-mode .code-tab-button.active-tab {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border-color: #000000 !important;
+    }
+
+    #themeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(42, 195, 222, 0.4);
+    }
+
+    /* Scroll-fade animation */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Keep code cards and code blocks readable in both themes */
+    .code-header,
+    .code-block {
+      color: #c9d1d9;
+    }
+
+    .code-header pre,
+    .code-header code,
+    .code-block pre,
+    .code-block code {
+      color: #e5e7eb;
+    }
+
+    /* In light mode: force code areas to stay light text on dark background */
+    body.light-mode .code-header,
+    body.light-mode .code-header *,
+    body.light-mode .code-block,
+    body.light-mode .code-block *,
+    body.light-mode pre,
+    body.light-mode pre code {
+      color: #f9fafb !important;
+    }
+
+    /* Paragraphs/lists that should be black in light mode, but keep code white */
+    body.light-mode .force-black-on-light,
+    body.light-mode .force-black-on-light p,
+    body.light-mode .force-black-on-light li {
+      color: #000000 !important;
+    }
+
+    body.light-mode .force-black-on-light code {
+      color: #f9fafb !important;
+    }
+
+    /* Preserve emerald headings in light mode */
+    .secure-heading {
+      /* base emerald color in dark mode too */
+      color: #10b981;
+    }
+
+    body.light-mode .secure-heading,
+    body.light-mode .secure-heading.section-title {
+      color: #10b981 !important;
+    }
+
+/* Keep SQL inline code highlighted black inside Remediation section during light mode */
+body.light-mode .force-black-on-light code {
+  background-color: #000000 !important;
+  color: #f9fafb !important;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Blue Dynasty Project Title — matches logo color & font */
+.project-title-traced {
+  color: #1da0ff;                 /* gradient blue match */
+  font-family: "Cinzel", serif;   /* fantasy-medieval style close to logo */
+  letter-spacing: 1px;
+
+}
+
+/* Light mode should NOT change title color or outline */
+body.light-mode .project-title-traced {
+  color: #1da0ff !important;
+}
+
+  </style>
+</head>
+
+<body class="custom-scrollbar">
+  <!-- Light/Dark Mode Toggle -->
+  <button id="themeToggle"
+    class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg">
+    🌙 Light Mode
+  </button>
+
+<section class="text-center py-12 fade-section">
+  <h1 class="text-5xl md:text-6xl font-bold text-[#2ac3de] accent-text on-light">
+    JOSEPH NWOKE
+  </h1>
+  <div class="space-x-3 md:space-x-4 mt-6">
+    <a href="/index.html">
+      <button class="px-5 md:px-6 py-2.5 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117] btn-accent on-light">
+        About Me
+      </button>
+    </a>
+    <a href="/Projects/projects.html">
+      <button class="px-5 md:px-6 py-2.5 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117] btn-accent on-light">
+        Projects
+      </button>
+    </a>
+    <a href="/Education_Career/education_and_career.html">
+      <button class="px-5 md:px-6 py-2.5 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117] btn-accent on-light">
+        Education & Career
+      </button>
+    </a>
+  </div>
+</section>
+
+
+  <!-- BlueDynasty Clinic Project Section -->
+  <section id="bluedynasty-clinic" class="px-4 pb-16 fade-section">
+    <div class="max-w-5xl mx-auto space-y-12">
+
+<!-- Section Header -->
+<div class="text-center mx-auto space-y-4 fade-section">
+
+  <!-- Blue Dynasty Logo -->
+  <img src="/blue_dynasty_logo.png"
+       alt="Blue Dynasty Logo"
+       class="mx-auto w-40 md:w-52 drop-shadow-2xl select-none pointer-events-none" />
+
+
+  <!-- Project Title Styled to Match the Logo -->
+  <h2 class="project-title-traced text-4xl md:text-5xl lg:text-6xl font-bold section-title on-light">
+    BlueDynasty Clinic — Healthcare SQL Injection & Defense Lab
+  </h2>
+
+  <!-- Project Description -->
+  <p class="text-base md:text-lg text-[#8b949e] max-w-3xl mx-auto on-light">
+    End-to-end security lab where I built, exploited, monitored, and then secured a vulnerable healthcare
+    appointment portal using Flask and Azure SQL.
+  </p>
+</div>
+
+      <!-- Centered Video Section -->
+      <div class="fade-section">
+        <div class="max-w-4xl mx-auto text-center space-y-4">
+          <h3 class="text-2xl md:text-3xl font-semibold text-[#2ac3de] accent-text on-light">
+            BlueDynasty Clinic — SQL Injection Exploit & Remediation Demo
+          </h3>
+          <p class="text-base md:text-lg text-[#8b949e] max-w-3xl mx-auto on-light">
+            Prefer watching instead of reading? This video walks through the full attack chain, from SQL injection
+            exploitation to logging, detection, and secure remediation.
+          </p>
+          <div class="aspect-video rounded-2xl overflow-hidden border border-[#30363d] bg-black shadow-lg">
+            <!-- Replace VIDEO_ID with your actual video id or link -->
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/VIDEO_ID"
+              title="BlueDynasty Clinic SQL Injection & Defense Lab" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Summary -->
+      <div class="fade-section">
+        <div class="space-y-4 max-w-4xl mx-auto">
+          <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text on-light">Quick Summary</h3>
+          <ul class="space-y-2 text-sm md:text-base text-[#c9d1d9] on-light">
+            <li>• Simulated a fictional healthcare clinic (“BlueDynasty Clinic”) with a vulnerable appointment search
+              portal storing PHI.</li>
+            <li>• Exploited a SQL injection flaw in a Flask app to dump sensitive appointment and patient data from
+              Azure SQL.</li>
+            <li>• Implemented security event logging, severity tagging, and a secure version of the app using
+              parameterized queries to block attacks.</li>
+          </ul>
+
+          <div class="mt-4 p-4 rounded-xl bg-[#161b22] border border-emerald-500/40 text-xs md:text-sm">
+            <p class="font-semibold text-emerald-400 mb-1 accent-text">Outcome</p>
+            <p class="text-[#c9d1d9]">
+              Demonstrated both offensive (Red Team) and defensive (Blue Team) skills by taking a real-world style
+              vulnerability from discovery and exploitation through to monitoring and secure remediation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario -->
+      <div class="space-y-3 fade-section">
+        <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text section-title on-light">
+          Project Scenario – BlueDynasty Clinic
+        </h3>
+        <p class="force-black-on-light text-sm md:text-base max-w-4xl">
+          BlueDynasty Clinic is a fictional healthcare provider I designed to simulate a realistic SQL injection and
+          defense scenario. The clinic’s appointment portal stores sensitive patient data including names, dates of
+          birth, clinicians, insurance providers, and reasons for visits. A flaw in the appointment search functionality
+          allowed attackers to inject SQL and retrieve all patient appointments, representing a serious PHI exposure and
+          potential HIPAA-style privacy violation.
+        </p>
+      </div>
+
+      <!-- Red vs Blue Phases -->
+      <div class="grid md:grid-cols-2 gap-6 fade-section">
+        <!-- Red Team -->
+        <div class="p-5 rounded-xl bg-[#161b22] border border-[#30363d] space-y-3">
+          <h3 class="text-lg md:text-xl font-semibold text-rose-400">Red Team Phase – Exploitation</h3>
+          <ul class="text-sm md:text-base text-[#c9d1d9] space-y-2">
+            <li>• Built a Flask-based appointment search app backed by Azure SQL (<code
+                class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">BlueDynastyDB</code>).</li>
+            <li>• Intentionally used dynamic SQL concatenation:
+              <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">WHERE P.LastName LIKE '%{search_term}%'</code>
+            </li>
+            <li>• Used payloads like <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">' OR 1=1--</code> to bypass
+              filters and dump all appointments.</li>
+            <li>• Demonstrated impact by exposing patient appointments, clinicians, and insurance providers.</li>
+          </ul>
+        </div>
+
+        <!-- Blue Team -->
+        <div class="p-5 rounded-xl bg-[#161b22] border border-[#30363d] space-y-3">
+          <h3 class="text-lg md:text-xl font-semibold text-sky-400">Blue Team Phase – Detection & Logging</h3>
+          <ul class="text-sm md:text-base text-[#c9d1d9] space-y-2">
+            <li>• Designed a <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">SecurityEvents</code> table to
+              capture search behavior and attacks.</li>
+            <li>• Logged normal searches as <code
+                class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">APPOINTMENT_SEARCH (INFO)</code> and injections as
+              <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">SQL_INJECTION_ATTEMPT (HIGH)</code>.</li>
+            <li>• Stored timestamp, source IP, event type, severity, and description for forensic reconstruction.</li>
+            <li>• Wrote events to both Azure SQL and a local log file for investigation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Remediation -->
+      <div class="grid md:grid-cols-2 gap-6 items-start fade-section">
+        <div class="space-y-3">
+          <h3 class="secure-heading text-2xl font-semibold text-emerald-400 section-title on-light">
+            Secure Remediation – Fixed Search Portal
+          </h3>
+          <ul class="force-black-on-light text-sm md:text-base space-y-2">
+            <li>• Created a secure version of the app (<code>app_secure.py</code>) using parameterized SQL queries instead of string concatenation.</li>
+            <li>• Replaced <code>WHERE P.LastName LIKE '%{search_term}%'</code> with <code>WHERE P.LastName LIKE ?</code> and bound parameters from Python.</li>
+            <li>• Added input length checks and <code>SQLI_PATTERN_BLOCKED</code> events when suspicious patterns are received.</li>
+            <li>• Verified that legacy payloads like <code>' OR 1=1--</code> no longer return unauthorized data.</li>
+          </ul>
+        </div>
+        <div
+          class="p-5 rounded-xl bg-[#161b22] border border-[#30363d] text-xs md:text-sm text-[#c9d1d9] space-y-3 code-header">
+          <p class="secure-heading font-semibold text-emerald-300 section-title">
+            Secure Query Pattern (Python + pyodbc)
+          </p>
+          <pre class="bg-[#0d1117] p-3 rounded-lg overflow-x-auto"><code>
+safe_query = """
+    SELECT TOP 50 ...
+    FROM Appointments A
+    JOIN Patients P ON A.PatientID = P.PatientID
+    ...
+    WHERE P.LastName LIKE ?
+    ORDER BY A.AppointmentDateTime DESC;
+"""
+
+like_param = f"%{search_term}%"
+cursor.execute(safe_query, (like_param,))
+rows = cursor.fetchall()
+          </code></pre>
+        </div>
+      </div>
+
+      <!-- Code Showcase -->
+      <div class="space-y-4 fade-section">
+        <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text section-title on-light">Code Showcase</h3>
+        <p class="text-sm md:text-base text-[#8b949e] on-light">
+          For people who prefer to read the code, here is a simplified view of the vulnerable and secure implementations used in this lab.
+        </p>
+
+        <!-- Tabs -->
+        <div class="flex flex-wrap gap-2 text-xs md:text-sm mb-2">
+          <button
+            class="code-tab-button btn-accent active-tab px-3 py-2 rounded-full border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117] hover:bg-[#2ac3de] hover:text-[#0d1117]"
+            data-target="code-vulnerable">
+            Vulnerable Version (app.py)
+          </button>
+          <button
+            class="code-tab-button px-3 py-2 rounded-full border border-[#30363d] text-[#8b949e] bg-[#161b22] hover:border-[#2ac3de]"
+            data-target="code-secure">
+            Secure Version (app_secure.py)
+          </button>
+        </div>
+
+        <!-- Vulnerable Code Block -->
+        <div id="code-vulnerable"
+          class="code-block rounded-xl bg-[#161b22] border border-[#30363d] p-4 text-[0.75rem] md:text-xs overflow-x-auto space-y-2">
+          <p class="font-semibold text-rose-400">Vulnerable search endpoint (SQL Injection present)</p>
+          <pre class="bg-[#0d1117] p-3 rounded-lg overflow-x-auto"><code>
+from flask import Flask, request
+import pyodbc
+
+app = Flask(__name__)
+
+CONN_STR = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=...;DATABASE=BlueDynastyDB;UID=...;PWD=...;Encrypt=yes;"
+
+def get_db_connection():
+    return pyodbc.connect(CONN_STR)
+
+@app.route("/", methods=["GET", "POST"])
+def search():
+    results_html = ""
+    error_msg = ""
+
+    if request.method == "POST":
+        search_term = request.form.get("last_name", "")
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            unsafe_query = f"""
+                SELECT TOP 50 
+                    A.AppointmentID,
+                    P.FirstName,
+                    P.LastName,
+                    A.AppointmentDateTime,
+                    A.ReasonForVisit,
+                    S.StatusName,
+                    U.FirstName AS ClinicianFirstName,
+                    U.LastName  AS ClinicianLastName,
+                    P.InsuranceProvider
+                FROM Appointments A
+                JOIN Patients P ON A.PatientID = P.PatientID
+                JOIN Users U ON A.ClinicianUserID = U.UserID
+                JOIN AppointmentStatus S ON A.StatusID = S.StatusID
+                WHERE P.LastName LIKE '%{search_term}%'
+                ORDER BY A.AppointmentDateTime DESC;
+            """
+
+            cursor.execute(unsafe_query)
+            rows = cursor.fetchall()
+            # ... build HTML table ...
+          </code></pre>
+        </div>
+
+        <!-- Secure Code Block -->
+        <div id="code-secure"
+          class="code-block rounded-xl bg-[#161b22] border border-[#30363d] p-4 text-[0.75rem] md:text-xs overflow-x-auto space-y-2 hidden">
+          <p class="font-semibold text-emerald-400">Secure search endpoint (SQL Injection mitigated)</p>
+          <pre class="bg-[#0d1117] p-3 rounded-lg overflow-x-auto"><code>
+from flask import Flask, request
+import pyodbc
+
+app = Flask(__name__)
+
+CONN_STR = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=...;DATABASE=BlueDynastyDB;UID=...;PWD=...;Encrypt=yes;"
+
+def get_db_connection():
+    return pyodbc.connect(CONN_STR)
+
+@app.route("/", methods=["GET", "POST"])
+def secure_search():
+    results_html = ""
+    error_msg = ""
+
+    if request.method == "POST":
+        search_term = request.form.get("last_name", "").strip()
+
+        if len(search_term) > 100:
+            search_term = search_term[:100]
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            safe_query = """
+                SELECT TOP 50 
+                    A.AppointmentID,
+                    P.FirstName,
+                    P.LastName,
+                    A.AppointmentDateTime,
+                    A.ReasonForVisit,
+                    S.StatusName,
+                    U.FirstName AS ClinicianFirstName,
+                    U.LastName  AS ClinicianLastName,
+                    P.InsuranceProvider
+                FROM Appointments A
+                JOIN Patients P ON A.PatientID = P.PatientID
+                JOIN Users U ON A.ClinicianUserID = U.UserID
+                JOIN AppointmentStatus S ON A.StatusID = S.StatusID
+                WHERE P.LastName LIKE ?
+                ORDER BY A.AppointmentDateTime DESC;
+            """
+
+            like_param = f"%{search_term}%"
+            cursor.execute(safe_query, (like_param,))
+            rows = cursor.fetchall()
+            # ... build HTML table ...
+          </code></pre>
+        </div>
+      </div>
+
+      <!-- Skills / Tools -->
+      <div class="space-y-3 fade-section">
+        <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text section-title on-light">Skills & Tools Demonstrated
+        </h3>
+        <div class="flex flex-wrap gap-2 text-xs md:text-sm">
+          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Python (Flask)</span>
+          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Azure SQL Database</span>
+          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">SQL Injection</span>
+          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Security Logging</span>
+          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Blue Team Monitoring</span>
+          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Secure Coding / SDLC</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-12 text-[#8b949e] fade-section">
+    <h2 class="text-xl md:text-2xl mb-4 accent-text on-light">Connect With Me</h2>
+    <div class="flex justify-center gap-6">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
+        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle logic
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('theme') === 'light') {
+      body.classList.add('light-mode');
+      toggleButton.textContent = '🌚 Dark Mode';
+    }
+
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+
+    // Code tab switching
+    const codeButtons = document.querySelectorAll('.code-tab-button');
+    const codeBlocks = document.querySelectorAll('.code-block');
+
+    codeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+
+        // Update active tab styling
+        codeButtons.forEach(b => {
+          if (b === btn) {
+            b.classList.add('active-tab');
+          } else {
+            b.classList.remove('active-tab');
+          }
+        });
+
+        // Show/hide code blocks
+        codeBlocks.forEach(block => {
+          if (block.id === targetId) {
+            block.classList.remove('hidden');
+          } else {
+            block.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Scroll-fade animation using IntersectionObserver
+    const fadeSections = document.querySelectorAll('.fade-section');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    fadeSections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
