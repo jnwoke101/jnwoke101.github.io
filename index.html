@@ -101,6 +101,17 @@ body.light-mode .profile-image {
     body.light-mode footer {
       color: #000000 !important;
 }
+    /* Dark mode: content boxes should be slightly lighter than page background */
+.content-box {
+  background-color: #111418 !important; /* deep gray-black contrast */
+}
+
+/* Light mode keeps the light gray you already have */
+body.light-mode .content-box {
+  background-color: #e6e6e6 !important;
+  color: #000000 !important;
+}
+
   </style>
 </head>
 <body class="bg-[#0d1117] text-[#c9d1d9]">
@@ -113,7 +124,6 @@ hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right
   <!-- Header -->
   <section class="text-center py-12">
     <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
-    <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
 <a href="/index.html">
   <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
     About Me
@@ -313,6 +323,7 @@ hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right
 
 </body>
 </html>
+
 
 
 
