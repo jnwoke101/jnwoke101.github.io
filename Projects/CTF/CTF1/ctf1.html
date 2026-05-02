@@ -1,159 +1,777 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64"/> 
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joseph Nwoke | CTF: Bank Race Condition</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
   <style>
+    :root {
+      --bg: #0d1117;
+      --card: rgba(17, 24, 39, 0.78);
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --accent: #2ac3de;
+      --accent-2: #7dd3fc;
+      --line: rgba(42, 195, 222, 0.28);
+      --shadow: rgba(42, 195, 222, 0.22);
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --success: #34d399;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(42, 195, 222, 0.16), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.12), transparent 24%),
+        linear-gradient(135deg, #0d1117 0%, #090d13 48%, #101827 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 8px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #161b22;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de;
-      border-radius: 10px;
-      border: 2px solid #161b22;
-    }
-    .footer {
-      margin-top: 50px;
-      padding: 20px;
-    }
-    .footer::before {
+
+    body::before {
       content: "";
-      display: block;
-      width: 100%;
-      height: 2px;
-      margin-bottom: 20px;
-    }
-    .social-icons a {
-      margin: 0 15px;
-      text-decoration: none;
-    }
-    .social-icons img {
-      width: 30px;
-      height: 30px;
-      transition: opacity 0.3s;
-    }
-    .social-icons img:hover {
-      opacity: 0.7;
-    }
-    .zoomable {
-      max-width: 100%;
-      cursor: zoom-in;
-      display: block;
-      margin: 2rem auto;
-      width: 100%;
-      max-width: 1918px;
-    }
-    .overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.05), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #111827; }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: var(--accent);
+      border-radius: 999px;
+      border: 2px solid #111827;
+    }
+
+    .page-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(13, 17, 23, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+    }
+
+    .nav-link,
+    .theme-button,
+    .action-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover,
+    .action-button:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.12);
+      border-color: var(--line);
+      color: var(--accent);
+    }
+
+    .hero-card,
+    .content-box {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(42, 195, 222, 0.18);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+      animation: floatIn 0.75s ease both;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .hero-card::before,
+    .content-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(42, 195, 222, 0.12), transparent 36%);
+      pointer-events: none;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(42, 195, 222, 0.22) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .content-box:hover,
+    .mini-card:hover,
+    .evidence-card:hover,
+    .artifact-card:hover,
+    .step-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(42, 195, 222, 0.45);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.30), 0 0 34px rgba(42, 195, 222, 0.12);
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(42, 195, 222, 0.38), 0 0 40px rgba(42, 195, 222, 0.16);
+      letter-spacing: 0.08em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .section-title {
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
-      justify-content: center;
-      z-index: 1000;
+      gap: 12px;
     }
-    .overlay img {
-      max-width: 90vw;
-      max-height: 90vh;
-      box-shadow: 0 0 25px #2ac3de;
-      border-radius: 8px;
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(42, 195, 222, 0.6), transparent);
+    }
+
+    .pill {
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.16);
+    }
+
+    .mini-card,
+    .evidence-card,
+    .artifact-card,
+    .step-card {
+      position: relative;
+      border: 1px solid rgba(42, 195, 222, 0.16);
+      background: rgba(13, 17, 23, 0.50);
+      border-radius: 26px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .metric-card {
+      position: relative;
+      border: 1px solid rgba(42, 195, 222, 0.16);
+      background: rgba(13, 17, 23, 0.50);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: "";
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      border: 1px dashed rgba(42, 195, 222, 0.32);
+      border-radius: 999px;
+      right: -18px;
+      top: -18px;
+      animation: spinSlow 16s linear infinite;
+    }
+
+    .step-card::before {
+      content: attr(data-step);
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(42, 195, 222, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(42, 195, 222, 0.34);
+      font-weight: 800;
+      box-shadow: 0 0 20px rgba(42, 195, 222, 0.15);
+    }
+
+    .evidence-img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 18px;
+      border: 1px solid rgba(42, 195, 222, 0.18);
+      background: rgba(0,0,0,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, filter 0.25s ease;
+      cursor: zoom-in;
+      object-fit: contain;
+    }
+
+    .evidence-figure:hover .evidence-img {
+      transform: translateY(-3px) scale(1.01);
+      border-color: rgba(42, 195, 222, 0.75);
+      box-shadow: 0 0 18px rgba(42, 195, 222, 0.28), 0 0 44px rgba(42, 195, 222, 0.13);
+      filter: saturate(1.08) contrast(1.04);
+    }
+
+    .evidence-caption {
+      margin-top: 0.65rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .img-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.76);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+    }
+
+    .img-modal.open { display: flex; }
+
+    .img-modal-content {
+      width: min(1120px, 95vw);
+      max-height: 88vh;
+      background: rgba(13, 17, 23, 0.94);
+      border: 1px solid rgba(42, 195, 222, 0.38);
+      box-shadow: 0 0 32px rgba(42, 195, 222, 0.18);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .img-modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+      background: #000;
+    }
+
+    .img-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.62);
+      border: 1px solid rgba(42, 195, 222, 0.55);
+      color: #e5e7eb;
+      padding: 8px 10px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease;
+      user-select: none;
+      z-index: 2;
+    }
+
+    .img-modal-close:hover {
+      transform: scale(1.06);
+      background: rgba(42, 195, 222, 0.18);
+    }
+
+    .img-modal-caption {
+      padding: 0.85rem 1rem;
+      border-top: 1px solid rgba(48, 54, 61, 1);
+      color: var(--text);
+      font-size: 0.9rem;
+      background: rgba(17, 24, 39, 0.92);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.6), transparent);
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #0b1220;
+      --muted: #4b5563;
+      --accent: #007c92;
+      --accent-2: #0369a1;
+      --line: rgba(0, 124, 146, 0.28);
+      --shadow: rgba(0, 124, 146, 0.2);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(0, 124, 146, 0.12), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(3, 105, 161, 0.08), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f5f7fb 48%, #edf6f8 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 124, 146, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 124, 146, 0.055) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav,
+    body.light-mode .hero-card,
+    body.light-mode .content-box {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .mini-card,
+    body.light-mode .evidence-card,
+    body.light-mode .artifact-card,
+    body.light-mode .step-card,
+    body.light-mode .metric-card {
+      background: rgba(255,255,255,0.72);
+      color: var(--text);
+      border-color: rgba(0, 124, 146, 0.20);
+    }
+
+    body.light-mode .muted { color: #4b5563 !important; }
+    body.light-mode .evidence-img { background: #f8fafc; }
+
+    body.light-mode .img-modal-content {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(0, 124, 146, 0.28);
+      box-shadow: 0 0 24px rgba(15, 23, 42, 0.14);
+    }
+
+    body.light-mode .img-modal-caption {
+      background: rgba(248, 250, 252, 0.96);
+      color: var(--text);
+      border-top: 1px solid rgba(15, 23, 42, 0.12);
+    }
+
+    body.light-mode .img-modal-close {
+      border-color: rgba(15, 23, 42, 0.22);
+      color: #0b1220;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    body.no-js .reveal,
+    noscript .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 820px) {
+      .glass-nav { border-radius: 24px; }
+      .hero-card { border-radius: 28px; }
+      .section-title { align-items: flex-start; }
+      .terminal-line { border-right: 0; animation: none; }
     }
   </style>
 </head>
-<body class="bg-[#0d1117] text-[#c9d1d9]">
-  <!-- Header -->
-  <section class="text-center py-12">
-    <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
-    <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
-    <div class="mt-6 space-x-4">
-      <a href="/index.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">About Me</button></a>
-      <a href="/Projects/projects.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">Projects</button></a>
-      <a href="/Education_Career/education_and_career.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">Education & Career</button></a>
+
+<body class="custom-scrollbar no-js">
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <!-- CTF Overview -->
-  <section class="max-w-4xl mx-auto bg-[#161b22] p-6 rounded-lg">
-    <h2 class="text-3xl text-[#2ac3de] mb-4">CTF Overview: Exploiting a Race Condition Vulnerability in a Bank's Web Server</h2>
-    <h3 class="text-xl text-[#2ac3de] mt-6">Objective</h3>
-    <ul class="list-disc list-inside">
-      <li>Simulate a scenario where I, acting as an attacker, attempt to increase the balance of one target bank account to at     least $1000.</li>
-      <li>Each of the three accounts starts with $100.</li>
-      <li>In a real-world situation, one account could be mine (or someone I'm helping), and I’ve gained access to the other two via phishing or other credential theft methods.</li>
-    </ul>
+  <main id="top" class="page-shell">
+    <section class="py-12 md:py-16">
+      <div class="hero-card rounded-[2rem] p-6 md:p-10">
+        <div class="relative z-10 grid gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
+          <div>
+            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">CTF Writeup • Web Exploitation • Burp Suite</p>
+            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">BANK RACE<br />CONDITION</h1>
+            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Timing flaw. Parallel requests. Business logic abuse.</p>
+            <p class="mt-6 max-w-3xl leading-8 muted text-[var(--muted)]">
+              A TryHackMe-style CTF writeup demonstrating how a race condition in a banking transfer workflow can be abused
+              when multiple transaction requests are processed at the same time without proper server-side locking.
+            </p>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Tools Used</h3>
-    <ul class="list-disc list-inside">
-      <li>BurpSuite: Used to intercept and repeat POST requests to exploit a race condition vulnerability in the bank’s web server.</li>
-    </ul>
-    <img src="/Logos/burpsuite-logo.png" alt="BurpSuite Logo" class="h-12 mt-2" />
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="#walkthrough" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Walkthrough</a>
+              <a href="#takeaways" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)]">View Lessons</a>
+            </div>
+          </div>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Steps Taken</h3>
-    <ol class="list-decimal list-inside space-y-4">
-      <li>
-        <strong>Setup and Access</strong><br/>
-        <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-1.png" alt="Access" class="zoomable" />
-        <p>Open BurpSuite's browser and log in using one victim’s credentials in order to transfer the money. Enable the Intercept feature to capture outgoing POST requests.</p>
-      </li>
-      <li>
-        <strong>Capturing and Preparing the POST Request</strong><br/>
-        <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-2.png" alt="Capture" class="zoomable" />
-        <p>Identify the POST request that handles the money transfer. Forward the request, then locate it in the HTTP history under the Proxy tab. Right-click the POST action and send it to the Repeater.</p>
-      </li>
-      <li>
-        <strong>Exploiting the Race Condition</strong><br/>
-        <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-3.png" alt="Exploit" class="zoomable" />
-        <p>In the Repeater tab, create a new group and add the money transfer request to it. Duplicate the tab 50 times to simulate multiple simultaneous transactions. Send the requests in parallel to overload the server and exploit the race condition.</p>
-      </li>
-      <li>
-        <strong>Verification</strong><br/>
-        <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-4.png" alt="Verify" class="zoomable" />
-        <p>Log out and back into both the sender and recipient accounts to verify balance changes. Repeat the same process using the second compromised account. Combined, this results in a transfer of at least $1000 to the recipient’s account.</p>
-      </li>
-    </ol>
+          <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <div class="metric-card p-5">
+              <p class="text-3xl font-black text-[var(--danger)]">Race</p>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Concurrency flaw in transaction logic</p>
+            </div>
+            <div class="metric-card p-5">
+              <p class="text-3xl font-black text-[var(--accent)]">Burp</p>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Repeater and parallel request testing</p>
+            </div>
+            <div class="metric-card p-5">
+              <p class="text-3xl font-black text-[var(--success)]">CTF</p>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Controlled lab environment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Outcome</h3>
-    <p>Successfully demonstrated how a race condition vulnerability can be exploited to multiply bank transfers, effectively boosting the recipient’s balance far beyond the account limits.</p>
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">CTF Snapshot</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 md:grid-cols-3">
+          <div class="mini-card p-5">
+            <div class="mb-3 text-3xl text-[var(--accent)]"><i class="bx bx-target-lock"></i></div>
+            <h3 class="font-bold text-[var(--accent)]">Objective</h3>
+            <p class="mt-3 leading-7 muted text-[var(--muted)]">Increase one target account balance to at least $1,000 in a controlled lab scenario.</p>
+          </div>
+          <div class="mini-card p-5">
+            <div class="mb-3 text-3xl text-[var(--accent)]"><i class="bx bx-transfer-alt"></i></div>
+            <h3 class="font-bold text-[var(--accent)]">Attack Idea</h3>
+            <p class="mt-3 leading-7 muted text-[var(--muted)]">Send repeated transfer requests fast enough to exploit poor transaction handling.</p>
+          </div>
+          <div class="mini-card p-5">
+            <div class="mb-3 text-3xl text-[var(--accent)]"><i class="bx bx-shield-quarter"></i></div>
+            <h3 class="font-bold text-[var(--accent)]">Defender Lesson</h3>
+            <p class="mt-3 leading-7 muted text-[var(--muted)]">Financial workflows need atomic transactions, locking, rate limits, and server-side validation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Takeaway</h3>
-    <p>Understanding how to exploit and identify race condition vulnerabilities in web applications is critically important for cybersecurity professionals because these flaws can lead to severe financial and data breaches if left unaddressed. Race conditions occur when a system's behavior depends on the sequence or timing of uncontrollable events, allowing attackers to manipulate processes by sending multiple requests simultaneously. In the context of banking or financial systems, this can result in unauthorized money transfers, duplication of transactions, or other fraudulent activities. By learning how these attacks are carried out—such as using tools like BurpSuite to overload a server with repeated POST requests—security analysts and penetration testers can better identify, test, and report such vulnerabilities, ultimately helping organizations fix the issues before malicious actors can exploit them in the real world.</p>
-  </section>
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Tools Used</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+          <div class="mini-card p-5 flex items-center gap-4">
+            <img src="/Logos/burpsuite-logo.png" alt="Burp Suite Logo" class="h-14 w-14 object-contain" />
+            <div>
+              <h3 class="font-bold text-[var(--accent)]">Burp Suite</h3>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Proxy, HTTP history, Repeater, and parallel request testing.</p>
+            </div>
+          </div>
 
-  <!-- Footer -->
-  <footer class="text-center py-12 text-sm text-[#8b949e]">
-    <h2 class="text-xl mb-4">Connect With Me</h2>
+          <div class="flex flex-wrap gap-2 text-sm">
+            <span class="pill rounded-full px-4 py-2">Burp Suite</span>
+            <span class="pill rounded-full px-4 py-2">Proxy Intercept</span>
+            <span class="pill rounded-full px-4 py-2">HTTP POST Requests</span>
+            <span class="pill rounded-full px-4 py-2">Repeater</span>
+            <span class="pill rounded-full px-4 py-2">Parallel Requests</span>
+            <span class="pill rounded-full px-4 py-2">Web Exploitation</span>
+            <span class="pill rounded-full px-4 py-2">Business Logic Testing</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Overview</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+          <div class="space-y-4 leading-8">
+            <p>
+              In this lab, three bank accounts start with $100 each. The goal is to abuse a flawed transfer workflow so one account can receive more money than should be possible under normal transaction rules.
+            </p>
+            <p>
+              The key weakness is a race condition: the application processes multiple transfer requests close together without properly locking the account balance or validating each transaction as one atomic operation.
+            </p>
+            <p>
+              This writeup focuses on the security concept, the testing process, and the defensive lessons rather than encouraging misuse against real systems.
+            </p>
+          </div>
+
+          <div class="mini-card p-5">
+            <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Business Impact</p>
+            <p class="mt-4 leading-8 muted text-[var(--muted)]">
+              In a real financial application, this kind of bug could enable fraudulent transactions, duplicated transfers,
+              inaccurate balances, financial loss, and loss of customer trust.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="walkthrough" class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Walkthrough</h2>
+      <div class="grid gap-6">
+        <div class="step-card p-5 md:p-6" data-step="01">
+          <h3 class="pr-14 text-xl font-bold text-[var(--accent)]">Setup & Access</h3>
+          <p class="mt-3 max-w-4xl leading-7 muted text-[var(--muted)]">
+            Opened Burp Suite's browser, authenticated to the lab application, and enabled Intercept to capture outgoing transfer requests.
+          </p>
+          <figure class="evidence-figure evidence-card mt-5 p-3">
+            <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-1.png" alt="Setup and access screenshot" class="evidence-img" data-caption="Figure 1 — Setup and access" />
+            <figcaption class="evidence-caption">Figure 1 — Setup and access</figcaption>
+          </figure>
+        </div>
+
+        <div class="step-card p-5 md:p-6" data-step="02">
+          <h3 class="pr-14 text-xl font-bold text-[var(--accent)]">Capture the Transfer Request</h3>
+          <p class="mt-3 max-w-4xl leading-7 muted text-[var(--muted)]">
+            Identified the POST request responsible for money transfers, located it in HTTP history, and sent it to Repeater for controlled testing.
+          </p>
+          <figure class="evidence-figure evidence-card mt-5 p-3">
+            <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-2.png" alt="Captured transfer request screenshot" class="evidence-img" data-caption="Figure 2 — Captured transfer request" />
+            <figcaption class="evidence-caption">Figure 2 — Captured transfer request</figcaption>
+          </figure>
+        </div>
+
+        <div class="step-card p-5 md:p-6" data-step="03">
+          <h3 class="pr-14 text-xl font-bold text-[var(--accent)]">Exploit the Race Condition</h3>
+          <p class="mt-3 max-w-4xl leading-7 muted text-[var(--muted)]">
+            Grouped and duplicated the transfer request in Repeater, then sent the requests in parallel to test whether the server handled concurrent balance updates safely.
+          </p>
+          <figure class="evidence-figure evidence-card mt-5 p-3">
+            <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-3.png" alt="Parallel request testing screenshot" class="evidence-img" data-caption="Figure 3 — Parallel request testing" />
+            <figcaption class="evidence-caption">Figure 3 — Parallel request testing</figcaption>
+          </figure>
+        </div>
+
+        <div class="step-card p-5 md:p-6" data-step="04">
+          <h3 class="pr-14 text-xl font-bold text-[var(--accent)]">Verify the Result</h3>
+          <p class="mt-3 max-w-4xl leading-7 muted text-[var(--muted)]">
+            Logged back into the involved accounts to confirm the balance changes and validate that the race condition produced the intended CTF outcome.
+          </p>
+          <figure class="evidence-figure evidence-card mt-5 p-3">
+            <img src="/Projects/CTF/CTF1/Images/THM-race-condition-ctf-4.png" alt="Verification screenshot" class="evidence-img" data-caption="Figure 4 — Balance verification" />
+            <figcaption class="evidence-caption">Figure 4 — Balance verification</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Outcome</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 md:grid-cols-2">
+          <div class="mini-card p-5">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--success)]">Result</p>
+            <h3 class="text-xl font-bold text-[var(--accent)]">Race Condition Confirmed</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">
+              The lab successfully demonstrated how repeated near-simultaneous transfer requests can manipulate a vulnerable workflow and increase a recipient balance beyond expected limits.
+            </p>
+          </div>
+
+          <div class="mini-card p-5">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--warning)]">Risk</p>
+            <h3 class="text-xl font-bold text-[var(--accent)]">Financial Logic Abuse</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">
+              The vulnerability is not just a technical issue; it is a business logic failure that can directly impact revenue, trust, and fraud exposure.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="takeaways" class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Defensive Takeaways</h2>
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div class="content-box rounded-3xl p-5 md:p-7">
+          <div class="relative z-10">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--success)]">Prevention</p>
+            <h3 class="text-xl font-bold text-[var(--accent)]">How to Fix This</h3>
+            <ul class="mt-5 space-y-3 leading-7 muted text-[var(--muted)]">
+              <li>• Use atomic database transactions for money movement.</li>
+              <li>• Apply row-level locking or safe concurrency controls during balance updates.</li>
+              <li>• Revalidate the sender balance server-side before each transaction commits.</li>
+              <li>• Add idempotency keys so repeated requests cannot duplicate the same action.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="content-box rounded-3xl p-5 md:p-7">
+          <div class="relative z-10">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--success)]">Detection</p>
+            <h3 class="text-xl font-bold text-[var(--accent)]">How to Monitor It</h3>
+            <ul class="mt-5 space-y-3 leading-7 muted text-[var(--muted)]">
+              <li>• Alert on repeated transfer requests from the same account in a short window.</li>
+              <li>• Monitor unusual balance changes or transaction spikes.</li>
+              <li>• Log request IDs, timestamps, session IDs, source IPs, and transaction states.</li>
+              <li>• Review fraud analytics for repeated small transfers or impossible balances.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="reveal mb-14 text-center">
+      <a href="/Projects/projects.html" class="inline-flex items-center justify-center gap-3 rounded-full border border-[var(--accent)] bg-[var(--accent)] px-7 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">
+        <i class="bx bx-arrow-back text-xl"></i>
+        Back to Projects
+      </a>
+    </section>
+  </main>
+
+  <div id="imgModal" class="img-modal" aria-hidden="true">
+    <div class="img-modal-content" role="dialog" aria-modal="true" aria-label="Enlarged evidence image">
+      <button id="imgModalClose" class="img-modal-close" type="button" aria-label="Close image">✕</button>
+      <img id="imgModalImage" src="" alt="Enlarged evidence image" />
+      <div id="imgModalCaption" class="img-modal-caption"></div>
+    </div>
+  </div>
+
+  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <h2 class="mb-4 text-xl text-[var(--accent)]">Connect With Me</h2>
     <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" rel="noopener noreferrer" class="transition hover:-translate-y-1 hover:opacity-80" aria-label="LinkedIn">
         <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
       </a>
+      <a href="mailto:josephcnwoke@gmail.com" class="transition hover:-translate-y-1 hover:opacity-80" aria-label="Email">
+        <i class="bx bx-envelope text-3xl text-[var(--accent)]"></i>
+      </a>
     </div>
+    <p class="mt-6 text-xs">© <span id="year"></span> Joseph Nwoke — Portfolio Project Page</p>
   </footer>
 
   <script>
-    document.querySelectorAll('.zoomable').forEach(img => {
-      img.addEventListener('click', () => {
-        const overlay = document.createElement('div');
-        overlay.className = 'overlay';
-        overlay.innerHTML = `<img src="${img.src}" alt="zoomed image" />`;
-        document.body.appendChild(overlay);
+    document.body.classList.remove('no-js');
 
-        overlay.addEventListener('click', () => {
-          overlay.remove();
-        });
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      revealObserver.observe(element);
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const imgModal = document.getElementById('imgModal');
+    const imgModalImage = document.getElementById('imgModalImage');
+    const imgModalCaption = document.getElementById('imgModalCaption');
+    const imgModalClose = document.getElementById('imgModalClose');
+
+    function openImgModal(src, alt, caption) {
+      imgModalImage.src = src;
+      imgModalImage.alt = alt || 'Enlarged evidence image';
+      imgModalCaption.textContent = caption || '';
+      imgModal.classList.add('open');
+      imgModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImgModal() {
+      imgModal.classList.remove('open');
+      imgModal.setAttribute('aria-hidden', 'true');
+      imgModalImage.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.evidence-img').forEach(img => {
+      img.addEventListener('click', () => {
+        const caption = img.getAttribute('data-caption') || '';
+        openImgModal(img.src, img.alt, caption);
       });
     });
+
+    imgModalClose.addEventListener('click', closeImgModal);
+
+    imgModal.addEventListener('click', (event) => {
+      if (event.target === imgModal) closeImgModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && imgModal.classList.contains('open')) {
+        closeImgModal();
+      }
+    });
   </script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "54eae24760c743d4bddaf7386fb7bb6d"}'></script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
