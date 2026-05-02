@@ -1,345 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64"/> 
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joseph Nwoke | About Me</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
 
-    /* Light Mode: Profile image border turns black */
-body.light-mode .profile-image {
-  border-color: #000000 !important;
-}
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-2: #111827;
+      --card: rgba(17, 24, 39, 0.78);
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --accent: #2ac3de;
+      --accent-2: #7dd3fc;
+      --line: rgba(42, 195, 222, 0.28);
+      --shadow: rgba(42, 195, 222, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       font-family: 'Courier New', monospace;
-      transition: background 0.3s, color 0.3s;
-    }
-    /* Custom scroll bar styling */
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 8px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #161b22;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de;
-      border-radius: 10px;
-      border: 2px solid #161b22;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(42, 195, 222, 0.16), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.12), transparent 24%),
+        linear-gradient(135deg, #0d1117 0%, #090d13 48%, #101827 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
     }
 
-            .footer {
-            margin-top: 50px;
-            padding: 20px;
-        }
-        .footer::before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 2px;
-            margin-bottom: 20px;
-        }
-        .social-icons a {
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        .social-icons img {
-            width: 30px;
-            height: 30px;
-            transition: opacity 0.3s;
-        }
-
-    /* ✅ FIXED: Proper closing brace */
-    .social-icons img:hover {
-      opacity: 0.7;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
+      z-index: -3;
     }
 
-    /* ✅ Light Mode Global Theme */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.05), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    .page-shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(13, 17, 23, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+    }
+
+    .nav-link,
+    .theme-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.12);
+      border-color: var(--line);
+      color: var(--accent);
+    }
+
+    .hero {
+      min-height: 72vh;
+      display: grid;
+      align-items: center;
+      padding: 64px 0 36px;
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(17, 24, 39, 0.88), rgba(13, 17, 23, 0.72));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      animation: floatIn 0.8s ease both;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(42, 195, 222, 0.25) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(42, 195, 222, 0.38), 0 0 40px rgba(42, 195, 222, 0.16);
+      letter-spacing: 0.08em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .profile-wrap {
+      position: relative;
+      width: 168px;
+      height: 168px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .profile-wrap::before,
+    .profile-wrap::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      inset: 0;
+      border: 1px dashed rgba(42, 195, 222, 0.65);
+      animation: spinSlow 18s linear infinite;
+    }
+
+    .profile-wrap::after {
+      inset: 12px;
+      border-style: solid;
+      border-color: rgba(42, 195, 222, 0.25);
+      animation-duration: 12s;
+      animation-direction: reverse;
+    }
+
+    .profile-image {
+      width: 128px;
+      height: 128px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 28px rgba(42, 195, 222, 0.28);
+      z-index: 2;
+    }
+
+    .content-box {
+      position: relative;
+      background: var(--card) !important;
+      border: 1px solid rgba(42, 195, 222, 0.18);
+      box-shadow: 0 16px 42px rgba(0,0,0,0.22);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+      animation: floatIn 0.7s ease both;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .content-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(42, 195, 222, 0.10), transparent 36%);
+      pointer-events: none;
+    }
+
+    .content-box:hover {
+      transform: translateY(-5px);
+      border-color: rgba(42, 195, 222, 0.45);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.28), 0 0 34px rgba(42, 195, 222, 0.12);
+    }
+
+    .section-title {
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(42, 195, 222, 0.6), transparent);
+    }
+
+    .pill {
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.16);
+    }
+
+    .stat-card,
+    .cert-item,
+    .tool-card {
+      border: 1px solid rgba(42, 195, 222, 0.16);
+      background: rgba(13, 17, 23, 0.48);
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .stat-card:hover,
+    .cert-item:hover,
+    .tool-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(42, 195, 222, 0.5);
+      background: rgba(42, 195, 222, 0.08);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(42, 195, 222, 0.7);
+    }
+
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 24px;
+      width: 1px;
+      height: calc(100% + 12px);
+      background: rgba(42, 195, 222, 0.22);
+    }
+
+    .timeline-item:last-child::after {
+      display: none;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.6), transparent);
+    }
+
     body.light-mode {
-      background: #ffffff !important;
-      color: #000000 !important;
+      --bg: #ffffff;
+      --bg-2: #f4f7fb;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #0b1220;
+      --muted: #4b5563;
+      --accent: #007c92;
+      --accent-2: #0369a1;
+      --line: rgba(0, 124, 146, 0.28);
+      --shadow: rgba(0, 124, 146, 0.2);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(0, 124, 146, 0.12), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(3, 105, 161, 0.08), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f5f7fb 48%, #edf6f8 100%) !important;
+      color: var(--text) !important;
     }
 
-    body.light-mode h1,
-    body.light-mode h2,
-    body.light-mode h3,
-    body.light-mode p,
-    body.light-mode figcaption {
-      color: #000000 !important;
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 124, 146, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 124, 146, 0.055) 1px, transparent 1px);
     }
 
-    /* ✅ Background content box lightening */
+    body.light-mode .glass-nav {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .hero-card,
     body.light-mode .content-box {
-      background-color: #e6e6e6 !important;
-      color: #000000 !important;
+      background: rgba(255, 255, 255, 0.78) !important;
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
     }
 
-    /* ✅ Light Mode button styling */
-    body.light-mode #themeToggle {
-      background: #ffffff !important;
+    body.light-mode .profile-image {
       border-color: #000000 !important;
-      color: #000000 !important;
     }
 
-    body.light-mode #themeToggle:hover {
-      background: #000000 !important;
-      color: #ffffff !important;
+    body.light-mode .stat-card,
+    body.light-mode .cert-item,
+    body.light-mode .tool-card {
+      background: rgba(255,255,255,0.64);
+      border-color: rgba(0, 124, 146, 0.18);
     }
 
-    body.light-mode button {
-      border-color: #000000 !important;
-      color: #000000 !important;
+    body.light-mode .muted {
+      color: #4b5563 !important;
     }
 
-    body.light-mode button:hover {
-      background: #000000 !important;
-      color: #ffffff !important;
+    @media (max-width: 720px) {
+      .glass-nav {
+        border-radius: 24px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 36px;
+      }
+
+      .profile-wrap {
+        width: 142px;
+        height: 142px;
+      }
+
+      .profile-image {
+        width: 108px;
+        height: 108px;
+      }
     }
 
-    body.light-mode footer {
-      color: #000000 !important;
-}
-    /* Dark mode: content boxes should be slightly lighter than page background */
-.content-box {
-  background-color: #111418 !important; /* deep gray-black contrast */
-}
-
-/* Light mode keeps the light gray you already have */
-body.light-mode .content-box {
-  background-color: #e6e6e6 !important;
-  color: #000000 !important;
-}
-
+    /* Safety fallback: if JavaScript fails, show the sections instead of hiding them forever. */
+    noscript .reveal,
+    body.no-js .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
-<body class="bg-[#0d1117] text-[#c9d1d9]">
 
-  <button id="themeToggle" class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 
-hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg fixed top-5 right-5 z-50">
-  🌙 Light Mode
-</button>
+<body class="no-js">
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
 
-  <!-- Header -->
-  <section class="text-center py-12">
-    <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
-<a href="/index.html">
-  <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
-    About Me
-  </button>
-</a>
-<a href="/Projects/projects.html">
-  <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
-    Projects
-  </button>
-</a>
-<a href="/Education_Career/education_and_career.html">
-  <button class="mt-6 px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">
-    Education & Career
-  </button>
-</a>
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
+    </div>
+  </header>
 
+  <main id="top" class="page-shell">
+    <section class="hero">
+      <div class="hero-card rounded-[2rem] p-6 md:p-10">
+        <div class="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+          <div>
+            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">IT Support • Cybersecurity • Cloud Defense</p>
+            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">JOSEPH<br />NWOKE</h1>
+            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Building labs. Hunting threats. Securing systems.</p>
 
-  </section>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <span class="pill rounded-full px-4 py-2 text-sm">Security+</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">CySA+</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Microsoft Sentinel</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Vulnerability Management</span>
+            </div>
 
-  <!-- About Me -->
-<section class="max-w-4xl mx-auto p-6 rounded-lg flex items-center gap-6 content-box">
-<img src="profile.png" 
-     alt="Profile" 
-     class="profile-image w-28 h-28 rounded-full border-4 border-[#2ac3de]" />
-    <div>
-      <h2 class="text-2xl text-[#2ac3de] mb-2">ABOUT ME</h2>
-      <p>
-        I’m an IT and cybersecurity professional who enjoys breaking systems to understand how to defend them. 
-        I’m currently finishing my Bachelor’s in Cybersecurity while building hands-on offensive and defensive labs from 
-        SQL injection exploitation to cloud-based detection and secure remediation. My goal is to grow into an information 
-        security role, whether it’s Red Team or Blue Team, and continue sharpening the skills that challenge me the most.
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="/Projects/projects.html" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Projects</a>
+              <a href="#skills" class="rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)] transition hover:-translate-y-1 hover:bg-[rgba(42,195,222,0.12)]">Explore Tools</a>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center gap-6">
+            <div class="profile-wrap">
+              <img src="profile.png" alt="Profile" class="profile-image" />
+            </div>
+
+            <div class="grid w-full grid-cols-3 gap-3 text-center">
+              <div class="stat-card rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent)]">SOC</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Monitoring</p>
+              </div>
+              <div class="stat-card rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent)]">Vuln</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Mgmt</p>
+              </div>
+              <div class="stat-card rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent)]">Cloud</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Security</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal content-box rounded-3xl p-6 md:p-8">
+      <h2 class="section-title mb-5 text-2xl font-bold">About Me</h2>
+      <p class="relative z-10 leading-8">
+        I’m an IT support professional transitioning into cybersecurity, with completed coursework for a Bachelor’s degree in Cybersecurity from UMGC and hands-on experience in endpoint support, vulnerability management, security monitoring, and cloud-based security labs. Through my cybersecurity internship, certifications, and personal projects, I’ve worked with tools such as Microsoft Sentinel, Microsoft Defender, Tenable/Nessus, PowerShell, KQL, Active Directory, and Azure. I’m focused on moving fully into an information security role where I can help protect systems, investigate threats, remediate vulnerabilities, and continue growing as a technical security professional.
       </p>
-    </div>
-  </section>
+    </section>
 
-  <!-- Education -->
-<section class="max-w-4xl mx-auto mt-10"> 
-    <h2 class="text-2xl text-[#2ac3de] mb-4">EDUCATION</h2>
-  <div class="p-6 rounded-lg content-box">
-      <p class="font-semibold">University of Maryland Global Campus</p>
-      <p class="text-sm text-[#8b949e]">Bachelor of Science in Cybersecurity — Senior Undergraduate</p>
-    </div>
-  </section>
+    <section class="mt-10 grid gap-6 md:grid-cols-2">
+      <div class="reveal content-box rounded-3xl p-6 md:p-8">
+        <h2 class="section-title mb-6 text-2xl font-bold">Education</h2>
+        <div class="timeline-item relative z-10 pb-2">
+          <h3 class="text-lg font-bold text-[var(--accent)]">University of Maryland Global Campus</h3>
+          <p class="mt-2 text-sm muted text-[var(--muted)]">Bachelor of Science in Cybersecurity — Degree requirements completed, graduation May 2026</p>
+        </div>
+      </div>
 
-  <!-- Certifications -->
-<section class="max-w-4xl mx-auto mt-10"> 
-    <h2 class="text-2xl text-[#2ac3de] mb-4">CERTIFICATIONS</h2>
-      <div class="p-6 rounded-lg h-64 overflow-y-auto custom-scrollbar content-box">
-      <ul class="space-y-4">
-        <li class="flex justify-between items-center">
- <span>CompTIA Security+</span>
-    <img src="/Logos/CompTIA_logo.png" class="h-6" alt="CompTIA" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>CompTIA CySA+</span>
-    <img src="/Logos/CompTIA_logo.png" class="h-6" alt="CompTIA" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>TryHackMe SOC Level 1</span>
-    <img src="/Logos/TryHackMe_logo.png" class="h-6" alt="TryHackMe" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>TryHackMe Junior Pentester</span>
-    <img src="/Logos/TryHackMe_logo.png" class="h-6" alt="TryHackMe" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>Hack The Box Certified Penetration Testing Specialist (CPTS)</span>
-    <img src="/Logos/HTB_logo.png" class="h-6" alt="Hack The Box" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>Microsoft Azure Security Engineer</span>
-    <img src="/Logos/Microsoft_Azure_logo.png" class="h-6" alt="Azure" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>AWS Certified Security – Specialty</span>
-    <img src="/Logos/Amazon_Web_Services_Logo.png" class="h-6" alt="AWS" />
-  </li>
-  <li class="flex justify-between items-center">
-    <span>Google Cybersecurity Professional Certificate</span>
-    <img src="/Logos/Google_logo.png" class="h-6" alt="Google" />
-        </li>
-      </ul>
-    </div>
-  </section>
+      <div class="reveal content-box rounded-3xl p-6 md:p-8">
+        <h2 class="section-title mb-6 text-2xl font-bold">Current Focus</h2>
+        <div class="space-y-5 relative z-10">
+          <div class="timeline-item">
+            <h3 class="font-bold text-[var(--accent)]">Security Operations Growth</h3>
+            <p class="mt-1 text-sm leading-6 muted text-[var(--muted)]">Building stronger SIEM, vulnerability management, incident response, and detection skills.</p>
+          </div>
+          <div class="timeline-item">
+            <h3 class="font-bold text-[var(--accent)]">Offensive Security Practice</h3>
+            <p class="mt-1 text-sm leading-6 muted text-[var(--muted)]">Continuing hands-on lab work in penetration testing, enumeration, exploitation, and remediation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <!-- Skills & Tools -->
-<section class="max-w-4xl mx-auto mt-10 p-6 rounded-lg content-box">
-  <h2 class="text-2xl text-[#2ac3de] mb-4">SKILLS & TOOLS</h2>
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/linux-logo.png" class="h-12" alt="Linux logo" />
-      <figcaption>Linux</figcaption>
-    </figure>
+    <section class="reveal mt-10">
+      <h2 class="section-title mb-5 text-2xl font-bold">Certifications</h2>
+      <div class="content-box rounded-3xl p-5 md:p-6">
+        <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
+          Click any certification to view the credential PDF.
+        </p>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/Metasploit-logo.png" class="h-12" alt="Metasploit logo" />
-      <figcaption>Metasploit</figcaption>
-    </figure>
+        <div class="relative z-10 grid gap-3 md:grid-cols-2">
+          <a href="/Certifications/Security+.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
+            <span>CompTIA Security+</span>
+            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          </a>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/wireshark-logo.png" class="h-12" alt="Wireshark logo" />
-      <figcaption>Wireshark</figcaption>
-    </figure>
+          <a href="/Certifications/CompTIA CySA+ ce certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
+            <span>CompTIA CySA+</span>
+            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          </a>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/zeek-logo.png" class="h-12" alt="Zeek logo" />
-      <figcaption>Zeek</figcaption>
-    </figure>
+          <a href="/Certifications/az-900-cert.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
+            <span>Microsoft Azure Fundamentals</span>
+            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          </a>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/Python-logo.png" class="h-12" alt="Python logo" />
-      <figcaption>Python</figcaption>
-    </figure>
+          <a href="/Certifications/GoogleCyberSec.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
+            <span>Google Cybersecurity Professional Certificate</span>
+            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          </a>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/Splunk-logo.png" class="h-12" alt="Splunk logo" />
-      <figcaption>Splunk</figcaption>
-    </figure>
+          <a href="/Certifications/Google_cloud_cybersec.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4 md:col-span-2">
+            <span>Google Cloud Cybersecurity Certificate</span>
+            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/nmap-logo.png" class="h-12" alt="Nmap logo" />
-      <figcaption>Nmap</figcaption>
-    </figure>
+    <section id="skills" class="reveal mt-10">
+      <h2 class="section-title mb-5 text-2xl font-bold">Tools I Use</h2>
+      <div class="content-box rounded-3xl p-6 md:p-8">
+        <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
+          A focused look at the platforms and tools I use across IT support, SOC operations, vulnerability management, cloud security, scripting, and hands-on security labs.
+        </p>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/microsoft365-logo.png" class="h-12" alt="Microsoft 365 logo" />
-      <figcaption>Microsoft 365</figcaption>
-    </figure>
+        <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">SOC & Detection</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Microsoft Sentinel</span>
+              <span class="pill rounded-full px-3 py-1">Microsoft Defender</span>
+              <span class="pill rounded-full px-3 py-1">KQL</span>
+              <span class="pill rounded-full px-3 py-1">MITRE ATT&CK</span>
+              <span class="pill rounded-full px-3 py-1">Incident Response</span>
+            </div>
+          </div>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/john-the-ripper-logo.png" class="h-12" alt="John the Ripper logo" />
-      <figcaption>John the Ripper</figcaption>
-    </figure>
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Vulnerability Management</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Tenable</span>
+              <span class="pill rounded-full px-3 py-1">Nessus</span>
+              <span class="pill rounded-full px-3 py-1">OpenVAS</span>
+              <span class="pill rounded-full px-3 py-1">CVSS</span>
+              <span class="pill rounded-full px-3 py-1">DISA STIG</span>
+            </div>
+          </div>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/open-vpn-logo.png" class="h-12" alt="OpenVPN logo" />
-      <figcaption>OpenVPN</figcaption>
-    </figure>
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Cloud & Infrastructure</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Microsoft Azure</span>
+              <span class="pill rounded-full px-3 py-1">Azure Arc</span>
+              <span class="pill rounded-full px-3 py-1">Log Analytics</span>
+              <span class="pill rounded-full px-3 py-1">Active Directory</span>
+              <span class="pill rounded-full px-3 py-1">Windows Server</span>
+            </div>
+          </div>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/autopsy-logo.png" class="h-12" alt="Autopsy logo" />
-      <figcaption>Autopsy</figcaption>
-    </figure>
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Offensive Security Labs</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Kali Linux</span>
+              <span class="pill rounded-full px-3 py-1">Nmap</span>
+              <span class="pill rounded-full px-3 py-1">Metasploit</span>
+              <span class="pill rounded-full px-3 py-1">Burp Suite</span>
+              <span class="pill rounded-full px-3 py-1">John the Ripper</span>
+            </div>
+          </div>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/nessus_logo.png" class="h-12" alt="Nessus logo" />
-      <figcaption>Nessus</figcaption>
-    </figure>
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Networking & Analysis</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Wireshark</span>
+              <span class="pill rounded-full px-3 py-1">TCP/IP</span>
+              <span class="pill rounded-full px-3 py-1">DNS</span>
+              <span class="pill rounded-full px-3 py-1">Firewall Rules</span>
+              <span class="pill rounded-full px-3 py-1">NSGs</span>
+            </div>
+          </div>
 
-    <figure class="flex flex-col items-center text-center text-sm">
-      <img src="/Logos/burpsuite-logo.png" class="h-12" alt="BurpSuite logo" />
-      <figcaption>BurpSuite</figcaption>
-    </figure>
-  </div>
-</section>
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Automation & IT Support</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">PowerShell</span>
+              <span class="pill rounded-full px-3 py-1">Python</span>
+              <span class="pill rounded-full px-3 py-1">Microsoft 365</span>
+              <span class="pill rounded-full px-3 py-1">SolarWinds</span>
+              <span class="pill rounded-full px-3 py-1">OneDrive</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section class="reveal mt-10 content-box rounded-3xl p-6 md:p-8">
+      <h2 class="section-title mb-5 text-2xl font-bold">What I'm Working On Now</h2>
+      <div class="relative z-10 space-y-4 leading-8">
+        <p>
+          Right now, I’m focused on strengthening my security operations and vulnerability management skills while continuing hands-on offensive security practice through labs and projects.
+        </p>
+        <p>
+          I’m building experience with SIEM monitoring, KQL queries, endpoint security, vulnerability remediation, Azure-based security labs, and penetration testing fundamentals.
+        </p>
+        <p>
+          My short-term goal is to move fully into an information security role where I can contribute technically, support investigations, help reduce risk, and continue growing as a security professional.
+        </p>
+      </div>
+    </section>
+  </main>
 
-  <!-- What I'm Working On Now -->
-<section class="max-w-4xl mx-auto mt-10">
-  <h2 class="text-2xl text-[#2ac3de] mb-4">WHAT I'M WORKING ON NOW</h2>
-  <div class="p-6 rounded-lg content-box">
-    <p class="text-sm md:text-base">
-      Right now, I’m focused on sharpening my technical skills in offensive security, especially penetration testing,
-      since that’s the area I find most challenging and engaging to work in.
-    </p>
-    <p class="mt-3 text-sm md:text-base">
-      I’m actively preparing for the <span class="font-semibold text-[#2ac3de]">Offensive Security Certified Professional (OSCP)</span>
-      certification and building deeper hands-on experience through labs and projects.
-    </p>
-    <p class="mt-3 text-sm md:text-base">
-      My short-term goal is to land an information security role—whether on the <span class="font-semibold">Blue Team</span>
-      (defensive operations, monitoring, and incident response) or the <span class="font-semibold">Red Team</span>
-      (adversary emulation and application/network testing)—where I can contribute technically while continuing to grow.
-    </p>
-  </div>
-</section>
-
-
-  <!-- Footer -->
-  <footer class="text-center py-12 text-sm text-[#8b949e]">
-    <h2 class="text-xl mb-4">Connect With Me</h2>
+  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <h2 class="mb-4 text-xl text-[var(--accent)]">Connect With Me</h2>
     <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" class="transition hover:-translate-y-1 hover:opacity-80">
         <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
       </a>
     </div>
   </footer>
 
-  <!-- ✅ Theme Toggle Script -->
   <script>
+    document.body.classList.remove('no-js');
+
     const toggleButton = document.getElementById('themeToggle');
     const body = document.body;
 
-    if (localStorage.getItem('theme') === 'light') {
-      body.classList.add('light-mode');
-      toggleButton.textContent = '🌚 Dark Mode';
-    }
-
-    toggleButton.addEventListener('click', () => {
-      body.classList.toggle('light-mode');
-      const isLight = body.classList.contains('light-mode');
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
       toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      observer.observe(element);
     });
   </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
