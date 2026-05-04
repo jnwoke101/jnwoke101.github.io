@@ -316,7 +316,7 @@
       height: 112px;
       border: 1px dashed rgba(42, 195, 222, 0.45);
       border-radius: 999px;
-      animation: spinSlow 30s linear infinite;
+      animation: spinSlow 15s linear infinite;
     }
 
     @keyframes spinSlow {
@@ -1030,7 +1030,7 @@
         rightArrow.addEventListener('click', nextSlide);
         leftArrow.addEventListener('click', prevSlide);
 
-        const intervalId = setInterval(nextSlide, 6000);
+        const intervalId = setInterval(nextSlide, 12000);
         carouselIntervals[wrapperIndex] = intervalId;
       });
     }
