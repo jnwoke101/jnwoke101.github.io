@@ -1,308 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OSINT Reconnaissance Report | Joseph Nwoke</title>
-  <meta name="description" content="An OSINT reconnaissance report on Microsoft demonstrating passive data collection and analysis."/>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64"/>
+  <title>Page Under Maintenance | Joseph Nwoke</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    body { font-family: 'Courier New', monospace; }
-    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #161b22; }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de;
-      border-radius: 10px;
-      border: 2px solid #161b22;
+    :root {
+      --bg: #0d1117;
+      --bg-2: #111827;
+      --card: rgba(17, 24, 39, 0.78);
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --accent: #2ac3de;
+      --accent-2: #7dd3fc;
+      --line: rgba(42, 195, 222, 0.28);
+      --shadow: rgba(42, 195, 222, 0.22);
     }
-    .zoomable {
-      max-width: 100%;
-      cursor: zoom-in;
-      display: block;
-      margin: 2rem auto;
-      width: 100%;
-      max-width: 1918px;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .overlay {
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(42, 195, 222, 0.16), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.12), transparent 24%),
+        linear-gradient(135deg, #0d1117 0%, #090d13 48%, #101827 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    body::before {
+      content: "";
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .overlay img {
-      max-width: 90vw;
-      max-height: 90vh;
-      box-shadow: 0 0 25px #2ac3de;
-      border-radius: 8px;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
+      z-index: -3;
     }
 
-    /* Slanted box styling for Purpose and Scope */
-    .slanted-box {
-      background-color: #0d1117;
-      border: 2px solid #2ac3de;
-      transform: skew(-10deg);
-      padding: 2rem;
-      margin: 3rem auto;
-      max-width: 650px;
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.05), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    .page-shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(13, 17, 23, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+    }
+
+    .nav-link,
+    .theme-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.12);
+      border-color: var(--line);
+      color: var(--accent);
+    }
+
+    .maintenance-wrap {
+      min-height: calc(100vh - 108px);
+      display: grid;
+      place-items: center;
+      padding: 64px 0;
+    }
+
+    .maintenance-card {
       position: relative;
-    }
-    .slanted-content {
-      transform: skew(10deg); /* Normalizes text inside the skew */
-      color: #c9d1d9;
+      overflow: hidden;
+      width: 100%;
+      max-width: 820px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(17, 24, 39, 0.88), rgba(13, 17, 23, 0.72));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      border-radius: 2rem;
+      padding: 44px 30px;
       text-align: center;
-    }
-    .slanted-content h3 {
-      color: #2ac3de;
-      font-size: 1.5rem;
-      margin-bottom: 0.75rem;
-      font-weight: bold;
+      animation: floatIn 0.8s ease both;
     }
 
-        }
-    .slanted-content h4 {
-      color: #2ac3de;
-      font-size: 1.5rem;
-      margin-bottom: 0.75rem;
-      font-weight: bold;
-      text-align: center;
+    .maintenance-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(42, 195, 222, 0.25) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
     }
-    
-    .slanted-content p {
-      font-size: 0.95rem;
-      line-height: 1.5rem;
+
+    .maintenance-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(42, 195, 222, 0.10), transparent 36%);
+      pointer-events: none;
     }
-    .slanted-content ul {
-      text-align: left;
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      line-height: 1.4rem;
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      border-radius: 999px;
+      padding: 9px 16px;
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(42, 195, 222, 0.38), 0 0 40px rgba(42, 195, 222, 0.16);
+      letter-spacing: 0.08em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .status-box {
+      margin: 30px auto 0;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(13, 17, 23, 0.48);
+      border: 1px solid rgba(42, 195, 222, 0.16);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 640px;
+    }
+
+    .pill {
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.16);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.6), transparent);
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --bg-2: #f4f7fb;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #0b1220;
+      --muted: #4b5563;
+      --accent: #007c92;
+      --accent-2: #0369a1;
+      --line: rgba(0, 124, 146, 0.28);
+      --shadow: rgba(0, 124, 146, 0.2);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(0, 124, 146, 0.12), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(3, 105, 161, 0.08), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f5f7fb 48%, #edf6f8 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 124, 146, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 124, 146, 0.055) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav,
+    body.light-mode .maintenance-card {
+      background: rgba(255, 255, 255, 0.78) !important;
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .status-box {
+      background: rgba(255,255,255,0.64);
+      border-color: rgba(0, 124, 146, 0.18);
+    }
+
+    @media (max-width: 720px) {
+      .glass-nav {
+        border-radius: 24px;
+      }
+
+      .maintenance-wrap {
+        min-height: auto;
+        padding: 42px 0;
+      }
     }
   </style>
 </head>
-<body class="bg-[#0d1117] text-[#c9d1d9] custom-scrollbar">
-  <!-- Header -->
-  <header class="text-center py-12">
-    <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
-    <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
-    <nav class="mt-6 space-x-4">
-      <a href="/index.html">
-        <button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] rounded">About Me</button>
-      </a>
-      <a href="/Projects/projects.html">
-        <button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] rounded">Projects</button>
-      </a>
-      <a href="/Education_Career/education_and_career.html">
-        <button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] rounded">Education & Career</button>
-      </a>
-    </nav>
+
+<body>
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="/index.html" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
+    </div>
   </header>
 
-  <!-- Main Content -->
-  <section class="max-w-6xl mx-auto bg-[#161b22] p-6 rounded-lg">
-    <h2 class="text-3xl text-[#2ac3de] mb-4">Project: OSINT Reconnaissance Report</h2>
+  <main class="page-shell maintenance-wrap">
+    <section class="maintenance-card">
+      <div class="card-content">
+        <div class="badge">Portfolio Update in Progress</div>
 
-    <!-- Disclosure -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Disclosure</h3>
-    <p>
-      This report was created solely for educational and portfolio purposes. All information presented was gathered from
-      publicly available sources, such as search engines, public DNS records, and SEC filings. No scanning, intrusion, or
-      exploitation of Microsoft’s systems was performed. The intent of this project is to demonstrate the process of passive
-      reconnaissance and raise awareness about the types of data that are accessible to potential attackers.
-    </p>
-    <p class="mt-4">
-      Microsoft has not endorsed or requested this report, and no confidential or proprietary data is included.
-    </p>
+        <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">Project Page • Under Maintenance</p>
+        <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">PAGE<br />UPDATE</h1>
+        <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Refining documentation. Updating screenshots. Improving write-up.</p>
 
-    <!-- Tools Used with Images -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Tools Used</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-4 text-center">
-      <!-- theHarvester -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="theharvester.png" alt="theHarvester Tool" class="w-24 h-24 object-contain mx-auto mb-3">
-        <p class="font-semibold">theHarvester</p>
-        <p class="text-sm mt-2">This tool is used to identify public emails and subdomains through search engines and external sources.</p>
+        <div class="mt-7 flex flex-wrap justify-center gap-3">
+          <span class="pill rounded-full px-4 py-2 text-sm">OSINT</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Recon</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Linux</span>
+        </div>
+
+        <div class="status-box">
+          This project page is currently being updated while I refine the technical details, screenshots, findings, and final documentation. Please check back soon for the completed version.
+        </div>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="/index.html" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">Back to Portfolio</a>
+          <a href="/Projects/projects.html" class="rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)] transition hover:-translate-y-1 hover:bg-[rgba(42,195,222,0.12)]">View Completed Projects</a>
+        </div>
       </div>
+    </section>
+  </main>
 
-      <!-- Whois -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="whois.png" alt="Whois Tool" class="w-24 h-24 object-contain mx-auto mb-3">
-        <p class="font-semibold">Whois</p>
-        <p class="text-sm mt-2">Gathered domain registration data including owner, expiration date, and contact info.</p>
-      </div>
-
-      <!-- SEC EDGAR -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="edgar.png" alt="SEC EDGAR Tool" class="w-24 h-24 object-contain mx-auto mb-3">
-        <p class="font-semibold">SEC EDGAR</p>
-        <p class="text-sm mt-2">Extracted executive names, roles, and other organizational details from public filings.</p>
-      </div>
-    </div>
-
-    <!-- Purpose inside Slanted Box -->
-    <div class="slanted-box">
-      <div class="slanted-content">
-        <h3>Purpose</h3>
-        <p>
-          The purpose of this project is to demonstrate how publicly available data can be leveraged by attackers to
-          identify potential attack vectors and risks. The target company chosen is a publicly traded entity,
-          ensuring legality and transparency.
-        </p>
-      </div>
-    </div>
-
-    <!-- Scope inside Slanted Box -->
-    <div class="slanted-box">
-      <div class="slanted-content">
-        <h3>Scope</h3>
-        <p>
-          The scope of this project is strictly <strong>passive reconnaissance</strong>. Only publicly available data was collected
-          and analyzed. This includes:
-        </p>
-        <ul class="list-disc list-inside mt-2">
-          <li>Reviewing public DNS records</li>
-          <li>Gathering domain registration details via Whois</li>
-          <li>Collecting publicly available email addresses and subdomains using theHarvester</li>
-          <li>Extracting executive information from SEC filings</li>
-          <li>Using search engines to cross-reference and validate data</li>
-        </ul>
-        <p class="mt-4"><strong>Out of Scope:</strong></p>
-        <ul class="list-disc list-inside mt-2">
-          <li>No network scanning, port scanning, or vulnerability scanning was conducted</li>
-          <li>No attempts were made to exploit systems or gain unauthorized access</li>
-          <li>No social engineering or direct contact with Microsoft personnel</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Data Sources -->
-    <h3 class="text-xl text-[#2ac3de] mt-10">Data Sources</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li>SEC filings</li>
-      <li>Search engines</li>
-      <li>Public DNS records</li>
-    </ul>
-
-    <!-- Key Findings -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Key Findings</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4 text-center">
-      <!-- Domains and Subdomains -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="pic1.png" alt="Domains and Subdomains" class="w-32 h-32 object-cover mx-auto mb-3 rounded">
-        <p class="font-semibold">Domains and Subdomains</p>
-        <p class="text-sm mt-2">Number of subdomains identified: TBD</p>
-      </div>
-
-      <!-- Key Executive Names -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="pic2.png" alt="Key Executive Names" class="w-32 h-32 object-cover mx-auto mb-3 rounded">
-        <p class="font-semibold">Key Executive Names (EDGAR)</p>
-        <p class="text-sm mt-2">7 executive names extracted with positions and start dates.</p>
-      </div>
-
-      <!-- Public Emails -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="pic3.png" alt="Public Emails" class="w-32 h-32 object-cover mx-auto mb-3 rounded">
-        <p class="font-semibold">Publicly Available Emails</p>
-        <p class="text-sm mt-2">10 verified emails identified, confirmed via LinkedIn.</p>
-      </div>
-
-      <!-- Risk Assessment -->
-      <div class="bg-[#0d1117] p-4 rounded-lg border border-[#2ac3de]">
-        <img src="pic4.png" alt="Risk Assessment" class="w-32 h-32 object-cover mx-auto mb-3 rounded">
-        <p class="font-semibold">Risk Assessment</p>
-        <p class="text-sm mt-2">Risk Level: Low / Medium / High - justification provided.</p>
-      </div>
-    </div>
-
-    <!-- Methodology -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Methodology</h3>
-    <h4 class="text-xl text-[#2ac3de] mt-6 text-center">Whois Enumeration</h4>
-    <ol class="list-decimal list-inside space-y-4">
-      <li>Gathered domain registration data including registrant location, email, phone number, and expiration date.
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="OSINT1_whois_command.mp4" type="video/mp4">
-        </video>
-      </li>
-
-      <h4 class="text-xl text-[#2ac3de] mt-6 text-center">theHarvester</h4>      
-      <li>I used this tool to identify public subdomains using Bing and URLscan.
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="/Projects/Other Projects/OSINT1/OSINT1_theHarvester.mp4" type="video/mp4">
-        </video>    
-        </li>
-      
-      <li>Since the previous sources didn't yield any results with emails, I decided to use Hunter.io in combination with theHarvester, which required me to input my Hunter.io API key.
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="OSINT1_theharvester_hunter.mp4" type="video/mp4">
-        </video>
-      </li>
-      
-      <li>10 verified emails were found, including directors and management team members confirmed via public LinkedIn searches.
-        <img src="OSINT1_theharvester_pic1.png" alt="theHarvester Emails" />
-      </li>
-
-      <h4 class="text-xl text-[#2ac3de] mt-6 text-center">EDGAR Filings Reviews</h4>      
-      <li>Extracted seven executive names along with age, positions, and start dates.
-        <video class="w-full rounded-lg border border-[#2ac3de] mt-4" controls>
-          <source src="OSINT1_EDGAR.mp4" type="video/mp4">
-        </video>  
-        <img src="OSINT1_EDGAR_pic1.png" alt="EDGAR Findings" />
-      </li>
-    </ol>
-
-    <!-- Data Collection -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Data Collection & Results</h3>
-    <p>Included raw findings with clear visuals, such as Whois output screenshots, theHarvester results, and SEC filing data snippets.</p>
-
-    <!-- Analysis -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Analysis</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Potential for phishing campaigns using identified email addresses.</li>
-      <li>Vendor risk and third-party exposure mapping.</li>
-      <li>Insights into organizational structure useful for social engineering attacks.</li>
-    </ul>
-
-    <!-- Recommendations -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Recommendations</h3>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Implement stricter email protection measures.</li>
-      <li>Enable DNS security features like DNSSEC.</li>
-      <li>Conduct regular audits of publicly available data.</li>
-    </ul>
-
-    <!-- Conclusion -->
-    <h3 class="text-xl text-[#2ac3de] mt-6">Conclusion</h3>
-    <p>Continuous monitoring of publicly available information is essential. Proactive OSINT practices help organizations minimize exposure and mitigate risks before they can be exploited by adversaries.</p>
-  </section>
-
-  <!-- Footer -->
-  <footer class="text-center py-12 text-sm text-[#8b949e]">
-    <h2 class="text-xl mb-4">Connect With Me</h2>
-    <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
-        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
-      </a>
-    </div>
+  <footer class="page-shell py-10 text-center text-sm text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <p>Joseph Nwoke • Cybersecurity Portfolio</p>
   </footer>
 
-  <!-- Image Zoom Script -->
-  <div id="imgOverlay" class="overlay"><img alt="Zoomed"/></div>
   <script>
-    const overlay = document.getElementById('imgOverlay');
-    const overlayImg = overlay.querySelector('img');
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('zoomable')) {
-        overlayImg.src = e.target.src;
-        overlay.style.display = 'flex';
-      } else if (e.target === overlay) {
-        overlay.style.display = 'none';
-      }
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
     });
   </script>
 </body>
