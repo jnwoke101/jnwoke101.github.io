@@ -1,217 +1,638 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64"/> 
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Joseph Nwoke | Secure Cloud Storage with Azure</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    body { font-family: 'Courier New', monospace; }
+    :root {
+      --bg: #07111f;
+      --bg-2: #0b1628;
+      --card: rgba(12, 27, 48, 0.78);
+      --card-2: rgba(15, 35, 61, 0.68);
+      --text: #dbeafe;
+      --muted: #9fb6d8;
+      --accent: #2ac3de;
+      --accent-2: #7dd3fc;
+      --key: #fbbf24;
+      --key-soft: rgba(251, 191, 36, 0.16);
+      --line: rgba(42, 195, 222, 0.26);
+      --shadow: rgba(42, 195, 222, 0.22);
+      --success: #34d399;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(42, 195, 222, 0.18), transparent 26%),
+        radial-gradient(circle at 82% 8%, rgba(251, 191, 36, 0.14), transparent 24%),
+        radial-gradient(circle at 70% 78%, rgba(37, 99, 235, 0.12), transparent 30%),
+        linear-gradient(135deg, #07111f 0%, #0b1628 48%, #08111f 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.88), transparent 90%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.045), transparent);
+      animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes pulseKey {
+      0%, 100% { box-shadow: 0 0 0 rgba(251, 191, 36, 0); }
+      50% { box-shadow: 0 0 34px rgba(251, 191, 36, 0.24); }
+    }
+
     .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #161b22; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0b1628; }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de; border-radius: 10px; border: 2px solid #161b22;
+      background: linear-gradient(180deg, var(--accent), var(--key));
+      border-radius: 999px;
+      border: 2px solid #0b1628;
     }
-    .footer { margin-top: 50px; padding: 20px; }
-    .footer::before { content: ""; display: block; width: 100%; height: 2px; margin-bottom: 20px; }
-    .social-icons a { margin: 0 15px; text-decoration: none; }
-    .social-icons img { width: 30px; height: 30px; transition: opacity 0.3s; }
-    .social-icons img:hover { opacity: 0.7; }
-    .zoomable { max-width: 100%; cursor: zoom-in; display: block; margin: 2rem auto; width: 100%; max-width: 1918px; }
-    .overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.85); display: flex;
-      align-items: center; justify-content: center; z-index: 1000;
+
+    .page-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
     }
-    .overlay img { max-width: 90vw; max-height: 90vh; box-shadow: 0 0 25px #2ac3de; border-radius: 8px; }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(7, 17, 31, 0.76);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+    }
+
+    .nav-link,
+    .theme-button,
+    .action-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover,
+    .action-button:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.12);
+      border-color: var(--line);
+      color: var(--accent);
+      box-shadow: 0 0 22px rgba(42, 195, 222, 0.14);
+    }
+
+    .hero-card,
+    .content-box,
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(42, 195, 222, 0.20);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.30);
+      animation: floatIn 0.75s ease both;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .hero-card::before,
+    .content-box::before,
+    .video-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at top left, rgba(42, 195, 222, 0.13), transparent 36%),
+        radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.09), transparent 32%);
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(251, 191, 36, 0.18) 34%, rgba(42, 195, 222, 0.18) 50%, transparent 66%);
+      transform: translateX(-120%);
+      animation: shimmer 6.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .content-box:hover,
+    .video-card:hover,
+    .tool-card:hover,
+    .step-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(251, 191, 36, 0.42);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.30), 0 0 34px rgba(42, 195, 222, 0.12), 0 0 34px rgba(251, 191, 36, 0.10);
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(42, 195, 222, 0.40), 0 0 40px rgba(251, 191, 36, 0.13);
+      letter-spacing: 0.08em;
+    }
+
+    .key-glow {
+      color: var(--key);
+      text-shadow: 0 0 12px rgba(251, 191, 36, 0.32);
+    }
+
+    .section-title {
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(42, 195, 222, 0.65), rgba(251, 191, 36, 0.42), transparent);
+    }
+
+    .tool-card,
+    .step-card,
+    .stat-card {
+      position: relative;
+      border: 1px solid rgba(42, 195, 222, 0.16);
+      background: var(--card-2);
+      border-radius: 24px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .tool-card img {
+      filter: drop-shadow(0 0 10px rgba(42, 195, 222, 0.24));
+    }
+
+    .pill {
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(251, 191, 36, 0.12);
+      border-color: rgba(251, 191, 36, 0.32);
+      color: var(--key);
+    }
+
+    .video-frame {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(42, 195, 222, 0.30);
+      background: #020617;
+      box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.08), 0 0 28px rgba(42, 195, 222, 0.12);
+    }
+
+    .video-frame::before {
+      content: "";
+      display: block;
+      padding-top: 56.25%;
+    }
+
+    .video-frame iframe,
+    .video-frame video,
+    .video-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      object-fit: cover;
+    }
+
+    .video-topbar {
+      border: 1px solid rgba(251, 191, 36, 0.18);
+      background: rgba(251, 191, 36, 0.08);
+      color: var(--key);
+    }
+
+    .watch-link {
+      color: var(--key);
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .watch-link:hover {
+      color: var(--accent-2);
+      transform: translateX(3px);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.65), rgba(251, 191, 36, 0.48), transparent);
+    }
+
+    body.light-mode {
+      --bg: #f5fbff;
+      --bg-2: #eaf6ff;
+      --card: rgba(255, 255, 255, 0.82);
+      --card-2: rgba(255, 255, 255, 0.72);
+      --text: #0b1220;
+      --muted: #475569;
+      --accent: #0078d4;
+      --accent-2: #0f6cbd;
+      --key: #b7791f;
+      --key-soft: rgba(183, 121, 31, 0.13);
+      --line: rgba(0, 120, 212, 0.24);
+      --shadow: rgba(0, 120, 212, 0.18);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(0, 120, 212, 0.12), transparent 28%),
+        radial-gradient(circle at 82% 8%, rgba(251, 191, 36, 0.16), transparent 25%),
+        linear-gradient(135deg, #ffffff 0%, #f5fbff 48%, #eaf6ff 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 120, 212, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 120, 212, 0.055) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav,
+    body.light-mode .hero-card,
+    body.light-mode .content-box,
+    body.light-mode .video-card {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .tool-card,
+    body.light-mode .step-card,
+    body.light-mode .stat-card {
+      background: rgba(255,255,255,0.72);
+      color: var(--text);
+      border-color: rgba(0, 120, 212, 0.18);
+    }
+
+    body.light-mode .video-frame {
+      background: #f8fafc;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .muted { color: #475569 !important; }
+
+    @media (max-width: 820px) {
+      .glass-nav { border-radius: 24px; }
+      .hero-card { border-radius: 28px; }
+      .section-title { align-items: flex-start; }
+    }
   </style>
 </head>
-<body class="bg-[#0d1117] text-[#c9d1d9]">
-  <!-- Header -->
-  <section class="text-center py-12">
-    <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
-    <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
-    <div class="mt-6 space-x-4">
-      <a href="/index.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">About Me</button></a>
-      <a href="/Projects/projects.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">Projects</button></a>
-      <a href="/Education_Career/education_and_career.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">Education & Career</button></a>
+
+<body class="custom-scrollbar no-js">
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Azure Key Vault</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About Me</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <!-- Project Overview -->
- <section class="max-w-6xl mx-auto bg-[#161b22] p-6 rounded-lg">
-    <h2 class="text-3xl text-[#2ac3de] mb-4">Project: Secure Cloud Storage with Azure Key Vault & Encryption</h2>
-    <h3 class="text-xl text-[#2ac3de] mt-6">Objective</h3>
-    <ul class="list-disc list-inside">
-      <li>Encrypt sensitive data at rest using Customer-Managed Keys (CMK) with Azure Key Vault.</li>
-      <li>Enforce secure data in transit using HTTPS and TLS 1.2+.</li>
-      <li>Implement least-privilege access using Azure Role-Based Access Control (RBAC).</li>
-      <li>Enable diagnostic logging and trigger alerts for key access anomalies.</li>
-    </ul>
+  <main id="top" class="page-shell">
+    <section class="py-12 md:py-16">
+      <div class="hero-card rounded-[2rem] p-6 md:p-10">
+        <div class="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <div>
+            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--key)]">Cloud Security • Encryption • Identity-Based Access</p>
+            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">SECURE CLOUD STORAGE<br /><span class="key-glow">WITH AZURE</span></h1>
+            <p class="mt-5 text-base md:text-lg text-[var(--text)]">Azure Key Vault. Customer-managed keys. RBAC. Monitoring. Alerts.</p>
+            <p class="mt-6 max-w-3xl leading-8 muted text-[var(--muted)]">
+              This portfolio project demonstrates how Azure Key Vault and native Azure security services can protect sensitive cloud storage using encryption, least privilege, logging, and alerting.
+            </p>
 
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="#videos" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Walkthroughs</a>
+              <a href="#project-overview" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)]">Project Overview</a>
+            </div>
+          </div>
 
+          <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <div class="stat-card p-5">
+              <p class="text-3xl font-black text-[var(--key)]">CMK</p>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Customer-managed encryption key</p>
+            </div>
+            <div class="stat-card p-5">
+              <p class="text-3xl font-black text-[var(--accent)]">RBAC</p>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Least-privilege access control</p>
+            </div>
+            <div class="stat-card p-5">
+              <p class="text-3xl font-black text-[var(--success)]">Logs</p>
+              <p class="mt-1 text-sm muted text-[var(--muted)]">Monitoring and alert notifications</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Tools Used</h3>
-    <ul class="list-disc list-inside">
-<ul>
-<li><strong>Azure Active Directory:</strong> Used to manage user identities and access by creating and assigning users to security groups. This enabled enforcement of least privilege through Role-Based Access Control (RBAC).</li>
-      <li><strong>Azure Monitor:</strong> Provided real-time observability into resource behavior. It was crucial for tracking unusual or denied access attempts and issuing immediate alerts.</li>
-      <li><strong>Azure Log Analytics:</strong> Centralized logging service where diagnostic logs from Key Vault and Storage Account were sent for monitoring and analysis. It enabled deep visibility into audit trails and operational metrics.</li>
-      <li><strong>Kusto Query Language (KQL):</strong> The language used to query logs stored in Azure Log Analytics. It enabled crafting of precise alert conditions and detection of anomalies.</li>
-      <li><strong>Azure Managed Identity:</strong> Allowed the secure binding of services like Storage Account to Key Vault without needing to store credentials, supporting passwordless authentication.</li>
-      <li><strong>Azure Role-Based Access Control (RBAC):</strong> Allowed secure role assignment for groups and users to define their access levels to specific Azure resources, promoting a secure and manageable access control model.</li>
-    </ul>
+    <section id="project-overview" class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Project Overview</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10">
+          <h3 class="text-2xl text-[var(--accent)] font-bold mb-4">Secure Cloud Storage with Azure Key Vault & Encryption</h3>
 
+          <div class="grid gap-5 lg:grid-cols-2">
+            <div class="step-card p-5">
+              <h4 class="text-xl text-[var(--key)] font-bold mb-3">Objective</h4>
+              <ul class="list-disc list-inside space-y-2 leading-7 muted text-[var(--muted)]">
+                <li>Encrypt sensitive data at rest using Customer-Managed Keys (CMK) with Azure Key Vault.</li>
+                <li>Enforce secure data in transit using HTTPS and TLS 1.2+.</li>
+                <li>Implement least-privilege access using Azure Role-Based Access Control (RBAC).</li>
+                <li>Enable diagnostic logging and trigger alerts for key access anomalies.</li>
+              </ul>
+            </div>
 
-<!-- Logos Section -->
-<div class="flex justify-center gap-8 mt-4 flex-wrap">
+            <div class="step-card p-5">
+              <h4 class="text-xl text-[var(--key)] font-bold mb-3">Outcome</h4>
+              <p class="leading-8 muted text-[var(--muted)]">
+                The project successfully demonstrated how to implement secure, monitored, and compliant cloud storage using native Azure capabilities. All configurations adhered to best practices for encryption, identity management, and alerting.
+              </p>
+            </div>
+          </div>
 
-  <div class="flex flex-col items-center">
-    <img src="/Logos/azure_monitor_logo.png" alt="Azure Monitor" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Monitor</figcaption>
-  </div>
+          <h3 class="text-xl text-[var(--accent)] mt-8 mb-4 font-bold">Tools Used</h3>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="tool-card p-5"><strong class="text-[var(--key)]">Azure Active Directory / Entra ID:</strong><p class="mt-2 muted text-[var(--muted)]">Managed user identities and access through security groups.</p></div>
+            <div class="tool-card p-5"><strong class="text-[var(--key)]">Azure Monitor:</strong><p class="mt-2 muted text-[var(--muted)]">Tracked unusual or denied access attempts and issued alerts.</p></div>
+            <div class="tool-card p-5"><strong class="text-[var(--key)]">Azure Log Analytics:</strong><p class="mt-2 muted text-[var(--muted)]">Centralized diagnostic logs for monitoring and analysis.</p></div>
+            <div class="tool-card p-5"><strong class="text-[var(--key)]">KQL:</strong><p class="mt-2 muted text-[var(--muted)]">Queried logs and built precise alert logic.</p></div>
+            <div class="tool-card p-5"><strong class="text-[var(--key)]">Managed Identity:</strong><p class="mt-2 muted text-[var(--muted)]">Supported passwordless service access to Key Vault.</p></div>
+            <div class="tool-card p-5"><strong class="text-[var(--key)]">Azure RBAC:</strong><p class="mt-2 muted text-[var(--muted)]">Applied secure role assignments to users and groups.</p></div>
+          </div>
 
-  <div class="flex flex-col items-center">
-    <img src="/Logos/azure-kql-logo.png" alt="Azure KQL" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure KQL</figcaption>
-  </div>
+          <div class="mt-8 flex justify-center gap-8 flex-wrap">
+            <div class="flex flex-col items-center"><img src="/Logos/azure_monitor_logo.png" alt="Azure Monitor" class="w-12 h-12 mb-1" /><figcaption class="text-sm text-center muted text-[var(--muted)]">Azure Monitor</figcaption></div>
+            <div class="flex flex-col items-center"><img src="/Logos/azure-kql-logo.png" alt="Azure KQL" class="w-12 h-12 mb-1" /><figcaption class="text-sm text-center muted text-[var(--muted)]">Azure KQL</figcaption></div>
+            <div class="flex flex-col items-center"><img src="/Logos/azure-managed-identity.png" alt="Azure Managed Identity" class="w-12 h-12 mb-1" /><figcaption class="text-sm text-center muted text-[var(--muted)]">Managed Identity</figcaption></div>
+            <div class="flex flex-col items-center"><img src="/Logos/azure-active-directory.png" alt="Azure Active Directory" class="w-12 h-12 mb-1" /><figcaption class="text-sm text-center muted text-[var(--muted)]">Entra ID</figcaption></div>
+            <div class="flex flex-col items-center"><img src="/Logos/azure_log_analytics.png" alt="Azure Log Analytics" class="w-12 h-12 mb-1" /><figcaption class="text-sm text-center muted text-[var(--muted)]">Log Analytics</figcaption></div>
+            <div class="flex flex-col items-center"><img src="/Logos/azure-rbac.png" alt="Azure RBAC" class="w-12 h-12 mb-1" /><figcaption class="text-sm text-center muted text-[var(--muted)]">Azure RBAC</figcaption></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="flex flex-col items-center">
-    <img src="/Logos/azure-managed-identity.png" alt="Azure Managed Identity" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Managed Identity</figcaption>
-  </div>
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Steps Taken</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div class="step-card p-5"><p class="text-sm uppercase tracking-[0.22em] text-[var(--key)]">Step 01</p><h3 class="mt-2 font-bold text-[var(--accent)]">User and Identity Setup</h3><p class="mt-3 leading-7 muted text-[var(--muted)]">Established user accounts and groups in Azure Active Directory to mirror department roles and enforce granular RBAC access.</p></div>
+        <div class="step-card p-5"><p class="text-sm uppercase tracking-[0.22em] text-[var(--key)]">Step 02</p><h3 class="mt-2 font-bold text-[var(--accent)]">Key Vault Configuration</h3><p class="mt-3 leading-7 muted text-[var(--muted)]">Created a Key Vault with soft-delete and purge protection, then generated a Customer-Managed Key named StorageEncryptionKey.</p></div>
+        <div class="step-card p-5"><p class="text-sm uppercase tracking-[0.22em] text-[var(--key)]">Step 03</p><h3 class="mt-2 font-bold text-[var(--accent)]">Managed Identity Deployment</h3><p class="mt-3 leading-7 muted text-[var(--muted)]">Set up StorageEncryptionIdentity for secure, passwordless interaction with encryption services.</p></div>
+        <div class="step-card p-5"><p class="text-sm uppercase tracking-[0.22em] text-[var(--key)]">Step 04</p><h3 class="mt-2 font-bold text-[var(--accent)]">Storage Account Setup</h3><p class="mt-3 leading-7 muted text-[var(--muted)]">Configured secure Azure Storage with CMK encryption and HTTPS-only access.</p></div>
+        <div class="step-card p-5"><p class="text-sm uppercase tracking-[0.22em] text-[var(--key)]">Step 05</p><h3 class="mt-2 font-bold text-[var(--accent)]">Logging and Monitoring</h3><p class="mt-3 leading-7 muted text-[var(--muted)]">Forwarded Key Vault and Storage Account diagnostic logs to a Log Analytics Workspace.</p></div>
+        <div class="step-card p-5"><p class="text-sm uppercase tracking-[0.22em] text-[var(--key)]">Step 06</p><h3 class="mt-2 font-bold text-[var(--accent)]">Alerting</h3><p class="mt-3 leading-7 muted text-[var(--muted)]">Created Azure Monitor alerts for abnormal activity and configured Action Groups for email notifications.</p></div>
+      </div>
+    </section>
 
-  <div class="flex flex-col items-center">
-    <img src="/Logos/azure-active-directory.png" alt="azure-active-directory" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">azure-active-directory/Entra ID</figcaption>
-  </div>
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Takeaway</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <p class="relative z-10 leading-8 muted text-[var(--muted)]">
+          This project showcases real-world skills in implementing defense-in-depth security using the Azure ecosystem. It emphasizes identity-based access, managed encryption, monitoring, and alerting, which are critical components of enterprise cloud security solutions.
+        </p>
+      </div>
+    </section>
 
+    <section id="videos" class="reveal mb-14">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Project Walkthrough Videos</h2>
+      <div class="grid gap-6">
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Identity Foundation</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">User Account Creation</h3>
+              </div>
+              <span class="pill rounded-full px-4 py-2 text-sm">Local MP4</span>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">This video demonstrates the creation of user accounts to establish a secure foundation for identity and access management in the Azure environment.</p>
+            <div class="video-frame"><video controls><source src="User Account Creation Gif.mp4" type="video/mp4"></video></div>
+          </div>
+        </article>
 
-  <div class="flex flex-col items-center">
-    <img src="/Logos/azure_log_analytics.png" alt="azure_log_analytics" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure Log Analytics</figcaption>
-  </div>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Resource Organization</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Secure Storage Resource Group Creation</h3>
+              </div>
+              <span class="pill rounded-full px-4 py-2 text-sm">Local MP4</span>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">Watch how the resource group for the secure storage solution is set up, ensuring resources are logically grouped for management and security policies.</p>
+            <div class="video-frame"><video controls><source src="Secure Storage Resource Group Creation.mp4" type="video/mp4"></video></div>
+          </div>
+        </article>
 
-    <div class="flex flex-col items-center">
-    <img src="/Logos/azure-rbac.png" alt="Azure RBAC" class="w-12 h-12 mb-1" />
-    <figcaption class="text-sm text-center text-[#c9d1d9]">Azure RBAC</figcaption>
-  </div>
-</div>   
-    <h3 class="text-xl text-[#2ac3de] mt-6">Steps Taken</h3>
-    <ol class="list-decimal list-inside space-y-4">
-      <li><strong>User and Identity Setup:</strong> Established user accounts and groups in Azure Active Directory to mirror department roles. These were essential for applying granular access controls through RBAC, ensuring that each user only had access to the resources required for their role. This segmentation minimizes insider threats and strengthens identity governance.</li>
-      <li><strong>Key Vault Configuration:</strong> Created a Key Vault with soft-delete and purge protection to ensure recoverability and compliance. Within it, a Customer-Managed Key (CMK) named StorageEncryptionKey was generated to control storage encryption. Giving encryption control to the organization enhances regulatory compliance and auditing capability.</li>
-      <li><strong>Managed Identity Deployment:</strong> Set up a user-assigned managed identity named StorageEncryptionIdentity. This identity was given key permissions in Key Vault, enabling secure, passwordless interaction with encryption services. It streamlines access management while maintaining tight security standards.</li>
-      <li><strong>Storage Account Setup:</strong> Deployed a secure Azure Storage Account configured with encryption using the CMK. Network access was restricted to HTTPS only, enforcing data protection in transit. Binding the managed identity to the account ensured encryption activities were securely authorized by identity.</li>
-      <li><strong>Logging and Monitoring:</strong> Diagnostic settings were applied to both the storage account and Key Vault to forward logs to a Log Analytics Workspace. This centralization of logs allows for historical queries, security auditing, and correlation of access patterns or anomalies. It builds a foundation for observability.</li>
-      <li><strong>Alerting:</strong> Azure Monitor was used to create alerts for abnormal activities such as failed key access or repeated operations. Alerts were configured to trigger emails via Action Groups. These real-time notifications allow for rapid incident response and monitoring of sensitive operations.</li>
-    </ol>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Key Management</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Key Vault Creation</h3>
+              </div>
+              <span class="pill rounded-full px-4 py-2 text-sm">Image Evidence</span>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">This section shows the creation of the Azure Key Vault, a critical component for securely managing encryption keys.</p>
+            <div class="video-frame"><img src="Key Vault Creation.png" alt="Key Vault Creation" /></div>
+          </div>
+        </article>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Outcome</h3>
-    <p>The project successfully demonstrated how to implement secure, monitored, and compliant cloud storage using native Azure capabilities. All configurations adhered to best practices for encryption, identity management, and alerting.</p>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Least Privilege</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Assign Access Permissions to Key Vault</h3>
+              </div>
+              <a class="watch-link text-sm font-bold" href="https://youtu.be/7iLQF3aV5ck" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">Learn how specific access policies are configured in Key Vault to enforce least privilege and secure key operations.</p>
+            <div class="video-frame"><iframe src="https://www.youtube.com/embed/7iLQF3aV5ck" title="Assign Access Permissions to Key Vault" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          </div>
+        </article>
 
-    <h3 class="text-xl text-[#2ac3de] mt-6">Takeaway</h3>
-    <p>This project showcases real-world skills in implementing defense-in-depth security using the Azure ecosystem. It emphasizes identity-based access, managed encryption, monitoring, and alerting—critical components of enterprise cloud security solutions.</p>
-  </section>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Encryption Key</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Storage Encryption Key Creation</h3>
+              </div>
+              <a class="watch-link text-sm font-bold" href="https://youtu.be/IM7oGpC62gM" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">This video walks through the creation of a customer-managed key used to encrypt storage account data, ensuring compliance and security ownership.</p>
+            <div class="video-frame"><iframe src="https://www.youtube.com/embed/IM7oGpC62gM" title="Storage Encryption Key Creation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          </div>
+        </article>
 
-  <!-- Video Sections -->
-  <section class="max-w-6xl mx-auto mt-12 space-y-12">
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">User Account Creation</h3>
-      <p class="mb-4">This video demonstrates the creation of user accounts to establish a secure foundation for identity and access management in the Azure environment.</p>
-      <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="User Account Creation Gif.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Secure Storage Resource Group Creation</h3>
-      <p class="mb-4">Watch how the resource group for the secure storage solution is set up, ensuring that all resources are logically grouped for management and security policies.</p>
-      <video class="w-full rounded-lg border border-[#2ac3de]" controls>
-        <source src="Secure Storage Resource Group Creation.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Key Vault Creation</h3>
-      <p class="mb-4">This video shows the creation of the Azure Key Vault, a critical component for securely managing encryption keys.</p>
-      <img src="Key Vault Creation.png" alt="Key Vault Creation" />
-      
-    </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Assign Access Permissions to Key Vault</h3>
-      <p class="mb-4">Learn how specific access policies are configured in Key Vault to enforce least privilege and secure key operations.</p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Assign Access Permissions to Key Vault.gif"
-         alt="Assign Access Permissions to Key Vault"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Storage Encryption Key Creation</h3>
-      <p class="mb-4">This video walks through the creation of a customer-managed key used to encrypt storage account data, ensuring compliance and security ownership.</p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Storage Encryption Key Creation.gif"
-         alt="Storage Encryption Key Creation"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-      
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Assign Roles to Groups for Storage Account</h3>
-      <p class="mb-4">Observe how role assignments are applied to Azure AD groups to control access to the secure storage account.</p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Assign Roles to Groups for Storage Account.gif"
-         alt="Assign Roles to Groups for Storage Account"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Storage RBAC</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Assign Roles to Groups for Storage Account</h3>
+              </div>
+              <span class="pill rounded-full px-4 py-2 text-sm">Local GIF</span>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">Observe how role assignments are applied to Azure AD groups to control access to the secure storage account.</p>
+            <div class="video-frame"><img src="/Projects/HomeLabs/HomeLab1/Assign Roles to Groups for Storage Account.gif" alt="Assign Roles to Groups for Storage Account" /></div>
+          </div>
+        </article>
 
-      <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Assign Roles to Groups for Key Vault</h3>
-      <p class="mb-4">This section explains how roles are assigned to groups to control who can interact with encryption keys securely.</p>
-      <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Assign Roles to Groups for Key Vault.gif"
-         alt="Assign Roles to Groups for Key Vault"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-    
-<div class="bg-[#161b22] p-8 rounded-xl shadow-lg">
-  <h3 class="text-2xl text-[#2ac3de] mb-4">Creating a Log Analytics Workspace</h3>
-  <p class="mb-4 max-w-2xl text-white">
-    Here, you'll see the creation of a Log Analytics Workspace, a core component for centralized logging and monitoring in Azure.
-  </p>
-  <div class="flex justify-center">
-    <img src="/Projects/HomeLabs/HomeLab1/Creating a Log Analytics Workspace.gif"
-         alt="Creating a Log Analytics Workspace"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-</div>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Key Vault RBAC</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Assign Roles to Groups for Key Vault</h3>
+              </div>
+              <a class="watch-link text-sm font-bold" href="https://youtu.be/HHf7bTSMQx4" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">This section explains how roles are assigned to groups to control who can interact with encryption keys securely.</p>
+            <div class="video-frame"><iframe src="https://www.youtube.com/embed/HHf7bTSMQx4" title="Assign Roles to Groups for Key Vault" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          </div>
+        </article>
 
-    <div class="bg-[#161b22] p-6 rounded-lg">
-      <h3 class="text-2xl text-[#2ac3de] mb-4">Create an Action Group for Your Alert</h3>
-      <p class="mb-4">This final video shows how to configure an Action Group in Azure Monitor to deliver alert notifications via email or other channels.</p>
-    <img src="/Projects/HomeLabs/HomeLab1/Create an Action Group for Your Alert.gif"
-         alt="Create an Action Group for Your Alert"
-         class="w-[960px] h-auto rounded-lg border border-[#2ac3de]" />
-  </div>
-  </section>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Centralized Logging</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Creating a Log Analytics Workspace</h3>
+              </div>
+              <span class="pill rounded-full px-4 py-2 text-sm">Local GIF</span>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">Here, you will see the creation of a Log Analytics Workspace, a core component for centralized logging and monitoring in Azure.</p>
+            <div class="video-frame"><img src="/Projects/HomeLabs/HomeLab1/Creating a Log Analytics Workspace.gif" alt="Creating a Log Analytics Workspace" /></div>
+          </div>
+        </article>
 
-  <footer class="text-center py-12 text-sm text-[#8b949e]">
-    <h2 class="text-xl mb-4">Connect With Me</h2>
+        <article class="video-card rounded-3xl p-5 md:p-6">
+          <div class="relative z-10">
+            <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="inline-flex rounded-full video-topbar px-3 py-1 text-xs uppercase tracking-[0.20em]">Alert Response</p>
+                <h3 class="mt-3 text-2xl text-[var(--accent)] font-bold">Create an Action Group for Your Alert</h3>
+              </div>
+              <a class="watch-link text-sm font-bold" href="https://youtu.be/npv0K2zdPRQ" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
+            </div>
+            <p class="mb-4 leading-7 muted text-[var(--muted)]">This final video shows how to configure an Action Group in Azure Monitor to deliver alert notifications through email or other channels.</p>
+            <div class="video-frame"><iframe src="https://www.youtube.com/embed/npv0K2zdPRQ" title="Create an Action Group for Your Alert" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <h2 class="mb-4 text-xl text-[var(--accent)]">Connect With Me</h2>
     <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" rel="noopener noreferrer" class="transition hover:-translate-y-1 hover:opacity-80" aria-label="LinkedIn">
         <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
       </a>
     </div>
+    <p class="mt-6 text-xs">© <span id="year"></span> Joseph Nwoke — Portfolio Project Page</p>
   </footer>
 
   <script>
-    document.querySelectorAll('.zoomable').forEach(img => {
-      img.addEventListener('click', () => {
-        const overlay = document.createElement('div');
-        overlay.className = 'overlay';
-        overlay.innerHTML = `<img src="${img.src}" alt="zoomed image" />`;
-        document.body.appendChild(overlay);
-        overlay.addEventListener('click', () => overlay.remove());
-      });
+    document.body.classList.remove('no-js');
+
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
     });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      revealObserver.observe(element);
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
