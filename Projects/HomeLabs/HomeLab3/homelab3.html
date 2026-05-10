@@ -1,582 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" />
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joseph Nwoke | Education & Career</title>
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Under Maintenance | Joseph Nwoke</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
   <style>
-    /* Scrollbar */
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 8px;
+    :root {
+      --bg: #0d1117;
+      --bg-2: #111827;
+      --card: rgba(17, 24, 39, 0.78);
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --accent: #2ac3de;
+      --accent-2: #7dd3fc;
+      --line: rgba(42, 195, 222, 0.28);
+      --shadow: rgba(42, 195, 222, 0.22);
     }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #161b22;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de;
-      border-radius: 10px;
-      border: 2px solid #161b22;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      background: #0d1117;
-      color: #c9d1d9;
       font-family: 'Courier New', monospace;
-      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(42, 195, 222, 0.16), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.12), transparent 24%),
+        linear-gradient(135deg, #0d1117 0%, #090d13 48%, #101827 100%);
+      color: var(--text);
       overflow-x: hidden;
-      transition: background-color 0.4s ease, color 0.4s ease;
+      transition: background 0.35s ease, color 0.35s ease;
     }
 
-    /* ---------- LIGHT MODE ---------- */
-    body.light-mode {
-      background: #ffffff !important;
-      color: #000000 !important;
-    }
-
-    /* Only elements tagged as "on-light" flip to black in light mode */
-    body.light-mode .on-light {
-      color: #000000 !important;
-    }
-
-    /* Accent helpers so light mode can flip blue → black */
-    .accent-text,
-    .section-title,
-    .btn-accent,
-    .tag-pill,
-    .code-tab-button {
-      transition: color 0.4s ease, border-color 0.4s ease, background-color 0.4s ease;
-    }
-
-    body.light-mode .accent-text,
-    body.light-mode .section-title {
-      color: #000000 !important;
-    }
-
-    body.light-mode .tag-pill {
-      color: #000000 !important;
-      border-color: #000000 !important;
-      background-color: #ffffff !important;
-    }
-
-    body.light-mode .btn-accent {
-      color: #000000 !important;
-      border-color: #000000 !important;
-      background: transparent !important;
-    }
-
-    body.light-mode .btn-accent:hover {
-      background: #000000 !important;
-      color: #ffffff !important;
-    }
-
-    /* Code tabs in light mode */
-    body.light-mode .code-tab-button {
-      border-color: #000000 !important;
-      color: #000000 !important;
-      background-color: #e5e7eb !important;
-    }
-
-    body.light-mode .code-tab-button.active-tab {
-      background: #000000 !important;
-      color: #ffffff !important;
-      border-color: #000000 !important;
-    }
-
-    #themeToggle {
+    body::before {
+      content: "";
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 999;
-      border-radius: 9999px;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 8px rgba(42, 195, 222, 0.4);
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
+      z-index: -3;
     }
 
-    /* Scroll-fade animation */
-    .fade-section {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.05), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
     }
 
-    .fade-section.visible {
-      opacity: 1;
-      transform: translateY(0);
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
     }
 
-    /* Keep code cards and code blocks readable in both themes */
-    .code-header,
-    .code-block {
-      color: #c9d1d9;
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
-    .code-header pre,
-    .code-header code,
-    .code-block pre,
-    .code-block code {
-      color: #e5e7eb;
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
     }
 
-    /* In light mode: force code areas to stay light text on dark background */
-    body.light-mode .code-header,
-    body.light-mode .code-header *,
-    body.light-mode .code-block,
-    body.light-mode .code-block *,
-    body.light-mode pre,
-    body.light-mode pre code {
-      color: #f9fafb !important;
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
     }
 
-    /* Paragraphs/lists that should be black in light mode, but keep code white */
-    body.light-mode .force-black-on-light,
-    body.light-mode .force-black-on-light p,
-    body.light-mode .force-black-on-light li {
-      color: #000000 !important;
+    .page-shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
     }
 
-    body.light-mode .force-black-on-light code {
-      color: #f9fafb !important;
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(13, 17, 23, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
     }
 
-    /* Preserve emerald headings in light mode */
-    .secure-heading {
-      /* base emerald color in dark mode too */
-      color: #10b981;
+    .nav-link,
+    .theme-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
 
-    body.light-mode .secure-heading,
-    body.light-mode .secure-heading.section-title {
-      color: #10b981 !important;
+    .nav-link:hover,
+    .theme-button:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.12);
+      border-color: var(--line);
+      color: var(--accent);
     }
 
-/* Keep SQL inline code highlighted black inside Remediation section during light mode */
-body.light-mode .force-black-on-light code {
-  background-color: #000000 !important;
-  color: #f9fafb !important;
-  padding: 2px 4px;
-  border-radius: 4px;
-}
+    .maintenance-wrap {
+      min-height: calc(100vh - 108px);
+      display: grid;
+      place-items: center;
+      padding: 64px 0;
+    }
 
-/* Blue Dynasty Project Title — matches logo color & font */
-.project-title-traced {
-  color: #1da0ff;                 /* gradient blue match */
-  font-family: "Cinzel", serif;   /* fantasy-medieval style close to logo */
-  letter-spacing: 1px;
+    .maintenance-card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 820px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(17, 24, 39, 0.88), rgba(13, 17, 23, 0.72));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+      border-radius: 2rem;
+      padding: 44px 30px;
+      text-align: center;
+      animation: floatIn 0.8s ease both;
+    }
 
-}
+    .maintenance-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(42, 195, 222, 0.25) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
 
-/* Light mode should NOT change title color or outline */
-body.light-mode .project-title-traced {
-  color: #1da0ff !important;
-}
+    .maintenance-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(42, 195, 222, 0.10), transparent 36%);
+      pointer-events: none;
+    }
 
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      border-radius: 999px;
+      padding: 9px 16px;
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(42, 195, 222, 0.38), 0 0 40px rgba(42, 195, 222, 0.16);
+      letter-spacing: 0.08em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .status-box {
+      margin: 30px auto 0;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(13, 17, 23, 0.48);
+      border: 1px solid rgba(42, 195, 222, 0.16);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 640px;
+    }
+
+    .pill {
+      border: 1px solid rgba(42, 195, 222, 0.28);
+      background: rgba(42, 195, 222, 0.08);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(42, 195, 222, 0.16);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.6), transparent);
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --bg-2: #f4f7fb;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #0b1220;
+      --muted: #4b5563;
+      --accent: #007c92;
+      --accent-2: #0369a1;
+      --line: rgba(0, 124, 146, 0.28);
+      --shadow: rgba(0, 124, 146, 0.2);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(0, 124, 146, 0.12), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(3, 105, 161, 0.08), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f5f7fb 48%, #edf6f8 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 124, 146, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 124, 146, 0.055) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav,
+    body.light-mode .maintenance-card {
+      background: rgba(255, 255, 255, 0.78) !important;
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .status-box {
+      background: rgba(255,255,255,0.64);
+      border-color: rgba(0, 124, 146, 0.18);
+    }
+
+    @media (max-width: 720px) {
+      .glass-nav {
+        border-radius: 24px;
+      }
+
+      .maintenance-wrap {
+        min-height: auto;
+        padding: 42px 0;
+      }
+    }
   </style>
 </head>
 
-<body class="custom-scrollbar">
-  <!-- Light/Dark Mode Toggle -->
-  <button id="themeToggle"
-    class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg">
-    🌙 Light Mode
-  </button>
+<body>
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="/index.html" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
 
-<section class="text-center py-12 fade-section">
-  <h1 class="text-5xl md:text-6xl font-bold text-[#2ac3de] accent-text on-light">
-    JOSEPH NWOKE
-  </h1>
-  <div class="space-x-3 md:space-x-4 mt-6">
-    <a href="/index.html">
-      <button class="px-5 md:px-6 py-2.5 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117] btn-accent on-light">
-        About Me
-      </button>
-    </a>
-    <a href="/Projects/projects.html">
-      <button class="px-5 md:px-6 py-2.5 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117] btn-accent on-light">
-        Projects
-      </button>
-    </a>
-    <a href="/Education_Career/education_and_career.html">
-      <button class="px-5 md:px-6 py-2.5 border border-[#2ac3de] text-[#2ac3de] rounded hover:bg-[#2ac3de] hover:text-[#0d1117] btn-accent on-light">
-        Education & Career
-      </button>
-    </a>
-  </div>
-</section>
-
-
-  <!-- BlueDynasty Clinic Project Section -->
-  <section id="bluedynasty-clinic" class="px-4 pb-16 fade-section">
-    <div class="max-w-5xl mx-auto space-y-12">
-
-<!-- Section Header -->
-<div class="text-center mx-auto space-y-4 fade-section">
-
-  <!-- Blue Dynasty Logo -->
-  <img src="/Logos/blue_dynasty_logo.png"
-       alt="Blue Dynasty Logo"
-       class="mx-auto w-40 md:w-52 drop-shadow-2xl select-none pointer-events-none" />
-
-
-  <!-- Project Title Styled to Match the Logo -->
-  <h2 class="project-title-traced text-4xl md:text-5xl lg:text-6xl font-bold section-title on-light">
-    BlueDynasty Clinic — Healthcare SQL Injection & Defense Lab
-  </h2>
-
-  <!-- Project Description -->
-  <p class="text-base md:text-lg text-[#8b949e] max-w-3xl mx-auto on-light">
-    End-to-end security lab where I built, exploited, monitored, and then secured a vulnerable healthcare
-    appointment portal using Flask and Azure SQL.
-  </p>
-</div>
-
-      <!-- Centered Video Section -->
-      <div class="fade-section">
-        <div class="max-w-4xl mx-auto text-center space-y-4">
-          <h3 class="text-2xl md:text-3xl font-semibold text-[#2ac3de] accent-text on-light">
-            BlueDynasty Clinic — SQL Injection Exploit & Remediation Demo
-          </h3>
-          <p class="text-base md:text-lg text-[#8b949e] max-w-3xl mx-auto on-light">
-            Prefer watching instead of reading? This video walks through the full attack chain, from SQL injection
-            exploitation to logging, detection, and secure remediation.
-          </p>
-          <div class="aspect-video rounded-2xl overflow-hidden border border-[#30363d] bg-black shadow-lg">
-            <!-- Replace VIDEO_ID with your actual video id or link -->
-            <iframe class="w-full h-full" src="https://www.youtube.com/embed/VIDEO_ID"
-              title="BlueDynasty Clinic SQL Injection & Defense Lab" frameborder="0" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Summary -->
-      <div class="fade-section">
-        <div class="space-y-4 max-w-4xl mx-auto">
-          <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text on-light">Quick Summary</h3>
-          <ul class="space-y-2 text-sm md:text-base text-[#c9d1d9] on-light">
-            <li>• Simulated a fictional healthcare clinic (“BlueDynasty Clinic”) with a vulnerable appointment search
-              portal storing PHI.</li>
-            <li>• Exploited a SQL injection flaw in a Flask app to dump sensitive appointment and patient data from
-              Azure SQL.</li>
-            <li>• Implemented security event logging, severity tagging, and a secure version of the app using
-              parameterized queries to block attacks.</li>
-          </ul>
-
-          <div class="mt-4 p-4 rounded-xl bg-[#161b22] border border-emerald-500/40 text-xs md:text-sm">
-            <p class="font-semibold text-emerald-400 mb-1 accent-text">Outcome</p>
-            <p class="text-[#c9d1d9]">
-              Demonstrated both offensive (Red Team) and defensive (Blue Team) skills by taking a real-world style
-              vulnerability from discovery and exploitation through to monitoring and secure remediation.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Scenario -->
-      <div class="space-y-3 fade-section">
-        <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text section-title on-light">
-          Project Scenario – BlueDynasty Clinic
-        </h3>
-        <p class="force-black-on-light text-sm md:text-base max-w-4xl">
-          BlueDynasty Clinic is a fictional healthcare provider I designed to simulate a realistic SQL injection and
-          defense scenario. The clinic’s appointment portal stores sensitive patient data including names, dates of
-          birth, clinicians, insurance providers, and reasons for visits. A flaw in the appointment search functionality
-          allowed attackers to inject SQL and retrieve all patient appointments, representing a serious PHI exposure and
-          potential HIPAA-style privacy violation.
-        </p>
-      </div>
-
-      <!-- Red vs Blue Phases -->
-      <div class="grid md:grid-cols-2 gap-6 fade-section">
-        <!-- Red Team -->
-        <div class="p-5 rounded-xl bg-[#161b22] border border-[#30363d] space-y-3">
-          <h3 class="text-lg md:text-xl font-semibold text-rose-400">Red Team Phase – Exploitation</h3>
-          <ul class="text-sm md:text-base text-[#c9d1d9] space-y-2">
-            <li>• Built a Flask-based appointment search app backed by Azure SQL (<code
-                class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">BlueDynastyDB</code>).</li>
-            <li>• Intentionally used dynamic SQL concatenation:
-              <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">WHERE P.LastName LIKE '%{search_term}%'</code>
-            </li>
-            <li>• Used payloads like <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">' OR 1=1--</code> to bypass
-              filters and dump all appointments.</li>
-            <li>• Demonstrated impact by exposing patient appointments, clinicians, and insurance providers.</li>
-          </ul>
-        </div>
-
-        <!-- Blue Team -->
-        <div class="p-5 rounded-xl bg-[#161b22] border border-[#30363d] space-y-3">
-          <h3 class="text-lg md:text-xl font-semibold text-sky-400">Blue Team Phase – Detection & Logging</h3>
-          <ul class="text-sm md:text-base text-[#c9d1d9] space-y-2">
-            <li>• Designed a <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">SecurityEvents</code> table to
-              capture search behavior and attacks.</li>
-            <li>• Logged normal searches as <code
-                class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">APPOINTMENT_SEARCH (INFO)</code> and injections as
-              <code class="text-xs bg-[#0d1117] px-1 py-0.5 rounded">SQL_INJECTION_ATTEMPT (HIGH)</code>.</li>
-            <li>• Stored timestamp, source IP, event type, severity, and description for forensic reconstruction.</li>
-            <li>• Wrote events to both Azure SQL and a local log file for investigation.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Remediation -->
-      <div class="grid md:grid-cols-2 gap-6 items-start fade-section">
-        <div class="space-y-3">
-          <h3 class="secure-heading text-2xl font-semibold text-emerald-400 section-title on-light">
-            Secure Remediation – Fixed Search Portal
-          </h3>
-          <ul class="force-black-on-light text-sm md:text-base space-y-2">
-            <li>• Created a secure version of the app (<code>app_secure.py</code>) using parameterized SQL queries instead of string concatenation.</li>
-            <li>• Replaced <code>WHERE P.LastName LIKE '%{search_term}%'</code> with <code>WHERE P.LastName LIKE ?</code> and bound parameters from Python.</li>
-            <li>• Added input length checks and <code>SQLI_PATTERN_BLOCKED</code> events when suspicious patterns are received.</li>
-            <li>• Verified that legacy payloads like <code>' OR 1=1--</code> no longer return unauthorized data.</li>
-          </ul>
-        </div>
-        <div
-          class="p-5 rounded-xl bg-[#161b22] border border-[#30363d] text-xs md:text-sm text-[#c9d1d9] space-y-3 code-header">
-          <p class="secure-heading font-semibold text-emerald-300 section-title">
-            Secure Query Pattern (Python + pyodbc)
-          </p>
-          <pre class="bg-[#0d1117] p-3 rounded-lg overflow-x-auto"><code>
-safe_query = """
-    SELECT TOP 50 ...
-    FROM Appointments A
-    JOIN Patients P ON A.PatientID = P.PatientID
-    ...
-    WHERE P.LastName LIKE ?
-    ORDER BY A.AppointmentDateTime DESC;
-"""
-
-like_param = f"%{search_term}%"
-cursor.execute(safe_query, (like_param,))
-rows = cursor.fetchall()
-          </code></pre>
-        </div>
-      </div>
-
-      <!-- Code Showcase -->
-      <div class="space-y-4 fade-section">
-        <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text section-title on-light">Code Showcase</h3>
-        <p class="text-sm md:text-base text-[#8b949e] on-light">
-          For people who prefer to read the code, here is a simplified view of the vulnerable and secure implementations used in this lab.
-        </p>
-
-        <!-- Tabs -->
-        <div class="flex flex-wrap gap-2 text-xs md:text-sm mb-2">
-          <button
-            class="code-tab-button btn-accent active-tab px-3 py-2 rounded-full border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117] hover:bg-[#2ac3de] hover:text-[#0d1117]"
-            data-target="code-vulnerable">
-            Vulnerable Version (app.py)
-          </button>
-          <button
-            class="code-tab-button px-3 py-2 rounded-full border border-[#30363d] text-[#8b949e] bg-[#161b22] hover:border-[#2ac3de]"
-            data-target="code-secure">
-            Secure Version (app_secure.py)
-          </button>
-        </div>
-
-        <!-- Vulnerable Code Block -->
-        <div id="code-vulnerable"
-          class="code-block rounded-xl bg-[#161b22] border border-[#30363d] p-4 text-[0.75rem] md:text-xs overflow-x-auto space-y-2">
-          <p class="font-semibold text-rose-400">Vulnerable search endpoint (SQL Injection present)</p>
-          <pre class="bg-[#0d1117] p-3 rounded-lg overflow-x-auto"><code>
-from flask import Flask, request
-import pyodbc
-
-app = Flask(__name__)
-
-CONN_STR = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=...;DATABASE=BlueDynastyDB;UID=...;PWD=...;Encrypt=yes;"
-
-def get_db_connection():
-    return pyodbc.connect(CONN_STR)
-
-@app.route("/", methods=["GET", "POST"])
-def search():
-    results_html = ""
-    error_msg = ""
-
-    if request.method == "POST":
-        search_term = request.form.get("last_name", "")
-
-        try:
-            conn = get_db_connection()
-            cursor = conn.cursor()
-
-            unsafe_query = f"""
-                SELECT TOP 50 
-                    A.AppointmentID,
-                    P.FirstName,
-                    P.LastName,
-                    A.AppointmentDateTime,
-                    A.ReasonForVisit,
-                    S.StatusName,
-                    U.FirstName AS ClinicianFirstName,
-                    U.LastName  AS ClinicianLastName,
-                    P.InsuranceProvider
-                FROM Appointments A
-                JOIN Patients P ON A.PatientID = P.PatientID
-                JOIN Users U ON A.ClinicianUserID = U.UserID
-                JOIN AppointmentStatus S ON A.StatusID = S.StatusID
-                WHERE P.LastName LIKE '%{search_term}%'
-                ORDER BY A.AppointmentDateTime DESC;
-            """
-
-            cursor.execute(unsafe_query)
-            rows = cursor.fetchall()
-            # ... build HTML table ...
-          </code></pre>
-        </div>
-
-        <!-- Secure Code Block -->
-        <div id="code-secure"
-          class="code-block rounded-xl bg-[#161b22] border border-[#30363d] p-4 text-[0.75rem] md:text-xs overflow-x-auto space-y-2 hidden">
-          <p class="font-semibold text-emerald-400">Secure search endpoint (SQL Injection mitigated)</p>
-          <pre class="bg-[#0d1117] p-3 rounded-lg overflow-x-auto"><code>
-from flask import Flask, request
-import pyodbc
-
-app = Flask(__name__)
-
-CONN_STR = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=...;DATABASE=BlueDynastyDB;UID=...;PWD=...;Encrypt=yes;"
-
-def get_db_connection():
-    return pyodbc.connect(CONN_STR)
-
-@app.route("/", methods=["GET", "POST"])
-def secure_search():
-    results_html = ""
-    error_msg = ""
-
-    if request.method == "POST":
-        search_term = request.form.get("last_name", "").strip()
-
-        if len(search_term) > 100:
-            search_term = search_term[:100]
-
-        try:
-            conn = get_db_connection()
-            cursor = conn.cursor()
-
-            safe_query = """
-                SELECT TOP 50 
-                    A.AppointmentID,
-                    P.FirstName,
-                    P.LastName,
-                    A.AppointmentDateTime,
-                    A.ReasonForVisit,
-                    S.StatusName,
-                    U.FirstName AS ClinicianFirstName,
-                    U.LastName  AS ClinicianLastName,
-                    P.InsuranceProvider
-                FROM Appointments A
-                JOIN Patients P ON A.PatientID = P.PatientID
-                JOIN Users U ON A.ClinicianUserID = U.UserID
-                JOIN AppointmentStatus S ON A.StatusID = S.StatusID
-                WHERE P.LastName LIKE ?
-                ORDER BY A.AppointmentDateTime DESC;
-            """
-
-            like_param = f"%{search_term}%"
-            cursor.execute(safe_query, (like_param,))
-            rows = cursor.fetchall()
-            # ... build HTML table ...
-          </code></pre>
-        </div>
-      </div>
-
-      <!-- Skills / Tools -->
-      <div class="space-y-3 fade-section">
-        <h3 class="text-2xl font-semibold text-[#2ac3de] accent-text section-title on-light">Skills & Tools Demonstrated
-        </h3>
-        <div class="flex flex-wrap gap-2 text-xs md:text-sm">
-          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Python (Flask)</span>
-          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Azure SQL Database</span>
-          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">SQL Injection</span>
-          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Security Logging</span>
-          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Blue Team Monitoring</span>
-          <span class="px-2.5 py-1 rounded-full bg-[#161b22] border border-[#30363d] tag-pill">Secure Coding / SDLC</span>
-        </div>
-      </div>
-
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <!-- Footer -->
-  <footer class="text-center py-12 text-[#8b949e] fade-section">
-    <h2 class="text-xl md:text-2xl mb-4 accent-text on-light">Connect With Me</h2>
-    <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
-        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
-      </a>
-    </div>
+  <main class="page-shell maintenance-wrap">
+    <section class="maintenance-card">
+      <div class="card-content">
+        <div class="badge">Portfolio Update in Progress</div>
+
+        <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">Project Page • Under Maintenance</p>
+        <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">PAGE<br />UPDATE</h1>
+        <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Refining documentation. Updating screenshots. Improving write-up.</p>
+
+        <div class="mt-7 flex flex-wrap justify-center gap-3">
+          <span class="pill rounded-full px-4 py-2 text-sm">SIEM</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Vulnerability Management</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Incident Response</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Cloud Security</span>
+        </div>
+
+        <div class="status-box">
+          This project page is currently being updated while I refine the technical details, screenshots, findings, and final documentation. Please check back soon for the completed version.
+        </div>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="/index.html" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">Back to Portfolio</a>
+          <a href="/Projects/projects.html" class="rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)] transition hover:-translate-y-1 hover:bg-[rgba(42,195,222,0.12)]">View Completed Projects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-shell py-10 text-center text-sm text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <p>Joseph Nwoke • Cybersecurity Portfolio</p>
   </footer>
 
   <script>
-    // Theme toggle logic
     const toggleButton = document.getElementById('themeToggle');
     const body = document.body;
 
-    if (localStorage.getItem('theme') === 'light') {
-      body.classList.add('light-mode');
-      toggleButton.textContent = '🌚 Dark Mode';
-    }
-
-    toggleButton.addEventListener('click', () => {
-      body.classList.toggle('light-mode');
-      const isLight = body.classList.contains('light-mode');
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
       toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
     });
-
-    // Code tab switching
-    const codeButtons = document.querySelectorAll('.code-tab-button');
-    const codeBlocks = document.querySelectorAll('.code-block');
-
-    codeButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const targetId = btn.getAttribute('data-target');
-
-        // Update active tab styling
-        codeButtons.forEach(b => {
-          if (b === btn) {
-            b.classList.add('active-tab');
-          } else {
-            b.classList.remove('active-tab');
-          }
-        });
-
-        // Show/hide code blocks
-        codeBlocks.forEach(block => {
-          if (block.id === targetId) {
-            block.classList.remove('hidden');
-          } else {
-            block.classList.add('hidden');
-          }
-        });
-      });
-    });
-
-    // Scroll-fade animation using IntersectionObserver
-    const fadeSections = document.querySelectorAll('.fade-section');
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    fadeSections.forEach(section => observer.observe(section));
   </script>
 </body>
 </html>
