@@ -227,27 +227,55 @@
     .video-frame {
       position: relative;
       overflow: hidden;
+      width: 100%;
+      height: clamp(240px, 52vw, 590px);
       border-radius: 22px;
       border: 1px solid rgba(42, 195, 222, 0.30);
       background: #020617;
       box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.08), 0 0 28px rgba(42, 195, 222, 0.12);
     }
 
-    .video-frame::before {
-      content: "";
-      display: block;
-      padding-top: 56.25%;
-    }
-
     .video-frame iframe,
     .video-frame video,
     .video-frame img {
-      position: absolute;
-      inset: 0;
+      display: block;
       width: 100%;
       height: 100%;
       border: 0;
       object-fit: cover;
+    }
+
+    .video-frame iframe {
+      background: #020617;
+    }
+
+    .youtube-fallback {
+      margin-top: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .youtube-fallback a {
+      color: var(--key);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .youtube-fallback a:hover {
+      text-decoration: underline;
+    }
+
+    @supports (aspect-ratio: 16 / 9) {
+      .video-frame {
+        height: auto;
+        aspect-ratio: 16 / 9;
+        min-height: 240px;
+      }
     }
 
     .video-topbar {
@@ -512,7 +540,20 @@
               <a class="watch-link text-sm font-bold" href="https://youtu.be/7iLQF3aV5ck" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
             </div>
             <p class="mb-4 leading-7 muted text-[var(--muted)]">Learn how specific access policies are configured in Key Vault to enforce least privilege and secure key operations.</p>
-            <div class="video-frame"><iframe src="https://www.youtube.com/embed/7iLQF3aV5ck" title="Assign Access Permissions to Key Vault" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <div class="video-frame youtube-frame">
+              <iframe
+                width="100%"
+                height="540"
+                src="https://www.youtube-nocookie.com/embed/7iLQF3aV5ck?rel=0&modestbranding=1&playsinline=1"
+                title="Assign Access Permissions to Key Vault"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="youtube-fallback">
+              <span>If the embedded player is blocked by your browser or YouTube settings, use the direct link.</span>
+              <a href="https://youtu.be/7iLQF3aV5ck" target="_blank" rel="noopener noreferrer">Open this video on YouTube →</a>
+            </div>
           </div>
         </article>
 
@@ -526,7 +567,20 @@
               <a class="watch-link text-sm font-bold" href="https://youtu.be/IM7oGpC62gM" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
             </div>
             <p class="mb-4 leading-7 muted text-[var(--muted)]">This video walks through the creation of a customer-managed key used to encrypt storage account data, ensuring compliance and security ownership.</p>
-            <div class="video-frame"><iframe src="https://www.youtube.com/embed/IM7oGpC62gM" title="Storage Encryption Key Creation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <div class="video-frame youtube-frame">
+              <iframe
+                width="100%"
+                height="540"
+                src="https://www.youtube-nocookie.com/embed/IM7oGpC62gM?rel=0&modestbranding=1&playsinline=1"
+                title="Storage Encryption Key Creation"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="youtube-fallback">
+              <span>If the embedded player is blocked by your browser or YouTube settings, use the direct link.</span>
+              <a href="https://youtu.be/IM7oGpC62gM" target="_blank" rel="noopener noreferrer">Open this video on YouTube →</a>
+            </div>
           </div>
         </article>
 
@@ -554,7 +608,20 @@
               <a class="watch-link text-sm font-bold" href="https://youtu.be/HHf7bTSMQx4" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
             </div>
             <p class="mb-4 leading-7 muted text-[var(--muted)]">This section explains how roles are assigned to groups to control who can interact with encryption keys securely.</p>
-            <div class="video-frame"><iframe src="https://www.youtube.com/embed/HHf7bTSMQx4" title="Assign Roles to Groups for Key Vault" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <div class="video-frame youtube-frame">
+              <iframe
+                width="100%"
+                height="540"
+                src="https://www.youtube-nocookie.com/embed/HHf7bTSMQx4?rel=0&modestbranding=1&playsinline=1"
+                title="Assign Roles to Groups for Key Vault"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="youtube-fallback">
+              <span>If the embedded player is blocked by your browser or YouTube settings, use the direct link.</span>
+              <a href="https://youtu.be/HHf7bTSMQx4" target="_blank" rel="noopener noreferrer">Open this video on YouTube →</a>
+            </div>
           </div>
         </article>
 
@@ -582,7 +649,20 @@
               <a class="watch-link text-sm font-bold" href="https://youtu.be/npv0K2zdPRQ" target="_blank" rel="noopener noreferrer">Open on YouTube →</a>
             </div>
             <p class="mb-4 leading-7 muted text-[var(--muted)]">This final video shows how to configure an Action Group in Azure Monitor to deliver alert notifications through email or other channels.</p>
-            <div class="video-frame"><iframe src="https://www.youtube.com/embed/npv0K2zdPRQ" title="Create an Action Group for Your Alert" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <div class="video-frame youtube-frame">
+              <iframe
+                width="100%"
+                height="540"
+                src="https://www.youtube-nocookie.com/embed/npv0K2zdPRQ?rel=0&modestbranding=1&playsinline=1"
+                title="Create an Action Group for Your Alert"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="youtube-fallback">
+              <span>If the embedded player is blocked by your browser or YouTube settings, use the direct link.</span>
+              <a href="https://youtu.be/npv0K2zdPRQ" target="_blank" rel="noopener noreferrer">Open this video on YouTube →</a>
+            </div>
           </div>
         </article>
       </div>
