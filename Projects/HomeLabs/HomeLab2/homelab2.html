@@ -4,566 +4,719 @@
   <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64"/> 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Joseph Nwoke|Azure Multi-Department Network Automation</title>
+  <title>Joseph Nwoke | Azure Multi-Department Network Automation</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    body { font-family: 'Courier New', monospace; }
-    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #161b22; }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #2ac3de; border-radius: 10px; border: 2px solid #161b22;
+    :root {
+      --bg: #0b0b12;
+      --card: rgba(18, 18, 30, 0.80);
+      --text: #e5e7eb;
+      --muted: #a1a1aa;
+      --accent: #8b5cf6;
+      --accent-2: #c4b5fd;
+      --silver: #d4d4d8;
+      --line: rgba(196, 181, 253, 0.30);
+      --shadow: rgba(139, 92, 246, 0.28);
     }
-    .footer { margin-top: 50px; padding: 20px; }
-    .footer::before { content: ""; display: block; width: 100%; height: 2px; margin-bottom: 20px; }
-    .social-icons a { margin: 0 15px; text-decoration: none; }
-    .social-icons img { width: 30px; height: 30px; transition: opacity 0.3s; }
-    .social-icons img:hover { opacity: 0.7; }
-    .zoomable { max-width: 100%; cursor: zoom-in; display: block; margin: 2rem auto; width: 100%; max-width: 1918px; }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(139, 92, 246, 0.18), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(212, 212, 216, 0.12), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(91, 33, 182, 0.12), transparent 32%),
+        linear-gradient(135deg, #09090f 0%, #0b0b12 48%, #181426 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(196, 181, 253, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 212, 216, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.055), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce-slow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(9, 9, 15, 0.74);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28), 0 0 26px rgba(139, 92, 246, 0.08);
+    }
+
+    .nav-link,
+    .theme-button,
+    .action-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover,
+    .action-button:hover {
+      transform: translateY(-2px);
+      background: rgba(139, 92, 246, 0.14);
+      border-color: var(--line);
+      color: var(--accent-2);
+    }
+
+    .hero-card,
+    .content-box {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(196, 181, 253, 0.20);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.30), 0 0 30px rgba(139, 92, 246, 0.08);
+      animation: floatIn 0.75s ease both;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .hero-card::before,
+    .content-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.14), transparent 36%);
+      pointer-events: none;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(196, 181, 253, 0.24) 35%, rgba(212, 212, 216, 0.12) 52%, transparent 68%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .content-box:hover,
+    .info-card:hover,
+    .click-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(196, 181, 253, 0.50);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.32), 0 0 34px rgba(139, 92, 246, 0.16);
+    }
+
+    .name-glow {
+      color: var(--accent-2);
+      text-shadow: 0 0 12px rgba(139, 92, 246, 0.46), 0 0 40px rgba(212, 212, 216, 0.14);
+      letter-spacing: 0.08em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .section-title {
+      color: var(--accent-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(196, 181, 253, 0.65), rgba(212, 212, 216, 0.30), transparent);
+    }
+
+    .pill {
+      border: 1px solid rgba(196, 181, 253, 0.30);
+      background: rgba(139, 92, 246, 0.09);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(139, 92, 246, 0.17);
+      border-color: rgba(212, 212, 216, 0.40);
+    }
+
+    .terraform-mark {
+      position: relative;
+      width: 178px;
+      height: 178px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+    }
+
+    .terraform-mark::before,
+    .terraform-mark::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 36px;
+      border: 1px dashed rgba(196, 181, 253, 0.48);
+      animation: spinSlow 18s linear infinite;
+    }
+
+    .terraform-mark::after {
+      inset: 16px;
+      border-style: solid;
+      border-color: rgba(212, 212, 216, 0.26);
+      animation-duration: 12s;
+      animation-direction: reverse;
+    }
+
+    .cube-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 40px);
+      gap: 8px;
+      transform: rotate(45deg);
+      z-index: 2;
+    }
+
+    .cube {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(145deg, rgba(139, 92, 246, 0.98), rgba(76, 29, 149, 0.94));
+      border: 1px solid rgba(244,244,245,0.35);
+      box-shadow: 0 0 24px rgba(139, 92, 246, 0.36);
+    }
+
+    .cube:nth-child(2),
+    .cube:nth-child(3) {
+      background: linear-gradient(145deg, rgba(244, 244, 245, 0.94), rgba(113, 113, 122, 0.86));
+    }
+
+    .info-card,
+    .click-card,
+    .challenge-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(196, 181, 253, 0.18);
+      background: rgba(9, 9, 15, 0.52);
+      border-radius: 28px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .info-card::before,
+    .click-card::before,
+    .challenge-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(139,92,246,0.12), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+
+    .info-card:hover::before,
+    .click-card:hover::before,
+    .challenge-card:hover::before {
+      opacity: 1;
+    }
+
+    .icon-box {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #09090f;
+      box-shadow: 0 0 24px rgba(139, 92, 246, 0.28);
+    }
+
+    .zoomable {
+      max-width: 100%;
+      cursor: zoom-in;
+      display: block;
+      margin: 0 auto;
+      width: min(100%, 1120px);
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.30), 0 0 34px rgba(139,92,246,0.14);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .zoomable:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 34px 95px rgba(0,0,0,0.38), 0 0 58px rgba(139,92,246,0.22);
+    }
+
     .overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.85); display: flex;
-      align-items: center; justify-content: center; z-index: 1000;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.86);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
     }
-    .overlay img { max-width: 90vw; max-height: 90vh; box-shadow: 0 0 25px #2ac3de; border-radius: 8px; }
 
-    .shrink-auto {
-  max-width: 300px; /* adjust the size you want */
-  height: auto;     /* keeps original proportions */
-}
-     @keyframes bounce-slow {
-    0%, 100% { transform: translateY(0) }
-    50% { transform: translateY(-10px) }
-  }
-  .animate-bounce-slow {
-    animation: bounce-slow 3s ease-in-out infinite;
-  }
-  /* LIGHT MODE OVERRIDES */
+    .overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      box-shadow: 0 0 42px var(--accent);
+      border-radius: 16px;
+    }
 
-/* ✅ Light Mode Overrides for dark content boxes */
-body.light-mode .bg-gray-800,
-body.light-mode .bg-gray-900,
-body.light-mode .bg-gray-950 {
-  background-color: #e5e7eb !important;  /* light gray */
-  color: #000000 !important;
-  border-color: rgba(0,0,0,0.2) !important;
-}
+    .video-frame {
+      border-color: var(--line) !important;
+      box-shadow: 0 0 42px rgba(139, 92, 246, 0.30) !important;
+      border-radius: 24px;
+    }
 
-/* ✅ Fix dark text inside boxes */
-body.light-mode .text-gray-300,
-body.light-mode .text-white,
-body.light-mode strong {
-  color: #000000 !important;
-}
+    iframe { border-radius: 20px; }
 
-/* ✅ Fix dark code blocks in light mode */
-body.light-mode pre {
-  background-color: #d1d5db !important; /* medium gray */
-  color: #000000 !important;
-  border-color: rgba(0,0,0,0.3) !important;
-}
+    pre {
+      background: rgba(0,0,0,0.46) !important;
+      color: var(--silver) !important;
+      border: 1px solid var(--line) !important;
+      box-shadow: inset 0 0 20px rgba(139,92,246,0.10);
+    }
 
+    .animate-bounce-slow { animation: bounce-slow 3.5s ease-in-out infinite; }
 
-/* Light Mode Overrides for h3 Banner Headers */
-body.light-mode h3.bg-black {
-  background: #e5e7eb !important; /* Light gray */
-  color: #000000 !important; /* Ensure text stays black */
-  border-color: transparent !important;
-}
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196, 181, 253, 0.70), rgba(212, 212, 216, 0.30), transparent);
+    }
 
-/*  Optional: Remove the dark text-shadow/glow effect in light mode */
-body.light-mode h3 {
-  text-shadow: none !important;
-}
-body.light-mode { background: #ffffff !important; color: #000000 !important; }
+    #modal {
+      background: rgba(0, 0, 0, 0.84) !important;
+      backdrop-filter: blur(12px);
+    }
 
-body.light-mode h1,
-body.light-mode h2,
-body.light-mode h3,
-body.light-mode p {
-  color: #000000 !important;
-}
+    #modalImg {
+      border: 1px solid var(--line);
+      box-shadow: 0 0 46px rgba(139, 92, 246, 0.38);
+    }
 
-body.light-mode section,
-body.light-mode footer {
-  background: #ffffff !important;
-  color: #000000 !important;
-}
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
 
-body.light-mode button,
-body.light-mode a {
-  color: #000000 !important;
-  border-color: #000000 !important;
-}
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-body.light-mode button:hover {
-  background: #000000 !important;
-  color: #ffffff !important;
-}
+    body.light-mode {
+      --bg: #ffffff;
+      --card: rgba(255, 255, 255, 0.82);
+      --text: #18181b;
+      --muted: #52525b;
+      --accent: #6d28d9;
+      --accent-2: #7c3aed;
+      --silver: #71717a;
+      --line: rgba(109, 40, 217, 0.24);
+      --shadow: rgba(109, 40, 217, 0.20);
+      background:
+        radial-gradient(circle at 12% 10%, rgba(109, 40, 217, 0.12), transparent 30%),
+        radial-gradient(circle at 88% 18%, rgba(113, 113, 122, 0.10), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f7f4ff 48%, #eef0f5 100%) !important;
+      color: var(--text) !important;
+    }
 
-body.light-mode #themeToggle {
-  background: #ffffff !important;
-  color: #000000 !important;
-  border-color: #000000 !important;
-}
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(109, 40, 217, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(113, 113, 122, 0.055) 1px, transparent 1px);
+    }
 
-body.light-mode #themeToggle:hover {
-  background: #000000 !important;
-  color: #ffffff !important;
-}
+    body.light-mode .glass-nav,
+    body.light-mode .hero-card,
+    body.light-mode .content-box,
+    body.light-mode .info-card,
+    body.light-mode .click-card,
+    body.light-mode .challenge-card {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10), 0 0 26px rgba(109, 40, 217, 0.08);
+      border-color: var(--line) !important;
+    }
+
+    body.light-mode h1,
+    body.light-mode h2,
+    body.light-mode h3,
+    body.light-mode p,
+    body.light-mode strong,
+    body.light-mode span {
+      color: inherit;
+    }
+
+    body.light-mode .muted,
+    body.light-mode .text-gray-300,
+    body.light-mode .text-gray-400 {
+      color: var(--muted) !important;
+    }
+
+    body.light-mode .text-white,
+    body.light-mode .text-purple-400,
+    body.light-mode .text-[var(--accent-2)] {
+      color: var(--accent-2) !important;
+    }
+
+    body.light-mode #themeToggle {
+      background: rgba(255,255,255,0.82) !important;
+      color: var(--accent-2) !important;
+      border-color: var(--line) !important;
+    }
+
+    body.light-mode pre {
+      background-color: rgba(244, 244, 245, 0.88) !important;
+      color: #18181b !important;
+      border-color: var(--line) !important;
+    }
+
+    body.no-js .reveal,
+    noscript .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 820px) {
+      .glass-nav { border-radius: 24px; }
+      .hero-card { border-radius: 28px; }
+      .terraform-mark { width: 142px; height: 142px; }
+      .cube-grid { grid-template-columns: repeat(2, 32px); }
+      .cube { width: 32px; height: 32px; }
+    }
   </style>
 </head>
-<body class="bg-[#0d1117] text-[#c9d1d9]">
-  <!-- Light/Dark Mode Toggle -->
-<button id="themeToggle"
-  class="px-4 py-2 border border-[#2ac3de] text-[#2ac3de] bg-[#0d1117]/80 
-         hover:bg-[#2ac3de] hover:text-[#0d1117] rounded-full shadow-lg 
-         fixed top-6 right-6 z-50">
-  🌙 Light Mode
-</button>
-  
-  <!-- Header -->
-  <section class="text-center py-12">
-    <h1 class="text-5xl font-bold text-[#2ac3de]">JOSEPH NWOKE</h1>
-    <p class="text-lg text-[#2ac3de] mt-2">Cybersecurity Analyst | PenTester | IT Professional</p>
-    <div class="mt-6 space-x-4">
-      <a href="/index.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">About Me</button></a>
-      <a href="/Projects/projects.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">Projects</button></a>
-      <a href="/Education_Career/education_and_career.html"><button class="px-6 py-2 border border-[#2ac3de] text-[#2ac3de] hover:bg-[#2ac3de] hover:text-[#0d1117] transition rounded">Education & Career</button></a>
+
+<body class="no-js">
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent-2)] text-center md:text-left">Terraform Project</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent-2)]" type="button">🌙 Light Mode</button>
+      </nav>
     </div>
-  </section>
+  </header>
 
-
-<!-- Project Overview -->
-<h3 class="text-3xl font-bold text-white bg-black py-4 text-center mt-10">
-  Infrastructure as Code (IaC)
-</h3>
-  
-<h3 class="text-3xl font-bold text-white bg-black py-4 text-center mt-10">
-  Azure Multi-Department Network Automation
-</h3>    
-<p class="mb-4">I completed a cloud automation project in Microsoft Azure where I built an entire IT environment using scripts instead of manual setup. This approach ensures that a company can create secure systems quickly, consistently, and with fewer errors. The design included a protected network and a virtual computer that employees can safely access without exposing the system to outside threats. By automating the process, businesses save time, reduce operational costs, and can easily duplicate or scale the environment as they grow. This type of setup is commonly used by organizations to support remote work, securely host internal applications, and ensure they can recover systems faster in the event of outages or changes in business needs.</p>
-
-  
-  <!-- Network Architecture -->
-<h3 class="text-3xl font-bold text-white bg-black py-4 text-center mt-10">
-  Network Design
-</h3>
-  
-</h3><img src="architecture.png" alt="Architecture Diagram">
-
-
-    <!-- Video Section-->
-<!-- Video Section -->
-<section class="py-20 bg-[#0d1117] text-white text-center">
-  <div class="max-w-4xl mx-auto px-6">
-
-    <h2 class="text-3xl font-bold text-[#2ac3de] mb-6 drop-shadow-lg">
-      Project Demonstration Video
-    </h2>
-
-    <div class="relative rounded-xl overflow-hidden shadow-[0_0_25px_#2ac3de] border border-[#2ac3de] mx-auto max-w-3xl">
-      <iframe
-        src="https://www.youtube-nocookie.com/embed/N20bHZ7omnQ?controls=1&modestbranding=1&rel=0&showinfo=0"
-        title="Azure IaC Deployment Video"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        class="w-full aspect-video"
-        style="background:#000;">
-      </iframe>
-    </div>
-
-    <p class="text-gray-400 mt-4">
-      Unlisted video hosted securely — viewable only on this page.
-    </p>
-
-  </div>
-</section>
-
-  <!--End of Video Section -->
-    
-    <!-- Tools and Skills Demonstrated-->
-    <!-- Tools-->
-<section class="py-20 bg-gray-950 text-white">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <h2 class="text-3xl font-bold text-center mb-12">Tools & Technologies Used</h2>
-
-    <div class="grid gap-10 lg:grid-cols-3">
-
-      <!-- Microsoft Azure -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bxl-microsoft text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Microsoft Azure</h3>
-          <p class="text-gray-300">Cloud platform used to deploy secure, scalable, and compliant enterprise workloads.</p>
-        </div>
-      </div>
-
-      <!-- Azure VNet -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bx-network-chart text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Azure Virtual Network</h3>
-          <p class="text-gray-300">Defines secure private cloud networking boundaries for workloads and services.</p>
-        </div>
-      </div>
-
-      <!-- Subnets + NSG -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bx-lock-alt text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Subnets & NSGs</h3>
-          <p class="text-gray-300">Controls east-west traffic through segmentation and rule-based security.</p>
-        </div>
-      </div>
-
-      <!-- Azure Bastion -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bx-shield-alt-2 text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Azure Bastion</h3>
-          <p class="text-gray-300">Provides secure remote access with no public RDP or SSH exposed to the internet.</p>
-        </div>
-      </div>
-
-      <!-- Terraform IaC -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bx-code-curly text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Terraform (IaC)</h3>
-          <p class="text-gray-300">Automates deployment of cloud environments using declarative templates.</p>
-        </div>
-      </div>
-
-      <!-- Automated Provisioning -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bx-refresh text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Automated Provisioning</h3>
-          <p class="text-gray-300">Ensures new infrastructure is deployed consistently and securely at scale.</p>
-        </div>
-      </div>
-
-      <!-- Network Architecture Design -->
-      <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-        <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-          <i class="bx bx-map text-3xl"></i>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold">Network Architecture Design</h3>
-          <p class="text-gray-300">Aligns networking with Zero Trust principles to protect business systems.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-  <!-- Skills -->
-<section class="py-20 bg-gray-950 text-white">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <h2 class="text-3xl font-bold text-center mb-12">Skills Demonstrated</h2>
-
-    <div class="grid gap-10 lg:grid-cols-3">
-
-      <!-- Security Controls -->
-      <div class="space-y-6">
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-shield-alt-2 text-3xl"></i>
-          </div>
+  <main id="top" class="page-shell">
+    <section class="py-12 md:py-16">
+      <div class="hero-card rounded-[2rem] p-6 md:p-10">
+        <div class="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div>
-            <h3 class="text-xl font-semibold">Restricted Lateral Movement</h3>
-            <p class="text-gray-300">Least-privilege access modeled around Zero Trust segmentation.</p>
-          </div>
-        </div>
+            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--silver)]">Terraform • Azure • Infrastructure as Code</p>
+            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">AZURE NETWORK<br />AUTOMATION</h1>
+            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Multi-department cloud networking deployed with Terraform.</p>
+            <p class="mt-6 max-w-3xl leading-8 muted text-[var(--muted)]">
+              I completed a cloud automation project in Microsoft Azure where I built an entire IT environment using scripts instead of manual setup.
+            </p>
 
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-lock-alt text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Zero Trust Controls</h3>
-            <p class="text-gray-300">Identity-driven access enforcement with continuous validation.</p>
-          </div>
-        </div>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="#overview" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#09090f] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Overview</a>
+              <a href="#code" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent-2)]">View Code</a>
+            </div>
 
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-desktop text-3xl"></i>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <span class="pill rounded-full px-4 py-2 text-sm">Terraform</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Azure</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">NSGs</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Bastion</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Network Segmentation</span>
+            </div>
           </div>
-          <div>
-            <h3 class="text-xl font-semibold">Secure Remote Admin</h3>
-            <p class="text-gray-300">Break-glass access only. No public RDP or SSH endpoints.</p>
+
+          <div class="grid gap-5">
+            <div class="terraform-mark" aria-hidden="true">
+              <div class="cube-grid">
+                <div class="cube"></div>
+                <div class="cube"></div>
+                <div class="cube"></div>
+                <div class="cube"></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 text-center">
+              <div class="content-box rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent-2)]">IaC</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Automation</p>
+              </div>
+              <div class="content-box rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent-2)]">NSG</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Security</p>
+              </div>
+              <div class="content-box rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent-2)]">VNet</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Design</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Network Architecture -->
-      <div class="space-y-6">
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-network-chart text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Secure Network Design</h3>
-            <p class="text-gray-300">Defense-in-depth filtering and traffic isolation using Azure policy.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-layer text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Private Service Access</h3>
-            <p class="text-gray-300">No internet-facing components; private endpoints only.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cloud Operations -->
-      <div class="space-y-6">
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-repeat text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Scalable Patterns</h3>
-            <p class="text-gray-300">Reusable IaC deployments ensure consistent cloud environments.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-cog text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Configuration Management</h3>
-            <p class="text-gray-300">Automated state enforcement and continuous compliance.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-dollar-circle text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Governance & Cost Control</h3>
-            <p class="text-gray-300">Azure policy and budget guardrails limit over-provisioning.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4 p-4 rounded-xl transition transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40">
-          <div class="w-16 h-16 bg-purple-700 rounded-lg flex items-center justify-center transition duration-300 hover:bg-purple-600">
-            <i class="bx bx-book-alt text-3xl"></i>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold">Architecture Documentation</h3>
-            <p class="text-gray-300">Clear visuals to support stakeholder understanding and adoption.</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-<!--End of skills section-->
-
-<!-- Code Summary section -->
-<section class="py-20 bg-gray-900 text-white text-center">
-  <div class="max-w-7xl mx-auto px-6">
-    
-    <h2 class="text-3xl font-bold mb-3">View Code Implementation</h2>
-    <p class="text-gray-300 mb-12">Click each box to view the code</p>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
-
-      <!-- Card Template -->
-      <template id="codeCardTemplate">
-        <div class="relative cursor-pointer group p-6 bg-gray-800 rounded-xl 
-                    transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40 
-                    animate-bounce-slow"
-             onclick="openModal(this)">
-          <img src="" alt="" class="w-20 mx-auto mb-4 drop-shadow-lg">
-          <h3 class="text-lg font-semibold mb-2"></h3>
-          <p class="text-gray-400 text-sm"></p>
-        </div>
-      </template>
-
-      <!-- Individual Cards -->
-      <div data-img="providers.png" data-title="providers.tf"
-           data-desc="Authenticates Azure and sets Terraform versioning"
-           class="code-card"></div>
-      
-      <div data-img="main.png" data-title="main.tf"
-           data-desc="Defines network infrastructure (VNets, NSGs, Peerings)"
-           class="code-card"></div>
-
-      <div data-img="variables.png" data-title="variables.tf"
-           data-desc="Makes configuration reusable"
-           class="code-card"></div>
-
-      <div data-img="outputs.png" data-title="outputs.tf"
-           data-desc="Provides deployment state results"
-           class="code-card"></div>
-
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center">
-    <div class="relative p-4 max-w-3xl mx-auto">
-      <img id="modalImg" src="" class="rounded-lg shadow-2xl max-h-[80vh] mx-auto">
-      <button onclick="closeModal()" 
-              class="absolute -top-4 -right-4 bg-purple-700 hover:bg-purple-600 
-                     text-white w-10 h-10 rounded-full text-xl font-bold">
-        ×
-      </button>
-    </div>
-  </div>
-</section>
-
-  <!-- End of code summary -->
-
-  <!-- Screenshot Section -->
-
-  <section class="py-20 bg-gray-950 text-white text-center">
-  <div class="max-w-7xl mx-auto px-6">
-
-    <h2 class="text-3xl font-bold mb-3">Azure Deployment Screenshots</h2>
-    <p class="text-gray-300 mb-12">
-      These screenshots highlight deployed resources in Azure used for the secure network architecture.
-    </p>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
-
-      <!-- Resource Group Screenshot -->
-      <div class="p-6 bg-gray-800 rounded-xl cursor-pointer animate-bounce-slow
-                  transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40"
-           onclick="openModal('rg-iaglab1-network.png')">
-        <h3 class="text-xl font-semibold mb-2">Azure Resource Group</h3>
-        <p class="text-gray-400 text-sm">Logical grouping of resources for lifecycle, policy, and cost control.</p>
-      </div>
-
-      <!-- NSG Screenshot -->
-      <div class="p-6 bg-gray-800 rounded-xl cursor-pointer animate-bounce-slow
-                  transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40"
-           onclick="openModal('nsg-fin-subnet-vnet-fin.png')">
-        <h3 class="text-xl font-semibold mb-2">Network Security Group</h3>
-        <p class="text-gray-400 text-sm">Controls allowed inbound/outbound network traffic for subnets.</p>
-      </div>
-
-      <!-- VNet Screenshot -->
-      <div class="p-6 bg-gray-800 rounded-xl cursor-pointer animate-bounce-slow
-                  transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-700/40"
-           onclick="openModal('it-vnet.png')">
-        <h3 class="text-xl font-semibold mb-2">Virtual Network</h3>
-        <p class="text-gray-400 text-sm">Private cloud network enabling secure workload communication.</p>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center">
-    <div class="relative p-4 max-w-4xl mx-auto">
-      <img id="modalImg" src="" class="rounded-lg shadow-2xl max-h-[85vh] mx-auto">
-      <button onclick="closeModal()" 
-              class="absolute -top-4 -right-4 bg-purple-700 hover:bg-purple-600 
-                     text-white w-10 h-10 rounded-full text-xl font-bold">
-        ×
-      </button>
-    </div>
-  </div>
-</section>
-  <!-- End of Screenshot Section -->
-
-
-  <section class="py-20 bg-gray-900 text-white">
-  <div class="max-w-5xl mx-auto px-6">
-
-    <h2 class="text-3xl font-bold mb-8 text-center">Challenges, Causes & Fixes</h2>
-
-    <!-- Challenges Faced Section -->
-    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-purple-700/30 
-                hover:shadow-purple-700/40 transition duration-300">
-
-      <h3 class="text-2xl font-semibold text-purple-400 mb-4">
-        Terraform Authentication Failure
-      </h3>
-
-      <div class="space-y-4 text-gray-300 leading-relaxed">
-
-        <p>
-          <strong class="text-white">Challenge:</strong><br>
-          Terraform couldn’t find the Azure subscription and displayed:
+    <section id="overview" class="reveal content-box rounded-3xl p-6 md:p-8 mb-10">
+      <div class="relative z-10">
+        <h2 class="section-title mb-5 text-2xl md:text-3xl font-bold">Infrastructure as Code</h2>
+        <h3 class="text-2xl font-bold text-[var(--accent-2)] mb-5">Azure Multi-Department Network Automation</h3>
+        <p class="leading-8 text-[var(--text)]">
+          I completed a cloud automation project in Microsoft Azure where I built an entire IT environment using scripts instead of manual setup. This approach ensures that a company can create secure systems quickly, consistently, and with fewer errors. The design included a protected network and a virtual computer that employees can safely access without exposing the system to outside threats. By automating the process, businesses save time, reduce operational costs, and can easily duplicate or scale the environment as they grow. This type of setup is commonly used by organizations to support remote work, securely host internal applications, and ensure they can recover systems faster in the event of outages or changes in business needs.
         </p>
+      </div>
+    </section>
 
-        <pre class="bg-black/40 p-3 rounded-lg text-sm border border-purple-700/30">
-subscription ID could not be determined
-        </pre>
+    <section class="reveal mb-10">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Network Design</h2>
+      <div class="content-box rounded-3xl p-4 md:p-6">
+        <img src="architecture.png" alt="Architecture Diagram" class="zoomable">
+      </div>
+    </section>
 
-        <p>
-          <strong class="text-white">Why it happened:</strong><br>
-          Azure CLI wasn’t fully authenticated in Cloud Shell for Terraform’s API calls.
+    <section class="reveal content-box rounded-3xl p-6 md:p-8 mb-10 text-center">
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold text-left">Project Demonstration Video</h2>
+        <div class="video-frame relative overflow-hidden border mx-auto max-w-3xl">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/N20bHZ7omnQ?controls=1&modestbranding=1&rel=0&showinfo=0"
+            title="Azure IaC Deployment Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="w-full aspect-video"
+            style="background:#000;">
+          </iframe>
+        </div>
+        <p class="text-gray-400 mt-4">Unlisted video hosted securely — viewable only on this page.</p>
+      </div>
+    </section>
+
+    <section class="reveal mb-10">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Tools & Technologies Used</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div class="info-card flex items-start gap-4 p-5">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bxl-microsoft text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Microsoft Azure</h3><p class="text-gray-300 mt-2">Cloud platform used to deploy secure, scalable, and compliant enterprise workloads.</p></div>
+          </div>
+
+          <div class="info-card flex items-start gap-4 p-5">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-network-chart text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Azure Virtual Network</h3><p class="text-gray-300 mt-2">Defines secure private cloud networking boundaries for workloads and services.</p></div>
+          </div>
+
+          <div class="info-card flex items-start gap-4 p-5">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-lock-alt text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Subnets & NSGs</h3><p class="text-gray-300 mt-2">Controls east-west traffic through segmentation and rule-based security.</p></div>
+          </div>
+
+          <div class="info-card flex items-start gap-4 p-5">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-shield-alt-2 text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Azure Bastion</h3><p class="text-gray-300 mt-2">Provides secure remote access with no public RDP or SSH exposed to the internet.</p></div>
+          </div>
+
+          <div class="info-card flex items-start gap-4 p-5">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-code-curly text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Terraform (IaC)</h3><p class="text-gray-300 mt-2">Automates deployment of cloud environments using declarative templates.</p></div>
+          </div>
+
+          <div class="info-card flex items-start gap-4 p-5">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-refresh text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Automated Provisioning</h3><p class="text-gray-300 mt-2">Ensures new infrastructure is deployed consistently and securely at scale.</p></div>
+          </div>
+
+          <div class="info-card flex items-start gap-4 p-5 lg:col-span-3">
+            <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-map text-3xl"></i></div>
+            <div><h3 class="text-xl font-semibold">Network Architecture Design</h3><p class="text-gray-300 mt-2">Aligns networking with Zero Trust principles to protect business systems.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-10">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Skills Demonstrated</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 lg:grid-cols-3">
+          <div class="grid gap-5">
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-shield-alt-2 text-3xl"></i></div><div><h3 class="text-xl font-semibold">Restricted Lateral Movement</h3><p class="text-gray-300 mt-2">Least-privilege access modeled around Zero Trust segmentation.</p></div></div>
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-lock-alt text-3xl"></i></div><div><h3 class="text-xl font-semibold">Zero Trust Controls</h3><p class="text-gray-300 mt-2">Identity-driven access enforcement with continuous validation.</p></div></div>
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-desktop text-3xl"></i></div><div><h3 class="text-xl font-semibold">Secure Remote Admin</h3><p class="text-gray-300 mt-2">Break-glass access only. No public RDP or SSH endpoints.</p></div></div>
+          </div>
+
+          <div class="grid gap-5 content-start">
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-network-chart text-3xl"></i></div><div><h3 class="text-xl font-semibold">Secure Network Design</h3><p class="text-gray-300 mt-2">Defense-in-depth filtering and traffic isolation using Azure policy.</p></div></div>
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-layer text-3xl"></i></div><div><h3 class="text-xl font-semibold">Private Service Access</h3><p class="text-gray-300 mt-2">No internet-facing components; private endpoints only.</p></div></div>
+          </div>
+
+          <div class="grid gap-5">
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-repeat text-3xl"></i></div><div><h3 class="text-xl font-semibold">Scalable Patterns</h3><p class="text-gray-300 mt-2">Reusable IaC deployments ensure consistent cloud environments.</p></div></div>
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-cog text-3xl"></i></div><div><h3 class="text-xl font-semibold">Configuration Management</h3><p class="text-gray-300 mt-2">Automated state enforcement and continuous compliance.</p></div></div>
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-dollar-circle text-3xl"></i></div><div><h3 class="text-xl font-semibold">Governance & Cost Control</h3><p class="text-gray-300 mt-2">Azure policy and budget guardrails limit over-provisioning.</p></div></div>
+            <div class="info-card flex items-start gap-4 p-5"><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"><i class="bx bx-book-alt text-3xl"></i></div><div><h3 class="text-xl font-semibold">Architecture Documentation</h3><p class="text-gray-300 mt-2">Clear visuals to support stakeholder understanding and adoption.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="code" class="reveal mb-10">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">View Code Implementation</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7 text-center">
+        <p class="relative z-10 text-gray-300 mb-10">Click each box to view the code</p>
+
+        <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
+          <template id="codeCardTemplate">
+            <div class="click-card cursor-pointer group p-6 animate-bounce-slow" onclick="openModal(this)">
+              <img src="" alt="" class="w-20 mx-auto mb-4 drop-shadow-lg">
+              <h3 class="text-lg font-semibold mb-2"></h3>
+              <p class="text-gray-400 text-sm"></p>
+            </div>
+          </template>
+
+          <div data-img="providers.png" data-title="providers.tf" data-desc="Authenticates Azure and sets Terraform versioning" class="code-card"></div>
+          <div data-img="main.png" data-title="main.tf" data-desc="Defines network infrastructure (VNets, NSGs, Peerings)" class="code-card"></div>
+          <div data-img="variables.png" data-title="variables.tf" data-desc="Makes configuration reusable" class="code-card"></div>
+          <div data-img="outputs.png" data-title="outputs.tf" data-desc="Provides deployment state results" class="code-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-10">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Azure Deployment Screenshots</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7 text-center">
+        <p class="relative z-10 text-gray-300 mb-10">These screenshots highlight deployed resources in Azure used for the secure network architecture.</p>
+
+        <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+          <div class="click-card p-6 cursor-pointer animate-bounce-slow" onclick="openModal('rg-iaglab1-network.png')">
+            <h3 class="text-xl font-semibold mb-2">Azure Resource Group</h3>
+            <p class="text-gray-400 text-sm">Logical grouping of resources for lifecycle, policy, and cost control.</p>
+          </div>
+
+          <div class="click-card p-6 cursor-pointer animate-bounce-slow" onclick="openModal('nsg-fin-subnet-vnet-fin.png')">
+            <h3 class="text-xl font-semibold mb-2">Network Security Group</h3>
+            <p class="text-gray-400 text-sm">Controls allowed inbound/outbound network traffic for subnets.</p>
+          </div>
+
+          <div class="click-card p-6 cursor-pointer animate-bounce-slow" onclick="openModal('it-vnet.png')">
+            <h3 class="text-xl font-semibold mb-2">Virtual Network</h3>
+            <p class="text-gray-400 text-sm">Private cloud network enabling secure workload communication.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-10">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Challenges, Causes & Fixes</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="challenge-card p-6 rounded-2xl shadow-lg border">
+          <h3 class="text-2xl font-semibold text-purple-400 mb-4">Terraform Authentication Failure</h3>
+
+          <div class="space-y-4 text-gray-300 leading-relaxed relative z-10">
+            <p><strong class="text-white">Challenge:</strong><br>Terraform couldn’t find the Azure subscription and displayed:</p>
+
+            <pre class="p-3 rounded-lg text-sm border">subscription ID could not be determined</pre>
+
+            <p><strong class="text-white">Why it happened:</strong><br>Azure CLI wasn’t fully authenticated in Cloud Shell for Terraform’s API calls.</p>
+
+            <p><strong class="text-white">Fix:</strong><br>Logged in again with correct authentication scope:</p>
+
+            <pre class="p-3 rounded-lg text-sm border">az login --use-device-code</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-14 content-box rounded-3xl p-6 md:p-8 text-center">
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold text-left">Cleanup Strategy</h2>
+        <p class="text-gray-300 text-lg leading-8">
+          Destroy deployed resources using <span class="text-purple-400 font-semibold">terraform destroy</span> to prevent Azure billing once validation is complete.
         </p>
+      </div>
+    </section>
 
-        <p>
-          <strong class="text-white">Fix:</strong><br>
-          Logged in again with correct authentication scope:
-        </p>
-
-        <pre class="bg-black/40 p-3 rounded-lg text-sm border border-purple-700/30">
-az login --use-device-code
-        </pre>
-
+    <div id="modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center">
+      <div class="relative p-4 max-w-4xl mx-auto">
+        <img id="modalImg" src="" class="rounded-lg shadow-2xl max-h-[85vh] mx-auto">
+        <button onclick="closeModal()" class="absolute -top-4 -right-4 bg-purple-700 hover:bg-purple-600 text-white w-10 h-10 rounded-full text-xl font-bold">×</button>
       </div>
     </div>
-  </div>
-</section>
+  </main>
 
-
-<!-- Clean-Up Section -->
-
-<section class="py-16 bg-gray-950 text-white text-center">
-  <div class="max-w-4xl mx-auto px-6">
-
-    <h2 class="text-3xl font-bold mb-6">Cleanup Strategy</h2>
-
-    <p class="text-gray-300 text-lg">
-      Destroy deployed resources using 
-      <span class="text-purple-400 font-semibold">terraform destroy</span> 
-      to prevent Azure billing once validation is complete.
-    </p>
-
-  </div>
-</section>
-
-
-  <footer class="text-center py-12 text-sm text-[#8b949e]">
-    <h2 class="text-xl mb-4">Connect With Me</h2>
+  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <h2 class="mb-4 text-xl text-[var(--accent-2)]">Connect With Me</h2>
     <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" class="transition hover:-translate-y-1 hover:opacity-80">
         <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
       </a>
     </div>
   </footer>
 
 <script>
-  // Zoomable image click behavior
+  document.body.classList.remove('no-js');
+
   document.querySelectorAll('.zoomable').forEach(img => {
     img.addEventListener('click', () => {
       const overlay = document.createElement('div');
@@ -574,43 +727,55 @@ az login --use-device-code
     });
   });
 
-  // Replace code-card elements with template content
   document.querySelectorAll('.code-card').forEach(card => {
     const t = document.getElementById('codeCardTemplate');
     const clone = t.content.cloneNode(true);
-
     clone.querySelector('img').src = card.dataset.img;
     clone.querySelector('h3').textContent = card.dataset.title;
     clone.querySelector('p').textContent = card.dataset.desc;
-
     card.replaceWith(clone.children[0]);
   });
 
-  // Modal handling
   function openModal(imgSrc) {
-  document.getElementById('modalImg').src = imgSrc;
-  document.getElementById('modal').classList.remove('hidden');
-}
+    if (imgSrc instanceof HTMLElement) {
+      imgSrc = imgSrc.querySelector('img')?.src || '';
+    }
+    document.getElementById('modalImg').src = imgSrc;
+    document.getElementById('modal').classList.remove('hidden');
+  }
 
   function closeModal() {
     document.getElementById('modal').classList.add('hidden');
   }
-  // ✅ Light/Dark mode script
-const toggleButton = document.getElementById('themeToggle');
-const body = document.body;
 
-// Load preference
-if (localStorage.getItem('theme') === 'light') {
-  body.classList.add('light-mode');
-  toggleButton.textContent = '🌚 Dark Mode';
-}
+  const toggleButton = document.getElementById('themeToggle');
+  const body = document.body;
 
-toggleButton.addEventListener('click', () => {
-  body.classList.toggle('light-mode');
-  const isLight = body.classList.contains('light-mode');
-  toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
-  localStorage.setItem('theme', isLight ? 'light' : 'dark');
-});
+  function applyTheme(mode) {
+    const isLight = mode === 'light';
+    body.classList.toggle('light-mode', isLight);
+    toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  }
+
+  applyTheme(localStorage.getItem('theme') || 'dark');
+
+  toggleButton.addEventListener('click', () => {
+    const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+    applyTheme(nextTheme);
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach((element) => {
+    revealObserver.observe(element);
+  });
 </script>
 </body>
 </html>
