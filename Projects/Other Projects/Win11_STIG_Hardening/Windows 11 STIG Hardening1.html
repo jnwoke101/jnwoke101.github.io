@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Windows 11 STIG Hardening | Joseph Nwoke</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg: #071014;
+      --bg-2: #0b1720;
+      --card: rgba(11, 23, 32, 0.82);
+      --text: #d7e3ea;
+      --muted: #93a8b3;
+      --accent: #00f0a8;
+      --accent-2: #38bdf8;
+      --windows: #38bdf8;
+      --nessus: #22d3ee;
+      --warning: #ffd166;
+      --line: rgba(0, 240, 168, 0.25);
+      --shadow: rgba(0, 240, 168, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(0, 240, 168, 0.16), transparent 25%),
+        radial-gradient(circle at 84% 16%, rgba(56, 189, 248, 0.14), transparent 26%),
+        radial-gradient(circle at 48% 82%, rgba(34, 211, 238, 0.10), transparent 24%),
+        linear-gradient(135deg, #050b0f 0%, #071014 45%, #0b1720 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 240, 168, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.88), transparent 92%);
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(0, 240, 168, 0.08), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 0.25; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    @keyframes progressLoad {
+      from { width: 0; }
+      to { width: var(--target); }
+    }
+
+    .page-shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 11, 15, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+    }
+
+    .nav-link,
+    .theme-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 240, 168, 0.11);
+      border-color: var(--line);
+      color: var(--accent);
+    }
+
+    .maintenance-wrap {
+      min-height: calc(100vh - 108px);
+      display: grid;
+      place-items: center;
+      padding: 64px 0;
+    }
+
+    .maintenance-card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 920px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(11, 23, 32, 0.92), rgba(5, 11, 15, 0.74));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+      border-radius: 2rem;
+      padding: 44px 30px;
+      text-align: center;
+      animation: floatIn 0.8s ease both;
+    }
+
+    .maintenance-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(0, 240, 168, 0.25) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .maintenance-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(0, 240, 168, 0.11), transparent 38%);
+      pointer-events: none;
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid rgba(0, 240, 168, 0.28);
+      background: rgba(0, 240, 168, 0.08);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 9px 16px;
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(0, 240, 168, 0.38), 0 0 42px rgba(56, 189, 248, 0.16);
+      letter-spacing: 0.06em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .status-box {
+      margin: 30px auto 0;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(3, 10, 14, 0.50);
+      border: 1px solid rgba(0, 240, 168, 0.16);
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 720px;
+      text-align: left;
+    }
+
+    .pill {
+      border: 1px solid rgba(0, 240, 168, 0.28);
+      background: rgba(0, 240, 168, 0.08);
+      color: var(--accent);
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 240, 168, 0.16);
+      border-color: rgba(0, 240, 168, 0.50);
+    }
+
+    .status-grid {
+      margin: 26px auto 0;
+      display: grid;
+      gap: 14px;
+      max-width: 720px;
+    }
+
+    .status-item {
+      border: 1px solid rgba(0, 240, 168, 0.16);
+      background: rgba(3, 10, 14, 0.50);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: left;
+    }
+
+    .status-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--windows));
+      animation: progressLoad 1.7s ease forwards;
+    }
+
+    .window-dots {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+      margin: 0 auto 24px;
+    }
+
+    .window-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      display: inline-block;
+      animation: blinkDot 2s ease-in-out infinite;
+    }
+
+    .dot-red { background: #ff4d4d; }
+    .dot-yellow { background: var(--warning); animation-delay: 0.2s; }
+    .dot-green { background: var(--accent); animation-delay: 0.4s; }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 168, 0.65), transparent);
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --bg-2: #edf8fb;
+      --card: rgba(255, 255, 255, 0.84);
+      --text: #071014;
+      --muted: #475569;
+      --accent: #007f5f;
+      --accent-2: #0369a1;
+      --windows: #2563eb;
+      --nessus: #0284c7;
+      --line: rgba(0, 127, 95, 0.26);
+      --shadow: rgba(0, 127, 95, 0.20);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(0, 127, 95, 0.12), transparent 27%),
+        radial-gradient(circle at 84% 16%, rgba(37, 99, 235, 0.10), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f5fbfd 48%, #eaf7f4 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 127, 95, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav,
+    body.light-mode .maintenance-card {
+      background: rgba(255, 255, 255, 0.82) !important;
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .status-box,
+    body.light-mode .status-item {
+      background: rgba(255,255,255,0.68);
+      border-color: rgba(0, 127, 95, 0.18);
+    }
+
+    @media (max-width: 720px) {
+      .glass-nav {
+        border-radius: 24px;
+      }
+
+      .maintenance-wrap {
+        min-height: auto;
+        padding: 42px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left" href="/index.html">Portfolio</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell maintenance-wrap">
+    <section class="maintenance-card">
+      <div class="card-content">
+        <div class="window-dots" aria-hidden="true">
+          <span class="window-dot dot-red"></span>
+          <span class="window-dot dot-yellow"></span>
+          <span class="window-dot dot-green"></span>
+        </div>
+
+        <div class="badge">Project Page Update in Progress</div>
+
+        <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">Nessus Scan • Windows 11 STIG • PowerShell Remediation</p>
+        <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">WIN11 STIG<br />HARDENING</h1>
+        <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Building script. Capturing evidence. Preparing final rescan.</p>
+
+        <div class="mt-7 flex flex-wrap justify-center gap-3">
+          <span class="pill rounded-full px-4 py-2 text-sm">Nessus</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">DISA STIG</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Windows 11</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">PowerShell</span>
+          <span class="pill rounded-full px-4 py-2 text-sm">Vulnerability Management</span>
+        </div>
+
+        <div class="status-box">
+          This project page is currently being updated while I finish the PowerShell automation phase. The manual remediation portion has already been completed and recorded on video. The final version will include the initial Nessus scan, 10 manual STIG fixes, 10 PowerShell-based fixes, validation commands, screenshots, and the follow-up scan results.
+        </div>
+
+        <div class="status-grid md:grid-cols-3">
+          <div class="status-item">
+            <div class="status-top">
+              <span>Initial Nessus Scan</span>
+              <strong class="text-[var(--accent)]">Complete</strong>
+            </div>
+            <div class="progress-track"><div class="progress-bar" style="--target: 100%;"></div></div>
+          </div>
+
+          <div class="status-item">
+            <div class="status-top">
+              <span>Manual Fixes Video</span>
+              <strong class="text-[var(--accent)]">10 Done</strong>
+            </div>
+            <div class="progress-track"><div class="progress-bar" style="--target: 100%;"></div></div>
+          </div>
+
+          <div class="status-item">
+            <div class="status-top">
+              <span>PowerShell Script</span>
+              <strong class="text-[var(--warning)]">In Progress</strong>
+            </div>
+            <div class="progress-track"><div class="progress-bar" style="--target: 68%;"></div></div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#03100d] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]" href="/index.html">Back to Portfolio</a>
+          <a class="rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)] transition hover:-translate-y-1 hover:bg-[rgba(0,240,168,0.12)]" href="/Projects/projects.html">View Completed Projects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-shell py-10 text-center text-sm text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <p>Joseph Nwoke • Cybersecurity Portfolio</p>
+  </footer>
+
+  <script>
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
+  </script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "3a352c63adc147828dc993f061fa69d7"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>
