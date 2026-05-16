@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joseph Nwoke | Windows 11 STIG Remediation with PowerShell</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg: #071014;
+      --bg-2: #0b1720;
+      --card: rgba(11, 23, 32, 0.82);
+      --text: #d7e3ea;
+      --muted: #93a8b3;
+      --accent: #00f0a8;
+      --accent-2: #00b7ff;
+      --nessus: #22d3ee;
+      --windows: #38bdf8;
+      --critical: #ff4d4d;
+      --high: #ff9f1c;
+      --medium: #ffd166;
+      --low: #6ee7b7;
+      --line: rgba(0, 240, 168, 0.25);
+      --shadow: rgba(0, 240, 168, 0.22);
+      --code-bg: rgba(3, 10, 14, 0.78);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(0, 240, 168, 0.16), transparent 25%),
+        radial-gradient(circle at 84% 16%, rgba(56, 189, 248, 0.14), transparent 26%),
+        radial-gradient(circle at 48% 82%, rgba(34, 211, 238, 0.10), transparent 24%),
+        linear-gradient(135deg, #050b0f 0%, #071014 45%, #0b1720 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 240, 168, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.88), transparent 92%);
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(0, 240, 168, 0.08), transparent);
+      animation: scanline 7s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(22px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes typingCursor {
+      0%, 49% { border-color: var(--accent); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    @keyframes shimmer {
+      0%, 35% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes pulseRing {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 240, 168, 0.30); }
+      50% { box-shadow: 0 0 0 10px rgba(0, 240, 168, 0); }
+    }
+
+    @keyframes progressLoad {
+      from { width: 0; }
+      to { width: var(--target); }
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: 0.25; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    .page-shell {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 11, 15, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+    }
+
+    .nav-link,
+    .theme-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 240, 168, 0.11);
+      border-color: var(--line);
+      color: var(--accent);
+    }
+
+    .hero {
+      min-height: 72vh;
+      display: grid;
+      align-items: center;
+      padding: 64px 0 36px;
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(11, 23, 32, 0.92), rgba(5, 11, 15, 0.74));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+      animation: floatIn 0.8s ease both;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(0, 240, 168, 0.25) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .name-glow {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(0, 240, 168, 0.38), 0 0 42px rgba(56, 189, 248, 0.16);
+      letter-spacing: 0.06em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent);
+      animation: typingCursor 1s step-end infinite;
+    }
+
+    .profile-wrap {
+      position: relative;
+      width: 168px;
+      height: 168px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .profile-wrap::before,
+    .profile-wrap::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      inset: 0;
+      border: 1px dashed rgba(0, 240, 168, 0.68);
+      animation: spinSlow 18s linear infinite;
+    }
+
+    .profile-wrap::after {
+      inset: 12px;
+      border-style: solid;
+      border-color: rgba(56, 189, 248, 0.30);
+      animation-duration: 12s;
+      animation-direction: reverse;
+    }
+
+    .project-orb {
+      width: 128px;
+      height: 128px;
+      border-radius: 999px;
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 32px rgba(0, 240, 168, 0.30);
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,0.22), transparent 18%),
+        linear-gradient(135deg, rgba(0, 240, 168, 0.18), rgba(56, 189, 248, 0.20));
+      animation: pulseRing 2.8s ease-in-out infinite;
+    }
+
+    .project-orb span {
+      font-size: 2.2rem;
+      filter: drop-shadow(0 0 8px rgba(0, 240, 168, 0.45));
+    }
+
+    .content-box {
+      position: relative;
+      background: var(--card) !important;
+      border: 1px solid rgba(0, 240, 168, 0.18);
+      box-shadow: 0 16px 42px rgba(0,0,0,0.24);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+      animation: floatIn 0.7s ease both;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .content-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(0, 240, 168, 0.10), transparent 38%);
+      pointer-events: none;
+    }
+
+    .content-box:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 240, 168, 0.48);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.30), 0 0 34px rgba(0, 240, 168, 0.12);
+    }
+
+    .section-title {
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(0, 240, 168, 0.65), transparent);
+    }
+
+    .pill {
+      border: 1px solid rgba(0, 240, 168, 0.28);
+      background: rgba(0, 240, 168, 0.08);
+      color: var(--accent);
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 240, 168, 0.16);
+      border-color: rgba(0, 240, 168, 0.50);
+    }
+
+    .stat-card,
+    .tool-card,
+    .finding-card,
+    .step-card,
+    .artifact-card {
+      border: 1px solid rgba(0, 240, 168, 0.16);
+      background: rgba(3, 10, 14, 0.50);
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .stat-card:hover,
+    .tool-card:hover,
+    .finding-card:hover,
+    .step-card:hover,
+    .artifact-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(0, 240, 168, 0.50);
+      background: rgba(0, 240, 168, 0.07);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 168, 0.65), transparent);
+    }
+
+    .dashboard-window {
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: rgba(2, 8, 12, 0.78);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03), 0 22px 60px rgba(0,0,0,0.28);
+    }
+
+    .window-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      animation: blinkDot 2s ease-in-out infinite;
+    }
+
+    .dot-red { background: var(--critical); }
+    .dot-yellow { background: var(--medium); animation-delay: 0.2s; }
+    .dot-green { background: var(--accent); animation-delay: 0.4s; }
+
+    .severity-border-critical { border-left: 4px solid var(--critical); }
+    .severity-border-high { border-left: 4px solid var(--high); }
+    .severity-border-medium { border-left: 4px solid var(--medium); }
+    .severity-border-low { border-left: 4px solid var(--low); }
+
+    .progress-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--windows));
+      animation: progressLoad 1.7s ease forwards;
+    }
+
+    .code-card {
+      background: var(--code-bg);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 1.25rem;
+      overflow: hidden;
+    }
+
+    .code-card pre {
+      overflow-x: auto;
+      padding: 18px;
+      color: #d7e3ea;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    .code-comment { color: #7dd3fc; }
+    .code-cmd { color: #00f0a8; }
+    .code-value { color: #ffd166; }
+
+    .timeline-line {
+      position: relative;
+    }
+
+    .timeline-line::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      bottom: 18px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(0,240,168,0.65), rgba(56,189,248,0.08));
+    }
+
+    .step-number {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: rgba(0, 240, 168, 0.12);
+      border: 1px solid rgba(0, 240, 168, 0.35);
+      color: var(--accent);
+      font-weight: 900;
+      box-shadow: 0 0 22px rgba(0, 240, 168, 0.18);
+      flex: 0 0 auto;
+    }
+
+    .screenshot-frame {
+      min-height: 210px;
+      border: 1px dashed rgba(56, 189, 248, 0.28);
+      border-radius: 1.5rem;
+      background:
+        linear-gradient(135deg, rgba(0,240,168,0.06), transparent),
+        rgba(2, 8, 12, 0.46);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .image-slot {
+      border: 1px solid rgba(0, 240, 168, 0.16);
+      background: rgba(3, 10, 14, 0.50);
+      border-radius: 1.25rem;
+      padding: 16px;
+      min-height: 128px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .image-slot:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 240, 168, 0.48);
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --bg-2: #edf8fb;
+      --card: rgba(255, 255, 255, 0.84);
+      --text: #071014;
+      --muted: #475569;
+      --accent: #007f5f;
+      --accent-2: #0369a1;
+      --nessus: #0284c7;
+      --windows: #2563eb;
+      --line: rgba(0, 127, 95, 0.26);
+      --shadow: rgba(0, 127, 95, 0.20);
+      --code-bg: rgba(6, 18, 24, 0.92);
+      background:
+        radial-gradient(circle at 14% 8%, rgba(0, 127, 95, 0.12), transparent 27%),
+        radial-gradient(circle at 84% 16%, rgba(37, 99, 235, 0.10), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f5fbfd 48%, #eaf7f4 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(0, 127, 95, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav {
+      background: rgba(255, 255, 255, 0.80);
+      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .hero-card,
+    body.light-mode .content-box {
+      background: rgba(255, 255, 255, 0.82) !important;
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .stat-card,
+    body.light-mode .tool-card,
+    body.light-mode .finding-card,
+    body.light-mode .step-card,
+    body.light-mode .artifact-card,
+    body.light-mode .image-slot {
+      background: rgba(255,255,255,0.68);
+      border-color: rgba(0, 127, 95, 0.18);
+    }
+
+    body.light-mode .dashboard-window,
+    body.light-mode .screenshot-frame {
+      background: rgba(255,255,255,0.62);
+    }
+
+    body.light-mode .muted { color: #475569 !important; }
+
+    @media (max-width: 720px) {
+      .glass-nav { border-radius: 24px; }
+      .hero { min-height: auto; padding-top: 36px; }
+      .profile-wrap { width: 142px; height: 142px; }
+      .project-orb { width: 108px; height: 108px; }
+      .timeline-line::before { left: 14px; }
+      .step-number { width: 30px; height: 30px; font-size: 0.85rem; }
+    }
+
+    noscript .reveal,
+    body.no-js .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="no-js">
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="page-shell">
+    <section class="hero">
+      <div class="hero-card rounded-[2rem] p-6 md:p-10">
+        <div class="grid gap-10 md:grid-cols-[1.08fr_0.92fr] md:items-center">
+          <div>
+            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">Nessus Scan • Windows 11 STIG • PowerShell Remediation</p>
+            <h1 class="name-glow text-4xl sm:text-5xl md:text-6xl font-black leading-tight">WINDOWS 11<br />STIG HARDENING</h1>
+            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Scanning. Scripting. Remediating. Validating.</p>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <span class="pill rounded-full px-4 py-2 text-sm">Nessus</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">DISA STIG</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Windows 11</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">PowerShell</span>
+              <span class="pill rounded-full px-4 py-2 text-sm">Audit Policy</span>
+            </div>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#workflow" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#03100d] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Workflow</a>
+              <a href="#evidence" class="rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)] transition hover:-translate-y-1 hover:bg-[rgba(0,240,168,0.12)]">Evidence Gallery</a>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center gap-6">
+            <div class="profile-wrap">
+              <div class="project-orb" aria-label="Windows 11 STIG hardening project icon"><span>🛡️</span></div>
+            </div>
+
+            <div class="grid w-full grid-cols-3 gap-3 text-center">
+              <div class="stat-card rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--critical)]">10+</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">PS Fixes</p>
+              </div>
+              <div class="stat-card rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--accent)]">STIG</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">Controls</p>
+              </div>
+              <div class="stat-card rounded-2xl p-4">
+                <p class="text-2xl font-black text-[var(--windows)]">Win11</p>
+                <p class="mt-1 text-xs muted text-[var(--muted)]">VM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal content-box rounded-3xl p-6 md:p-8">
+      <h2 class="section-title mb-5 text-2xl font-bold">Project Overview</h2>
+      <div class="relative z-10 grid gap-6 md:grid-cols-[1.05fr_0.95fr] md:items-center">
+        <div class="space-y-4 leading-8">
+          <p>
+            This project documents a Windows 11 security hardening workflow using Nessus scan results, DISA STIG guidance, manual remediation evidence, and PowerShell automation. I first scanned the Windows 11 VM, identified failed STIG controls, and manually fixed 10 selected controls while recording video evidence of the remediation process.
+          </p>
+          <p>
+            The next phase focuses on building one PowerShell script to automate 10 additional STIG fixes, then validating the results with commands and a follow-up Nessus scan to determine whether the findings are resolved or still appear.
+          </p>
+          <p class="muted text-[var(--muted)]">
+            The page is designed to look like a mix of a Nessus dashboard, Windows 11 security console, and terminal-based remediation lab.
+          </p>
+        </div>
+
+        <div class="dashboard-window">
+          <div class="window-bar">
+            <div class="flex items-center gap-2">
+              <span class="window-dot dot-red"></span>
+              <span class="window-dot dot-yellow"></span>
+              <span class="window-dot dot-green"></span>
+            </div>
+            <span class="text-xs text-[var(--muted)]">scan-results.nessus</span>
+          </div>
+          <div class="p-5 space-y-5">
+            <div>
+              <div class="mb-2 flex items-center justify-between text-sm">
+                <span>Initial Nessus Scan</span>
+                <span class="text-[var(--accent)]">Complete</span>
+              </div>
+              <div class="progress-track"><div class="progress-bar" style="--target: 100%;"></div></div>
+            </div>
+            <div>
+              <div class="mb-2 flex items-center justify-between text-sm">
+                <span>Manual Fixes Recorded</span>
+                <span class="text-[var(--windows)]">10 Controls</span>
+              </div>
+              <div class="progress-track"><div class="progress-bar" style="--target: 100%;"></div></div>
+            </div>
+            <div>
+              <div class="mb-2 flex items-center justify-between text-sm">
+                <span>PowerShell Script Phase</span>
+                <span class="text-[var(--medium)]">In Progress</span>
+              </div>
+              <div class="progress-track"><div class="progress-bar" style="--target: 68%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow" class="reveal mt-10">
+      <h2 class="section-title mb-5 text-2xl font-bold">Remediation Workflow</h2>
+      <div class="content-box rounded-3xl p-6 md:p-8">
+        <div class="relative z-10 timeline-line space-y-6">
+          <div class="flex gap-4 step-card rounded-2xl p-4">
+            <div class="step-number">1</div>
+            <div>
+              <h3 class="font-bold text-[var(--accent)]">Baseline Nessus Scan</h3>
+              <p class="mt-1 text-sm leading-7 muted text-[var(--muted)]">Run an authenticated scan against the Windows 11 VM to identify failed STIG controls and security configuration gaps.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 step-card rounded-2xl p-4">
+            <div class="step-number">2</div>
+            <div>
+              <h3 class="font-bold text-[var(--accent)]">Manual Remediation Video</h3>
+              <p class="mt-1 text-sm leading-7 muted text-[var(--muted)]">Manually fix 10 selected controls and record video evidence showing the configuration path, setting change, and remediation process.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 step-card rounded-2xl p-4">
+            <div class="step-number">3</div>
+            <div>
+              <h3 class="font-bold text-[var(--accent)]">PowerShell Automation Build</h3>
+              <p class="mt-1 text-sm leading-7 muted text-[var(--muted)]">Create one PowerShell script to remediate 10 additional STIG controls using registry changes, audit policy commands, security settings, and validation output.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 step-card rounded-2xl p-4">
+            <div class="step-number">4</div>
+            <div>
+              <h3 class="font-bold text-[var(--accent)]">Validation and Rescan</h3>
+              <p class="mt-1 text-sm leading-7 muted text-[var(--muted)]">Run validation commands, reboot if needed, and rescan with Nessus to confirm whether the manual and scripted controls pass or still appear as findings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mt-10 grid gap-6 md:grid-cols-2">
+      <div class="content-box rounded-3xl p-6 md:p-8">
+        <h2 class="section-title mb-5 text-2xl font-bold">Manual Fixes Completed</h2>
+        <p class="relative z-10 mb-5 text-sm leading-7 muted text-[var(--muted)]">
+          These 10 controls were remediated manually and captured on video as hands-on proof before moving into PowerShell automation.
+        </p>
+        <div class="relative z-10 space-y-3 text-sm">
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000285</strong><p class="mt-1 muted text-[var(--muted)]">Require secure RPC communication for Remote Desktop Session Host.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-AU-000510</strong><p class="mt-1 muted text-[var(--muted)]">Configure System event log size to 32768 KB or greater.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-AC-000010</strong><p class="mt-1 muted text-[var(--muted)]">Set account lockout threshold to three or fewer invalid attempts.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-SO-000190</strong><p class="mt-1 muted text-[var(--muted)]">Prevent DES and RC4 Kerberos encryption suites.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000280</strong><p class="mt-1 muted text-[var(--muted)]">Always prompt for password upon Remote Desktop connection.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000110</strong><p class="mt-1 muted text-[var(--muted)]">Prevent printing over HTTP.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000155</strong><p class="mt-1 muted text-[var(--muted)]">Disable Solicited Remote Assistance.</p></div>
+          <div class="finding-card severity-border-low rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000204</strong><p class="mt-1 muted text-[var(--muted)]">Limit enhanced diagnostic data for Windows Analytics.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000090</strong><p class="mt-1 muted text-[var(--muted)]">Reprocess registry policy even when Group Policy objects have not changed.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-SO-000070</strong><p class="mt-1 muted text-[var(--muted)]">Set machine inactivity limit to 900 seconds or less.</p></div>
+        </div>
+      </div>
+
+      <div class="content-box rounded-3xl p-6 md:p-8">
+        <h2 class="section-title mb-5 text-2xl font-bold">PowerShell Fixes In Progress</h2>
+        <p class="relative z-10 mb-5 text-sm leading-7 muted text-[var(--muted)]">
+          These 10 controls are being built into one automated PowerShell remediation script, followed by validation and Nessus rescanning.
+        </p>
+        <div class="relative z-10 space-y-3 text-sm">
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-SO-000280</strong><p class="mt-1 muted text-[var(--muted)]">Use Windows LAPS to rotate enabled local Administrator passwords.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000391</strong><p class="mt-1 muted text-[var(--muted)]">Disable Internet Explorer 11 as a standalone browser.</p></div>
+          <div class="finding-card severity-border-low rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000005</strong><p class="mt-1 muted text-[var(--muted)]">Disable camera access from the lock screen.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000185</strong><p class="mt-1 muted text-[var(--muted)]">Prevent AutoRun commands from executing.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000150</strong><p class="mt-1 muted text-[var(--muted)]">Require password on resume from sleep while plugged in.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-AU-000585</strong><p class="mt-1 muted text-[var(--muted)]">Enable failure auditing for process creation events.</p></div>
+          <div class="finding-card severity-border-medium rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000305</strong><p class="mt-1 muted text-[var(--muted)]">Disable indexing of encrypted files.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000040</strong><p class="mt-1 muted text-[var(--muted)]">Disable insecure guest logons to SMB servers.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-00-000031</strong><p class="mt-1 muted text-[var(--muted)]">Require BitLocker pre-boot authentication with TPM PIN or key and PIN.</p></div>
+          <div class="finding-card severity-border-high rounded-2xl p-4"><strong class="text-[var(--accent)]">WN11-CC-000066</strong><p class="mt-1 muted text-[var(--muted)]">Include command line data in process creation events.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mt-10">
+      <h2 class="section-title mb-5 text-2xl font-bold">Tools and Skills Demonstrated</h2>
+      <div class="content-box rounded-3xl p-6 md:p-8">
+        <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
+          This section connects the project to practical security operations and vulnerability management skills recruiters can understand quickly.
+        </p>
+
+        <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Vulnerability Management</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Nessus</span>
+              <span class="pill rounded-full px-3 py-1">Authenticated Scans</span>
+              <span class="pill rounded-full px-3 py-1">Remediation</span>
+              <span class="pill rounded-full px-3 py-1">Rescanning</span>
+            </div>
+          </div>
+
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Windows Security</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Windows 11</span>
+              <span class="pill rounded-full px-3 py-1">Audit Policy</span>
+              <span class="pill rounded-full px-3 py-1">Event Logging</span>
+              <span class="pill rounded-full px-3 py-1">Local Policy</span>
+            </div>
+          </div>
+
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Automation</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">PowerShell</span>
+              <span class="pill rounded-full px-3 py-1">Scripting</span>
+              <span class="pill rounded-full px-3 py-1">Validation</span>
+              <span class="pill rounded-full px-3 py-1">Repeatability</span>
+            </div>
+          </div>
+
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Compliance</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">DISA STIG</span>
+              <span class="pill rounded-full px-3 py-1">Control Mapping</span>
+              <span class="pill rounded-full px-3 py-1">Hardening</span>
+              <span class="pill rounded-full px-3 py-1">Evidence</span>
+            </div>
+          </div>
+
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Documentation</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Screenshots</span>
+              <span class="pill rounded-full px-3 py-1">Before/After</span>
+              <span class="pill rounded-full px-3 py-1">Video Proof</span>
+              <span class="pill rounded-full px-3 py-1">Findings Notes</span>
+            </div>
+          </div>
+
+          <div class="tool-card rounded-2xl p-5">
+            <h3 class="mb-3 font-bold text-[var(--accent)]">Security Operations</h3>
+            <div class="flex flex-wrap gap-2 text-sm">
+              <span class="pill rounded-full px-3 py-1">Log Visibility</span>
+              <span class="pill rounded-full px-3 py-1">Detection Support</span>
+              <span class="pill rounded-full px-3 py-1">Risk Reduction</span>
+              <span class="pill rounded-full px-3 py-1">Endpoint Defense</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence" class="reveal mt-10 content-box rounded-3xl p-6 md:p-8">
+      <h2 class="section-title mb-5 text-2xl font-bold">Evidence Gallery</h2>
+      <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
+        Replace these placeholders with your real screenshots from Nessus, Windows audit policy settings, PowerShell script execution, and the final rescan results.
+      </p>
+
+      <div class="relative z-10 grid gap-5 md:grid-cols-2">
+        <div class="image-slot">
+          <div>
+            <p class="mb-2 text-3xl">📊</p>
+            <h3 class="font-bold text-[var(--accent)]">Initial Nessus Scan</h3>
+            <p class="mt-2 text-sm muted text-[var(--muted)]">Add screenshot showing failed STIG audit policy findings.</p>
+          </div>
+        </div>
+
+        <div class="image-slot">
+          <div>
+            <p class="mb-2 text-3xl">🎥</p>
+            <h3 class="font-bold text-[var(--accent)]">Manual Fix Video</h3>
+            <p class="mt-2 text-sm muted text-[var(--muted)]">Embed or link to your video showing manual remediation.</p>
+          </div>
+        </div>
+
+        <div class="image-slot">
+          <div>
+            <p class="mb-2 text-3xl">💻</p>
+            <h3 class="font-bold text-[var(--accent)]">PowerShell Execution</h3>
+            <p class="mt-2 text-sm muted text-[var(--muted)]">Add terminal screenshot showing the 10 scripted fixes being applied.</p>
+          </div>
+        </div>
+
+        <div class="image-slot">
+          <div>
+            <p class="mb-2 text-3xl">✅</p>
+            <h3 class="font-bold text-[var(--accent)]">Final Validation Scan</h3>
+            <p class="mt-2 text-sm muted text-[var(--muted)]">Add after-scan proof showing which findings passed or remained.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mt-10 grid gap-6 md:grid-cols-3">
+      <div class="artifact-card rounded-3xl p-6">
+        <h3 class="mb-3 font-bold text-[var(--accent)]">Script Repository</h3>
+        <p class="text-sm leading-7 muted text-[var(--muted)]">Link to the PowerShell script or show a sanitized code sample directly on the page.</p>
+      </div>
+
+      <div class="artifact-card rounded-3xl p-6">
+        <h3 class="mb-3 font-bold text-[var(--accent)]">Remediation Notes</h3>
+        <p class="text-sm leading-7 muted text-[var(--muted)]">List each STIG ID, original finding, command used, expected result, and validation command.</p>
+      </div>
+
+      <div class="artifact-card rounded-3xl p-6">
+        <h3 class="mb-3 font-bold text-[var(--accent)]">Final Outcome</h3>
+        <p class="text-sm leading-7 muted text-[var(--muted)]">Summarize what passed after the rescan, what failed, and what you learned from troubleshooting.</p>
+      </div>
+    </section>
+
+    <section class="reveal mt-10 content-box rounded-3xl p-6 md:p-8">
+      <h2 class="section-title mb-5 text-2xl font-bold">Key Takeaway</h2>
+      <div class="relative z-10 space-y-4 leading-8">
+        <p>
+          This project shows how vulnerability management is more than running a scanner. It requires understanding the finding, applying the correct configuration change, validating the system state, and rescanning to confirm the risk was actually reduced.
+        </p>
+        <p class="muted text-[var(--muted)]">
+          It also demonstrates why PowerShell matters in security operations: the same fix can be tested once, documented clearly, and repeated across systems more efficiently than manual clicking.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <h2 class="mb-4 text-xl text-[var(--accent)]">Connect With Me</h2>
+    <div class="flex justify-center gap-6">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" class="transition hover:-translate-y-1 hover:opacity-80">
+        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    document.body.classList.remove('no-js');
+
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      observer.observe(element);
+    });
+  </script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "3a352c63adc147828dc993f061fa69d7"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>
