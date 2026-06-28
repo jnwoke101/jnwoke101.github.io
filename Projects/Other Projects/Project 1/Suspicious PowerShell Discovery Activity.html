@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joseph Nwoke | Microsoft Sentinel Detection Engineering Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #04111f;
+      --card: rgba(8, 22, 39, 0.78);
+      --card-2: rgba(10, 35, 58, 0.62);
+      --text: #e6f6ff;
+      --muted: #9fc7d8;
+      --accent: #38bdf8;
+      --accent-2: #22d3ee;
+      --accent-3: #14f1c6;
+      --line: rgba(56, 189, 248, 0.28);
+      --shadow: rgba(34, 211, 238, 0.22);
+      --danger: #fb7185;
+      --warning: #facc15;
+      --success: #34d399;
+      --kql: #020617;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(56, 189, 248, 0.22), transparent 28%),
+        radial-gradient(circle at 86% 18%, rgba(20, 241, 198, 0.15), transparent 24%),
+        radial-gradient(circle at 55% 78%, rgba(34, 211, 238, 0.10), transparent 31%),
+        linear-gradient(135deg, #04111f 0%, #06182a 45%, #08243b 100%);
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.78), transparent 88%);
+      z-index: -3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(34, 211, 238, 0.035) 0px,
+          rgba(34, 211, 238, 0.035) 1px,
+          transparent 1px,
+          transparent 6px
+        );
+      animation: telemetryDrift 10s linear infinite;
+      z-index: -2;
+      opacity: 0.78;
+    }
+
+    @keyframes telemetryDrift {
+      from { transform: translateY(-70px); }
+      to { transform: translateY(70px); }
+    }
+
+    @keyframes liftIn {
+      from { opacity: 0; transform: translateY(26px) rotateX(6deg) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) rotateX(0) scale(1); }
+    }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.80); opacity: 0.65; }
+      70% { transform: scale(1.18); opacity: 0.06; }
+      100% { transform: scale(1.18); opacity: 0; }
+    }
+
+    @keyframes dataSweep {
+      0%, 25% { transform: translateX(-120%); }
+      55%, 100% { transform: translateX(120%); }
+    }
+
+    @keyframes blinkCursor {
+      0%, 49% { border-color: var(--accent-3); }
+      50%, 100% { border-color: transparent; }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(34, 211, 238, 0); }
+      50% { box-shadow: 0 0 28px rgba(34, 211, 238, 0.20); }
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #03101d; }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: var(--accent);
+      border-radius: 999px;
+      border: 2px solid #03101d;
+    }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3));
+      box-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
+      z-index: 99999;
+      transition: width 0.08s linear;
+    }
+
+    .page-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .glass-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      margin-top: 18px;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 17, 31, 0.74);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+    }
+
+    .nav-link,
+    .theme-button,
+    .action-button {
+      border: 1px solid transparent;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .nav-link:hover,
+    .theme-button:hover,
+    .action-button:hover {
+      transform: translateY(-2px);
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--line);
+      color: var(--accent-3);
+      box-shadow: 0 0 24px rgba(34, 211, 238, 0.09);
+    }
+
+    .hero-card,
+    .content-box {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.30);
+      animation: liftIn 0.75s ease both;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+
+    .hero-card::before,
+    .content-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), transparent 36%),
+        radial-gradient(circle at 90% 10%, rgba(20, 241, 198, 0.08), transparent 26%);
+      pointer-events: none;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(120deg, transparent 0%, rgba(34, 211, 238, 0.18) 35%, transparent 65%);
+      transform: translateX(-120%);
+      animation: dataSweep 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .content-box:hover,
+    .mini-card:hover,
+    .evidence-card:hover,
+    .timeline-card:hover,
+    .query-card:hover,
+    .matrix-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(34, 211, 238, 0.56);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.32), 0 0 34px rgba(34, 211, 238, 0.13);
+    }
+
+    .name-glow {
+      color: var(--accent-2);
+      text-shadow: 0 0 12px rgba(34, 211, 238, 0.38), 0 0 44px rgba(20, 241, 198, 0.12);
+      letter-spacing: 0.06em;
+    }
+
+    .terminal-line {
+      display: inline-block;
+      border-right: 2px solid var(--accent-3);
+      animation: blinkCursor 1s step-end infinite;
+    }
+
+    .section-title {
+      color: var(--accent-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.75), transparent);
+    }
+
+    .pill {
+      border: 1px solid rgba(34, 211, 238, 0.24);
+      background: rgba(56, 189, 248, 0.10);
+      color: var(--accent-2);
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+      background: rgba(56, 189, 248, 0.18);
+    }
+
+    .mini-card,
+    .evidence-card,
+    .timeline-card,
+    .query-card,
+    .matrix-card {
+      position: relative;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      background: var(--card-2);
+      border-radius: 26px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .metric-card {
+      position: relative;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      background: rgba(8, 27, 48, 0.62);
+      border-radius: 22px;
+      overflow: hidden;
+      min-height: 126px;
+      animation: glowPulse 5s ease-in-out infinite;
+    }
+
+    .metric-card::before {
+      content: "";
+      position: absolute;
+      width: 84px;
+      height: 84px;
+      border: 1px dashed rgba(34, 211, 238, 0.30);
+      border-radius: 999px;
+      right: -18px;
+      top: -18px;
+      animation: orbit 17s linear infinite;
+    }
+
+    .orbit-panel {
+      position: relative;
+      min-height: 320px;
+      border: 1px solid rgba(34, 211, 238, 0.20);
+      border-radius: 2rem;
+      background:
+        radial-gradient(circle at center, rgba(20, 241, 198, 0.13), transparent 28%),
+        rgba(4, 17, 31, 0.50);
+      overflow: hidden;
+    }
+
+    .orbit-panel::before,
+    .orbit-panel::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 250px;
+      height: 250px;
+      margin-left: -125px;
+      margin-top: -125px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 211, 238, 0.24);
+      animation: pulseRing 3s ease-out infinite;
+    }
+
+    .orbit-panel::after {
+      animation-delay: 1.2s;
+      width: 310px;
+      height: 310px;
+      margin-left: -155px;
+      margin-top: -155px;
+    }
+
+    .orbit-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 138px;
+      height: 138px;
+      margin-left: -69px;
+      margin-top: -69px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 241, 198, 0.46);
+      background: rgba(5, 22, 39, 0.88);
+      box-shadow: 0 0 32px rgba(34, 211, 238, 0.22);
+      z-index: 2;
+    }
+
+    .orbit-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: rgba(8, 34, 57, 0.95);
+      border: 1px solid rgba(34, 211, 238, 0.32);
+      box-shadow: 0 0 22px rgba(34, 211, 238, 0.12);
+      z-index: 3;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .orbit-node:hover {
+      transform: scale(1.08) translateY(-3px);
+      background: rgba(14, 54, 82, 0.95);
+    }
+
+    .node-1 { left: 11%; top: 16%; }
+    .node-2 { right: 12%; top: 20%; }
+    .node-3 { left: 16%; bottom: 15%; }
+    .node-4 { right: 17%; bottom: 13%; }
+
+    .flow-step {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .flow-step.active {
+      border-color: rgba(20, 241, 198, 0.78);
+      box-shadow: 0 0 26px rgba(20, 241, 198, 0.15);
+      background: rgba(20, 241, 198, 0.08);
+    }
+
+    .flow-detail {
+      display: none;
+    }
+
+    .flow-detail.active {
+      display: block;
+      animation: liftIn 0.35s ease both;
+    }
+
+    .timeline-list {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-list::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 16px;
+      bottom: 16px;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(34, 211, 238, 0.75), rgba(20, 241, 198, 0.05));
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 52px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 7px;
+      top: 22px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--accent-3);
+      box-shadow: 0 0 20px rgba(20, 241, 198, 0.75);
+      z-index: 2;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #f8fafc;
+      background: var(--kql);
+      border: 1px solid rgba(34, 211, 238, 0.18);
+      border-radius: 18px;
+      padding: 18px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+
+    code {
+      color: #f8fafc;
+      background: var(--kql);
+      border: 1px solid rgba(34, 211, 238, 0.18);
+      border-radius: 8px;
+      padding: 2px 6px;
+    }
+
+    .copy-btn {
+      border: 1px solid rgba(34, 211, 238, 0.30);
+      color: var(--accent-2);
+      background: rgba(8, 35, 58, 0.70);
+      border-radius: 999px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.8rem;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(34, 211, 238, 0.14);
+      color: var(--accent-3);
+    }
+
+    .query-tab {
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      background: rgba(8, 35, 58, 0.55);
+      border-radius: 999px;
+      padding: 0.65rem 1rem;
+      color: var(--muted);
+      transition: all 0.22s ease;
+    }
+
+    .query-tab.active,
+    .query-tab:hover {
+      color: #04111f;
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+      transform: translateY(-2px);
+    }
+
+    .query-panel { display: none; }
+    .query-panel.active { display: block; animation: liftIn 0.35s ease both; }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.35s ease;
+      opacity: 0;
+    }
+
+    .accordion-item.open .accordion-content {
+      max-height: 360px;
+      opacity: 1;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(45deg);
+    }
+
+    .accordion-icon {
+      transition: transform 0.25s ease;
+    }
+
+    .evidence-img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      min-height: 220px;
+      display: block;
+      border-radius: 18px;
+      border: 1px solid rgba(34, 211, 238, 0.18);
+      background:
+        linear-gradient(135deg, rgba(56, 189, 248, 0.10), transparent),
+        rgba(0,0,0,0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, filter 0.25s ease;
+      cursor: zoom-in;
+      object-fit: contain;
+    }
+
+    .evidence-figure:hover .evidence-img {
+      transform: translateY(-3px) scale(1.01);
+      border-color: rgba(34, 211, 238, 0.75);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.28), 0 0 44px rgba(20, 241, 198, 0.13);
+      filter: saturate(1.08) contrast(1.04);
+    }
+
+    .evidence-caption {
+      margin-top: 0.65rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+
+    .gallery-card {
+      cursor: pointer;
+    }
+
+    .gallery-card::after {
+      content: attr(data-gallery-count);
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 6px 10px;
+      border: 1px solid rgba(34, 211, 238, 0.45);
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.72);
+      color: var(--accent-3);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 18px rgba(34, 211, 238, 0.18);
+      backdrop-filter: blur(10px);
+      z-index: 2;
+    }
+
+    .gallery-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 0.75rem;
+      color: var(--accent-3);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .modal-nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px;
+      height: 46px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 211, 238, 0.50);
+      background: rgba(0, 0, 0, 0.62);
+      color: #f0fbff;
+      cursor: pointer;
+      z-index: 3;
+      transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .modal-nav-button:hover {
+      transform: translateY(-50%) scale(1.08);
+      background: rgba(34, 211, 238, 0.16);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.18);
+    }
+
+    .modal-nav-button.show { display: flex; }
+    .modal-prev { left: 14px; }
+    .modal-next { right: 14px; }
+
+    .img-modal-counter {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      display: none;
+      padding: 7px 11px;
+      border: 1px solid rgba(34, 211, 238, 0.40);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.62);
+      color: #f0fbff;
+      font-size: 0.8rem;
+      z-index: 3;
+      backdrop-filter: blur(8px);
+    }
+
+    .img-modal-counter.show { display: inline-flex; }
+
+    .img-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.76);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+    }
+
+    .img-modal.open { display: flex; }
+
+    .img-modal-content {
+      width: min(1120px, 95vw);
+      max-height: 88vh;
+      background: rgba(4, 17, 31, 0.96);
+      border: 1px solid rgba(34, 211, 238, 0.34);
+      box-shadow: 0 0 32px rgba(34, 211, 238, 0.18);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .img-modal-content img {
+      width: 100%;
+      height: auto;
+      max-height: 88vh;
+      object-fit: contain;
+      display: block;
+      background: #000;
+    }
+
+    .img-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.62);
+      border: 1px solid rgba(34, 211, 238, 0.50);
+      color: #f0fbff;
+      padding: 8px 10px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.2s ease;
+      user-select: none;
+      z-index: 2;
+    }
+
+    .img-modal-close:hover {
+      transform: scale(1.06);
+      background: rgba(34, 211, 238, 0.14);
+    }
+
+    .img-modal-caption {
+      padding: 0.85rem 1rem;
+      border-top: 1px solid rgba(34, 211, 238, 0.15);
+      color: var(--text);
+      font-size: 0.9rem;
+      background: rgba(4, 22, 38, 0.96);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.7), transparent);
+    }
+
+    body.light-mode {
+      --card: rgba(255, 255, 255, 0.84);
+      --card-2: rgba(255,255,255,0.76);
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #0284c7;
+      --accent-2: #0891b2;
+      --accent-3: #0f766e;
+      --line: rgba(2, 132, 199, 0.20);
+      --shadow: rgba(2, 132, 199, 0.15);
+      --kql: #0f172a;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(2, 132, 199, 0.10), transparent 30%),
+        radial-gradient(circle at 86% 18%, rgba(20, 184, 166, 0.08), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #effaff 48%, #eefcf9 100%) !important;
+      color: var(--text) !important;
+    }
+
+    body.light-mode::before {
+      background-image:
+        linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+    }
+
+    body.light-mode .glass-nav,
+    body.light-mode .hero-card,
+    body.light-mode .content-box {
+      background: rgba(255, 255, 255, 0.80);
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
+    }
+
+    body.light-mode .mini-card,
+    body.light-mode .evidence-card,
+    body.light-mode .timeline-card,
+    body.light-mode .query-card,
+    body.light-mode .matrix-card,
+    body.light-mode .metric-card,
+    body.light-mode .orbit-panel,
+    body.light-mode .orbit-core,
+    body.light-mode .orbit-node {
+      background: rgba(255,255,255,0.76);
+      color: var(--text);
+      border-color: rgba(2, 132, 199, 0.14);
+    }
+
+    body.light-mode .muted { color: #475569 !important; }
+    body.light-mode .evidence-img { background: #f8fbff; }
+    body.light-mode pre,
+    body.light-mode code { background: #0f172a; color: #f8fafc; }
+
+    body.light-mode .img-modal-content {
+      background: rgba(255, 255, 255, 0.96);
+      border-color: rgba(2, 132, 199, 0.22);
+      box-shadow: 0 0 24px rgba(15, 23, 42, 0.14);
+    }
+
+    body.light-mode .img-modal-caption {
+      background: rgba(248, 250, 252, 0.96);
+      color: var(--text);
+      border-top: 1px solid rgba(15, 23, 42, 0.12);
+    }
+
+    body.light-mode .img-modal-close {
+      border-color: rgba(15, 23, 42, 0.18);
+      color: #111827;
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    body.light-mode .gallery-card::after,
+    body.light-mode .modal-nav-button,
+    body.light-mode .img-modal-counter {
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--accent-2);
+      border-color: rgba(2, 132, 199, 0.24);
+    }
+
+    body.no-js .reveal,
+    noscript .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 820px) {
+      .glass-nav { border-radius: 24px; }
+      .hero-card { border-radius: 28px; }
+      .section-title { align-items: flex-start; }
+      .terminal-line { border-right: 0; animation: none; }
+      .timeline-list::before { left: 10px; }
+      .timeline-item { padding-left: 36px; }
+      .timeline-dot { left: 2px; }
+      .orbit-panel { min-height: 430px; }
+      .node-1 { left: 10%; top: 10%; }
+      .node-2 { right: 10%; top: 10%; }
+      .node-3 { left: 10%; bottom: 12%; }
+      .node-4 { right: 10%; bottom: 12%; }
+    }
+  </style>
+</head>
+
+<body class="custom-scrollbar no-js">
+  <div id="scrollProgress" class="scroll-progress"></div>
+
+  <header class="page-shell glass-nav px-4 py-3">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent-2)] text-center md:text-left">Portfolio</a>
+
+      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <a class='nav-link px-4 py-2 rounded-full' href='/'>About</a>
+        <a class='nav-link px-4 py-2 rounded-full' href='/projects/projects'>Projects</a>
+        <a class='nav-link px-4 py-2 rounded-full' href='/education_career/education_and_career'>Education & Career</a>
+        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent-2)]" type="button">🌙 Light Mode</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="page-shell">
+    <section class="py-12 md:py-16">
+      <div class="hero-card rounded-[2rem] p-6 md:p-10">
+        <div class="relative z-10 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <div>
+            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">Microsoft Sentinel • Detection Engineering • SOC Investigation</p>
+            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">POWERSHELL<br />DISCOVERY LAB</h1>
+            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Telemetry validated. Detection built. Incident investigated. Response documented.</p>
+            <p class="mt-6 max-w-3xl leading-8 muted text-[var(--muted)]">
+              A Microsoft Sentinel detection engineering lab focused on identifying suspicious PowerShell discovery activity from a Defender-onboarded Windows 11 lab VM. The project connects detection logic, alert validation, entity mapping, SOC investigation, and MITRE ATT&CK mapping into one end-to-end workflow.
+            </p>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="#workflow" class="rounded-full border border-[var(--accent-2)] bg-[var(--accent-2)] px-6 py-3 font-semibold text-[#04111f] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Workflow</a>
+              <a href="#queries" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent-2)]">View KQL</a>
+              <a href="#evidence" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent-2)]">View Evidence</a>
+            </div>
+          </div>
+
+          <div class="orbit-panel">
+            <div class="orbit-core">
+              <div class="text-center">
+                <i class="bx bx-shield-quarter text-4xl text-[var(--accent-3)]"></i>
+                <p class="mt-2 text-xs uppercase tracking-[0.25em] text-[var(--accent-2)]">Sentinel</p>
+              </div>
+            </div>
+            <div class="orbit-node node-1" title="Defender telemetry">
+              <i class="bx bx-laptop text-3xl text-[var(--accent-2)]"></i>
+            </div>
+            <div class="orbit-node node-2" title="KQL detection">
+              <i class="bx bx-code-curly text-3xl text-[var(--accent-3)]"></i>
+            </div>
+            <div class="orbit-node node-3" title="Incident generated">
+              <i class="bx bx-bell text-3xl text-[var(--warning)]"></i>
+            </div>
+            <div class="orbit-node node-4" title="MITRE mapping">
+              <i class="bx bx-map-alt text-3xl text-[var(--accent-2)]"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Project Snapshot</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 md:grid-cols-4">
+          <div class="metric-card p-5">
+            <p class="text-3xl font-black text-[var(--accent-2)]">MDE</p>
+            <p class="mt-1 text-sm muted text-[var(--muted)]">Endpoint telemetry source</p>
+          </div>
+          <div class="metric-card p-5">
+            <p class="text-3xl font-black text-[var(--accent-3)]">KQL</p>
+            <p class="mt-1 text-sm muted text-[var(--muted)]">Detection logic created</p>
+          </div>
+          <div class="metric-card p-5">
+            <p class="text-3xl font-black text-[var(--warning)]">INC</p>
+            <p class="mt-1 text-sm muted text-[var(--muted)]">Sentinel incident triggered</p>
+          </div>
+          <div class="metric-card p-5">
+            <p class="text-3xl font-black text-[var(--accent-2)]">MITRE</p>
+            <p class="mt-1 text-sm muted text-[var(--muted)]">Discovery techniques mapped</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Scenario</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+          <div class="space-y-4 leading-8">
+            <p>
+              The goal of this lab was to simulate safe PowerShell discovery behavior and validate whether Microsoft Sentinel could detect, alert, and support investigation of the activity.
+            </p>
+            <p>
+              The activity included local user discovery, local administrator group review, system information discovery, and process discovery from a Defender-onboarded Windows 11 lab VM. The investigation was performed as authorized lab activity, with sensitive identifiers redacted.
+            </p>
+          </div>
+
+          <div class="mini-card p-5">
+            <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Detection Focus</p>
+            <p class="mt-4 leading-8 muted text-[var(--muted)]">
+              Suspicious PowerShell command-line indicators, parent process context, account and host entity mapping, and MITRE ATT&CK discovery behavior.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow" class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Interactive Detection Workflow</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <div class="grid gap-4">
+            <button class="flow-step mini-card p-5 text-left active" data-flow="1" type="button">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Step 01</p>
+              <h3 class="mt-2 text-xl font-bold">Validate Telemetry</h3>
+            </button>
+            <button class="flow-step mini-card p-5 text-left" data-flow="2" type="button">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Step 02</p>
+              <h3 class="mt-2 text-xl font-bold">Generate Lab Activity</h3>
+            </button>
+            <button class="flow-step mini-card p-5 text-left" data-flow="3" type="button">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Step 03</p>
+              <h3 class="mt-2 text-xl font-bold">Build Detection</h3>
+            </button>
+            <button class="flow-step mini-card p-5 text-left" data-flow="4" type="button">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Step 04</p>
+              <h3 class="mt-2 text-xl font-bold">Investigate Incident</h3>
+            </button>
+          </div>
+
+          <div class="mini-card p-6">
+            <div id="flow-1" class="flow-detail active">
+              <h3 class="text-2xl font-bold text-[var(--accent-2)]">Telemetry Validation</h3>
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                Confirmed that Microsoft Sentinel returned data from endpoint and security tables such as DeviceInfo, DeviceProcessEvents, DeviceLogonEvents, DeviceEvents, and SecurityEvent.
+              </p>
+            </div>
+            <div id="flow-2" class="flow-detail">
+              <h3 class="text-2xl font-bold text-[var(--accent-2)]">Controlled PowerShell Activity</h3>
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                Generated safe discovery commands including local user enumeration, administrator group review, system information discovery, and process review. No malware or unauthorized testing was performed.
+              </p>
+            </div>
+            <div id="flow-3" class="flow-detail">
+              <h3 class="text-2xl font-bold text-[var(--accent-2)]">Detection Engineering</h3>
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                Created a scheduled Sentinel analytics rule using KQL to detect suspicious PowerShell command-line indicators, then mapped host and account entities to improve triage quality.
+              </p>
+            </div>
+            <div id="flow-4" class="flow-detail">
+              <h3 class="text-2xl font-bold text-[var(--accent-2)]">SOC Investigation</h3>
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                Reviewed the Sentinel incident, process command line, parent process, account context, logon activity, MITRE mapping, and documented closure as authorized lab activity.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Detection Logic Highlights</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 md:grid-cols-3">
+          <div class="mini-card p-5">
+            <div class="mb-3 text-3xl text-[var(--accent-2)]"><i class="bx bx-terminal"></i></div>
+            <h3 class="font-bold text-[var(--accent-2)]">PowerShell Indicators</h3>
+            <p class="mt-3 leading-7 muted text-[var(--muted)]">Detected suspicious command-line strings such as <code>-NoProfile</code>, <code>-ExecutionPolicy Bypass</code>, and discovery cmdlets.</p>
+          </div>
+          <div class="mini-card p-5">
+            <div class="mb-3 text-3xl text-[var(--accent-2)]"><i class="bx bx-network-chart"></i></div>
+            <h3 class="font-bold text-[var(--accent-2)]">Entity Mapping</h3>
+            <p class="mt-3 leading-7 muted text-[var(--muted)]">Mapped host and account entities so the incident would contain the right device and user context for triage.</p>
+          </div>
+          <div class="mini-card p-5">
+            <div class="mb-3 text-3xl text-[var(--accent-2)]"><i class="bx bx-tune"></i></div>
+            <h3 class="font-bold text-[var(--accent-2)]">Tuning Notes</h3>
+            <p class="mt-3 leading-7 muted text-[var(--muted)]">Documented false positive considerations such as approved administrator scripts, known maintenance activity, and expected management tooling.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="queries" class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">KQL Queries Used</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10">
+          <div class="mb-6 flex flex-wrap gap-2">
+            <button class="query-tab active" data-query="hunt" type="button">Hunt Query</button>
+            <button class="query-tab" data-query="rule" type="button">Analytics Rule</button>
+            <button class="query-tab" data-query="logon" type="button">Logon Context</button>
+            <button class="query-tab" data-query="events" type="button">Related Events</button>
+          </div>
+
+          <div id="query-hunt" class="query-panel active">
+            <div class="query-card p-5 md:p-6">
+              <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Initial Hunt</p>
+                  <h3 class="text-xl font-bold text-[var(--accent-2)]">Find PowerShell process activity</h3>
+                </div>
+                <button class="copy-btn" data-copy-target="code-hunt" type="button">Copy KQL</button>
+              </div>
+              <pre id="code-hunt">DeviceProcessEvents
+| where TimeGenerated &gt; ago(24h)
+| where FileName in~ ("powershell.exe", "pwsh.exe")
+| project
+    TimeGenerated,
+    DeviceName,
+    AccountName,
+    FileName,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine
+| order by TimeGenerated desc</pre>
+            </div>
+          </div>
+
+          <div id="query-rule" class="query-panel">
+            <div class="query-card p-5 md:p-6">
+              <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Detection Rule</p>
+                  <h3 class="text-xl font-bold text-[var(--accent-2)]">Suspicious PowerShell Discovery Activity</h3>
+                </div>
+                <button class="copy-btn" data-copy-target="code-rule" type="button">Copy KQL</button>
+              </div>
+              <pre id="code-rule">DeviceProcessEvents
+| where TimeGenerated &gt; ago(1h)
+| where FileName in~ ("powershell.exe", "pwsh.exe")
+| where ProcessCommandLine has_any (
+    "-NoProfile",
+    "-ExecutionPolicy Bypass",
+    "Get-LocalUser",
+    "Get-LocalGroupMember",
+    "Get-ComputerInfo",
+    "Get-Process"
+)
+| project
+    TimeGenerated,
+    DeviceName,
+    AccountName,
+    FileName,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine</pre>
+            </div>
+          </div>
+
+          <div id="query-logon" class="query-panel">
+            <div class="query-card p-5 md:p-6">
+              <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Context Review</p>
+                  <h3 class="text-xl font-bold text-[var(--accent-2)]">Review logon activity around the event</h3>
+                </div>
+                <button class="copy-btn" data-copy-target="code-logon" type="button">Copy KQL</button>
+              </div>
+              <pre id="code-logon">DeviceLogonEvents
+| where TimeGenerated &gt; ago(24h)
+| where DeviceName has "&lt;DEVICE-NAME&gt;"
+| project
+    TimeGenerated,
+    DeviceName,
+    AccountName,
+    LogonType,
+    ActionType,
+    RemoteIP
+| order by TimeGenerated desc</pre>
+            </div>
+          </div>
+
+          <div id="query-events" class="query-panel">
+            <div class="query-card p-5 md:p-6">
+              <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Related Events</p>
+                  <h3 class="text-xl font-bold text-[var(--accent-2)]">Review supporting Defender events</h3>
+                </div>
+                <button class="copy-btn" data-copy-target="code-events" type="button">Copy KQL</button>
+              </div>
+              <pre id="code-events">DeviceEvents
+| where TimeGenerated &gt; ago(24h)
+| where DeviceName has "&lt;DEVICE-NAME&gt;"
+| project
+    TimeGenerated,
+    DeviceName,
+    ActionType,
+    AccountName,
+    AdditionalFields
+| order by TimeGenerated desc</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence" class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Evidence Screenshots</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 mb-5 rounded-2xl border border-[var(--line)] bg-[rgba(8,35,58,0.38)] p-4 leading-7 muted text-[var(--muted)]">
+          Evidence is organized by investigation phase. The KQL Query Results card opens a multi-image gallery with arrows so each query screenshot can be reviewed without crowding the page.
+        </div>
+
+        <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <figure class="evidence-figure evidence-card p-3">
+            <img src="/Projects/Project1/Sentinel%20Incident%20Overview.png" alt="Sentinel incident overview" class="evidence-img" data-caption="Figure 1 — Sentinel incident overview for Suspicious PowerShell Discovery Activity" />
+            <figcaption class="evidence-caption">Figure 1 — Sentinel incident overview</figcaption>
+          </figure>
+
+          <figure class="evidence-figure evidence-card gallery-card p-3" data-gallery="kql" data-gallery-count="4 screenshots">
+            <img src="/Projects/Project1/KQL%20Query%20%28Process%20Events%20asc%29.png" alt="KQL query results gallery preview" class="evidence-img" data-caption="Figure 2 — KQL query results gallery" />
+            <figcaption class="evidence-caption">Figure 2 — KQL query results</figcaption>
+            <span class="gallery-hint"><i class="bx bx-images"></i> Click to open gallery</span>
+          </figure>
+
+          <figure class="evidence-figure evidence-card p-3">
+            <img src="/Projects/Project1/Analytics%20Rule%20Configuration.gif" alt="Analytics rule configuration GIF" class="evidence-img" data-caption="Figure 3 — Sentinel analytics rule configuration" />
+            <figcaption class="evidence-caption">Figure 3 — Analytics rule configuration</figcaption>
+          </figure>
+
+          <figure class="evidence-figure evidence-card p-3">
+            <img src="/Projects/Project1/Entity%20Mapping.png" alt="Sentinel entity mapping" class="evidence-img" data-caption="Figure 4 — Entity mapping for host and account context" />
+            <figcaption class="evidence-caption">Figure 4 — Entity mapping</figcaption>
+          </figure>
+
+          <figure class="evidence-figure evidence-card p-3">
+            <img src="/Projects/Project1/Defender%20Timeline.png" alt="Defender timeline evidence" class="evidence-img" data-caption="Figure 5 — Defender timeline showing related endpoint activity" />
+            <figcaption class="evidence-caption">Figure 5 — Defender timeline</figcaption>
+          </figure>
+
+          <figure class="evidence-figure evidence-card p-3">
+            <img src="/Projects/Project1/MITRE%20ATT%26CK.png" alt="MITRE ATT&CK mapping" class="evidence-img" data-caption="Figure 6 — MITRE ATT&CK mapping for PowerShell discovery activity" />
+            <figcaption class="evidence-caption">Figure 6 — MITRE ATT&CK mapping</figcaption>
+          </figure>
+
+          <figure class="evidence-figure evidence-card p-3 lg:col-span-3">
+            <img src="/Projects/Project1/Reason%20For%20Closing.png" alt="Reason for closing the Sentinel incident" class="evidence-img" data-caption="Figure 7 — Incident closure classification and reason" />
+            <figcaption class="evidence-caption">Figure 7 — Reason for closing</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">MITRE ATT&CK Mapping</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div class="matrix-card p-5">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">T1059.001</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">PowerShell</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">PowerShell process execution was observed with suspicious discovery-related command-line arguments.</p>
+          </div>
+
+          <div class="matrix-card p-5">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">T1087.001</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">Local Account Discovery</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">Commands such as <code>Get-LocalUser</code> can enumerate local accounts on an endpoint.</p>
+          </div>
+
+          <div class="matrix-card p-5">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">T1069.001</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">Local Groups</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">Administrator group discovery was reviewed as a potential privilege and access discovery behavior.</p>
+          </div>
+
+          <div class="matrix-card p-5">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">T1082</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">System Information Discovery</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">System information discovery was represented by commands such as <code>Get-ComputerInfo</code>.</p>
+          </div>
+
+          <div class="matrix-card p-5 md:col-span-2">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">T1057</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">Process Discovery</h3>
+            <p class="mt-4 leading-7 muted text-[var(--muted)]">Process discovery activity was represented by PowerShell process review commands such as <code>Get-Process</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Incident Timeline</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 timeline-list">
+          <div class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card p-5">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Telemetry Validation</p>
+              <h3 class="mt-2 text-xl font-bold text-[var(--accent-2)]">Sentinel Tables Confirmed</h3>
+              <p class="mt-3 leading-7 muted text-[var(--muted)]">Endpoint tables returned data, confirming the lab VM was visible to Sentinel and Defender telemetry was available for investigation.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card p-5">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Controlled Activity</p>
+              <h3 class="mt-2 text-xl font-bold text-[var(--accent-2)]">PowerShell Discovery Commands Executed</h3>
+              <p class="mt-3 leading-7 muted text-[var(--muted)]">Safe PowerShell commands were executed to create realistic discovery telemetry without using malware or unauthorized activity.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card p-5">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">Detection Engineering</p>
+              <h3 class="mt-2 text-xl font-bold text-[var(--accent-2)]">Sentinel Analytics Rule Created</h3>
+              <p class="mt-3 leading-7 muted text-[var(--muted)]">A scheduled analytics rule detected suspicious PowerShell discovery indicators and created a Sentinel incident with host and account entities.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <span class="timeline-dot"></span>
+            <div class="timeline-card p-5">
+              <p class="text-sm uppercase tracking-[0.24em] text-[var(--accent-2)]">SOC Investigation</p>
+              <h3 class="mt-2 text-xl font-bold text-[var(--accent-2)]">Incident Reviewed and Closed</h3>
+              <p class="mt-3 leading-7 muted text-[var(--muted)]">The incident was reviewed, mapped to MITRE ATT&CK, documented, and closed as authorized lab activity.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Detection Tuning & Lessons Learned</h2>
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div class="content-box rounded-3xl p-5 md:p-7">
+          <div class="relative z-10">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--warning)]">Tuning</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">Reduce False Positives</h3>
+            <p class="mt-5 leading-8 muted text-[var(--muted)]">
+              The detection should be tuned by excluding approved administrator scripts, expected management tools, known maintenance activity, and trusted automation accounts. Higher-risk patterns such as encoded commands, hidden windows, download cradles, and unusual parent processes should receive higher priority.
+            </p>
+          </div>
+        </div>
+
+        <div class="content-box rounded-3xl p-5 md:p-7">
+          <div class="relative z-10">
+            <p class="mb-2 text-sm uppercase tracking-[0.24em] text-[var(--success)]">Outcome</p>
+            <h3 class="text-xl font-bold text-[var(--accent-2)]">End-to-End SOC Workflow Practiced</h3>
+            <p class="mt-5 leading-8 muted text-[var(--muted)]">
+              This project connected detection engineering with SOC investigation by building the rule, validating the alert, reviewing the evidence, mapping behavior to MITRE ATT&CK, and documenting response recommendations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Expandable Investigation Notes</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 grid gap-4">
+          <div class="accordion-item mini-card p-5 open">
+            <button class="accordion-toggle flex w-full items-center justify-between gap-4 text-left" type="button">
+              <span class="font-bold text-[var(--accent-2)]">Why this activity matters</span>
+              <span class="accordion-icon text-2xl text-[var(--accent-3)]">+</span>
+            </button>
+            <div class="accordion-content">
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                PowerShell discovery commands can be used by administrators, but they are also commonly used by attackers after initial access to understand the host, accounts, privileges, and running processes.
+              </p>
+            </div>
+          </div>
+
+          <div class="accordion-item mini-card p-5">
+            <button class="accordion-toggle flex w-full items-center justify-between gap-4 text-left" type="button">
+              <span class="font-bold text-[var(--accent-2)]">What made the detection stronger</span>
+              <span class="accordion-icon text-2xl text-[var(--accent-3)]">+</span>
+            </button>
+            <div class="accordion-content">
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                The detection included command-line indicators, entity mapping, custom details, MITRE mapping, and investigation queries, making it more useful than a simple one-off log search.
+              </p>
+            </div>
+          </div>
+
+          <div class="accordion-item mini-card p-5">
+            <button class="accordion-toggle flex w-full items-center justify-between gap-4 text-left" type="button">
+              <span class="font-bold text-[var(--accent-2)]">Future improvements</span>
+              <span class="accordion-icon text-2xl text-[var(--accent-3)]">+</span>
+            </button>
+            <div class="accordion-content">
+              <p class="mt-4 leading-8 muted text-[var(--muted)]">
+                Future versions can include watchlists, suppression logic, enrichment, parent process scoring, Logic App automation, and incident grouping based on host and account activity.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-12">
+      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Skills Demonstrated</h2>
+      <div class="content-box rounded-3xl p-5 md:p-7">
+        <div class="relative z-10 flex flex-wrap gap-2 text-sm">
+          <span class="pill rounded-full px-4 py-2">Microsoft Sentinel</span>
+          <span class="pill rounded-full px-4 py-2">Microsoft Defender for Endpoint</span>
+          <span class="pill rounded-full px-4 py-2">KQL</span>
+          <span class="pill rounded-full px-4 py-2">Detection Engineering</span>
+          <span class="pill rounded-full px-4 py-2">Scheduled Analytics Rules</span>
+          <span class="pill rounded-full px-4 py-2">Entity Mapping</span>
+          <span class="pill rounded-full px-4 py-2">DeviceProcessEvents</span>
+          <span class="pill rounded-full px-4 py-2">DeviceLogonEvents</span>
+          <span class="pill rounded-full px-4 py-2">SOC Investigation</span>
+          <span class="pill rounded-full px-4 py-2">MITRE ATT&CK</span>
+          <span class="pill rounded-full px-4 py-2">Incident Response Documentation</span>
+          <span class="pill rounded-full px-4 py-2">Detection Tuning</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal mb-14 text-center">
+      <a class='inline-flex items-center justify-center gap-3 rounded-full border border-[var(--accent-2)] bg-[var(--accent-2)] px-7 py-3 font-semibold text-[#04111f] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]' href='/projects/projects'>
+        <i class="bx bx-arrow-back text-xl"></i>
+        Back to Projects
+      </a>
+    </section>
+  </main>
+
+  <div id="imgModal" class="img-modal" aria-hidden="true">
+    <div class="img-modal-content" role="dialog" aria-modal="true" aria-label="Enlarged evidence image">
+      <button id="imgModalClose" class="img-modal-close" type="button" aria-label="Close image">✕</button>
+      <span id="imgModalCounter" class="img-modal-counter"></span>
+      <button id="imgModalPrev" class="modal-nav-button modal-prev" type="button" aria-label="Previous image"><i class="bx bx-chevron-left text-3xl"></i></button>
+      <button id="imgModalNext" class="modal-nav-button modal-next" type="button" aria-label="Next image"><i class="bx bx-chevron-right text-3xl"></i></button>
+      <img id="imgModalImage" src="" alt="Enlarged evidence image" />
+      <div id="imgModalCaption" class="img-modal-caption"></div>
+    </div>
+  </div>
+
+  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
+    <div class="footer-line mb-8"></div>
+    <h2 class="mb-4 text-xl text-[var(--accent-2)]">Connect With Me</h2>
+    <div class="flex justify-center gap-6">
+      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" rel="noopener noreferrer" class="transition hover:-translate-y-1 hover:opacity-80" aria-label="LinkedIn">
+        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
+      </a>
+      <a href="mailto:josephcnwoke@gmail.com" class="transition hover:-translate-y-1 hover:opacity-80" aria-label="Email">
+        <i class="bx bx-envelope text-3xl text-[var(--accent-2)]"></i>
+      </a>
+    </div>
+    <p class="mt-6 text-xs">© <span id="year"></span> Joseph Nwoke — Portfolio Project Page</p>
+  </footer>
+
+  <script>
+    document.body.classList.remove('no-js');
+
+    const toggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+    const scrollProgress = document.getElementById('scrollProgress');
+
+    function applyTheme(mode) {
+      const isLight = mode === 'light';
+      body.classList.toggle('light-mode', isLight);
+      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    applyTheme(localStorage.getItem('theme') || 'dark');
+
+    toggleButton.addEventListener('click', () => {
+      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
+
+    function updateScrollProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      scrollProgress.style.width = `${percent}%`;
+    }
+
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    updateScrollProgress();
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      revealObserver.observe(element);
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.querySelectorAll('.flow-step').forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.getAttribute('data-flow');
+        document.querySelectorAll('.flow-step').forEach(step => step.classList.remove('active'));
+        document.querySelectorAll('.flow-detail').forEach(detail => detail.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById(`flow-${selected}`).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.query-tab').forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.getAttribute('data-query');
+        document.querySelectorAll('.query-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.query-panel').forEach(panel => panel.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById(`query-${selected}`).classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const targetId = button.getAttribute('data-copy-target');
+        const target = document.getElementById(targetId);
+        const originalText = button.textContent;
+        try {
+          await navigator.clipboard.writeText(target.innerText);
+          button.textContent = 'Copied';
+          setTimeout(() => button.textContent = originalText, 1200);
+        } catch (error) {
+          button.textContent = 'Select code';
+          setTimeout(() => button.textContent = originalText, 1200);
+        }
+      });
+    });
+
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        toggle.closest('.accordion-item').classList.toggle('open');
+      });
+    });
+
+    const imgModal = document.getElementById('imgModal');
+    const imgModalImage = document.getElementById('imgModalImage');
+    const imgModalCaption = document.getElementById('imgModalCaption');
+    const imgModalClose = document.getElementById('imgModalClose');
+    const imgModalPrev = document.getElementById('imgModalPrev');
+    const imgModalNext = document.getElementById('imgModalNext');
+    const imgModalCounter = document.getElementById('imgModalCounter');
+
+    const evidenceBasePath = '/Projects/Project1/';
+    const evidenceGalleries = {
+      kql: [
+        {
+          src: evidenceBasePath + 'KQL%20Query%20%28Process%20Events%20asc%29.png',
+          alt: 'KQL process events ascending results',
+          caption: 'KQL Query Results — DeviceProcessEvents in ascending timeline order'
+        },
+        {
+          src: evidenceBasePath + 'KQL%20Query%20%28Process%20Events%20desc%29.png',
+          alt: 'KQL process events descending results',
+          caption: 'KQL Query Results — DeviceProcessEvents in descending timeline order'
+        },
+        {
+          src: evidenceBasePath + 'KQL%20Query%20%28Logon%20Events%29.png',
+          alt: 'KQL logon events results',
+          caption: 'KQL Query Results — DeviceLogonEvents used to review account and logon context'
+        },
+        {
+          src: evidenceBasePath + 'KQL%20Query%20%28Device%20Events%29.png',
+          alt: 'KQL device events results',
+          caption: 'KQL Query Results — DeviceEvents used to review related Defender endpoint activity'
+        }
+      ]
+    };
+
+    let activeImages = [];
+    let activeIndex = 0;
+
+    function updateModalImage() {
+      const item = activeImages[activeIndex];
+      imgModalImage.src = item.src;
+      imgModalImage.alt = item.alt || 'Enlarged evidence image';
+      imgModalCaption.textContent = item.caption || '';
+
+      const isGallery = activeImages.length > 1;
+      imgModalPrev.classList.toggle('show', isGallery);
+      imgModalNext.classList.toggle('show', isGallery);
+      imgModalCounter.classList.toggle('show', isGallery);
+      imgModalCounter.textContent = isGallery ? `${activeIndex + 1} / ${activeImages.length}` : '';
+    }
+
+    function openImgModal(images, startIndex = 0) {
+      activeImages = Array.isArray(images) ? images : [images];
+      activeIndex = startIndex;
+      updateModalImage();
+      imgModal.classList.add('open');
+      imgModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeImgModal() {
+      imgModal.classList.remove('open');
+      imgModal.setAttribute('aria-hidden', 'true');
+      imgModalImage.src = '';
+      activeImages = [];
+      activeIndex = 0;
+      document.body.style.overflow = '';
+    }
+
+    function showNextImage() {
+      if (activeImages.length <= 1) return;
+      activeIndex = (activeIndex + 1) % activeImages.length;
+      updateModalImage();
+    }
+
+    function showPrevImage() {
+      if (activeImages.length <= 1) return;
+      activeIndex = (activeIndex - 1 + activeImages.length) % activeImages.length;
+      updateModalImage();
+    }
+
+    document.querySelectorAll('.evidence-figure').forEach(figure => {
+      figure.addEventListener('click', () => {
+        const galleryName = figure.getAttribute('data-gallery');
+        if (galleryName && evidenceGalleries[galleryName]) {
+          openImgModal(evidenceGalleries[galleryName], 0);
+          return;
+        }
+
+        const img = figure.querySelector('.evidence-img');
+        if (!img) return;
+        const caption = img.getAttribute('data-caption') || '';
+        openImgModal({ src: img.src, alt: img.alt, caption });
+      });
+    });
+
+    imgModalPrev.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showPrevImage();
+    });
+
+    imgModalNext.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showNextImage();
+    });
+
+    imgModalClose.addEventListener('click', closeImgModal);
+
+    imgModal.addEventListener('click', (event) => {
+      if (event.target === imgModal) closeImgModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!imgModal.classList.contains('open')) return;
+      if (event.key === 'Escape') closeImgModal();
+      if (event.key === 'ArrowRight') showNextImage();
+      if (event.key === 'ArrowLeft') showPrevImage();
+    });
+  </script>
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "54eae24760c743d4bddaf7386fb7bb6d"}'></script>
+  <!-- End Cloudflare Web Analytics -->
+</body>
+</html>
