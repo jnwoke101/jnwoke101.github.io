@@ -781,7 +781,7 @@
       <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent-2)] text-center md:text-left">Portfolio</a>
 
       <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
-        <a class='nav-link px-4 py-2 rounded-full' href='/index.html'</a>
+        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
         <a class='nav-link px-4 py-2 rounded-full' href='/Projects/projects.html'>Projects</a>
         <a class='nav-link px-4 py-2 rounded-full' href='/Education_Career/education_and_career.html'>Education & Career</a>
         <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent-2)]" type="button">🌙 Light Mode</button>
@@ -1078,38 +1078,39 @@
 
         <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           <figure class="evidence-figure evidence-card p-3">
-            <img src="/Other Projects/Project 1/Sentinel%20Incident%20Overview.png" alt="Sentinel incident overview" class="evidence-img" data-caption="Figure 1 — Sentinel incident overview for Suspicious PowerShell Discovery Activity" />
+            <img src="/Other Projects/Project 1/Sentinel Incident Overview.png" alt="Sentinel incident overview" class="evidence-img" data-caption="Figure 1 — Sentinel incident overview for Suspicious PowerShell Discovery Activity" />
             <figcaption class="evidence-caption">Figure 1 — Sentinel incident overview</figcaption>
           </figure>
 
           <figure class="evidence-figure evidence-card gallery-card p-3" data-gallery="kql" data-gallery-count="4 screenshots">
-            <img src="/Other Projects/Project 1/KQL%20Query%20%28Process%20Events%20asc%29.png" alt="KQL query results gallery preview" class="evidence-img" data-caption="Figure 2 — KQL query results gallery" />
+            <img src="/Other Projects/Project 1/KQL Query (Process Events asc).png" alt="KQL query results gallery preview" class="evidence-img" data-caption="Figure 2 — KQL query results gallery" />
             <figcaption class="evidence-caption">Figure 2 — KQL query results</figcaption>
             <span class="gallery-hint"><i class="bx bx-images"></i> Click to open gallery</span>
           </figure>
+          
 
           <figure class="evidence-figure evidence-card p-3">
-            <img src="/Other Projects/Project 1/Analytics%20Rule%20Configuration.gif" alt="Analytics rule configuration GIF" class="evidence-img" data-caption="Figure 3 — Sentinel analytics rule configuration" />
+            <img src="/Other Projects/Project 1/Analytics Rule Configuration.gif" alt="Analytics rule configuration GIF" class="evidence-img" data-caption="Figure 3 — Sentinel analytics rule configuration" />
             <figcaption class="evidence-caption">Figure 3 — Analytics rule configuration</figcaption>
           </figure>
 
           <figure class="evidence-figure evidence-card p-3">
-            <img src="/Other Projects/Project 1/Entity%20Mapping.png" alt="Sentinel entity mapping" class="evidence-img" data-caption="Figure 4 — Entity mapping for host and account context" />
+            <img src="/Other Projects/Project 1/Entity Mapping.png" alt="Sentinel entity mapping" class="evidence-img" data-caption="Figure 4 — Entity mapping for host and account context" />
             <figcaption class="evidence-caption">Figure 4 — Entity mapping</figcaption>
           </figure>
 
           <figure class="evidence-figure evidence-card p-3">
-            <img src="/Other Projects/Project 1/Defender%20Timeline.png" alt="Defender timeline evidence" class="evidence-img" data-caption="Figure 5 — Defender timeline showing related endpoint activity" />
+            <img src="/Other Projects/Project 1/Defender Timeline.png" alt="Defender timeline evidence" class="evidence-img" data-caption="Figure 5 — Defender timeline showing related endpoint activity" />
             <figcaption class="evidence-caption">Figure 5 — Defender timeline</figcaption>
           </figure>
 
           <figure class="evidence-figure evidence-card p-3">
-            <img src="/Other Projects/Project 1/MITRE%20ATT%26CK.png" alt="MITRE ATT&CK mapping" class="evidence-img" data-caption="Figure 6 — MITRE ATT&CK mapping for PowerShell discovery activity" />
+            <img src="/Other Projects/Project 1/MITRE ATT&CK.png" alt="MITRE ATT&CK mapping" class="evidence-img" data-caption="Figure 6 — MITRE ATT&CK mapping for PowerShell discovery activity" />
             <figcaption class="evidence-caption">Figure 6 — MITRE ATT&CK mapping</figcaption>
           </figure>
 
           <figure class="evidence-figure evidence-card p-3 lg:col-span-3">
-            <img src="/Other Projects/Project 1/Reason%20For%20Closing.png" alt="Reason for closing the Sentinel incident" class="evidence-img" data-caption="Figure 7 — Incident closure classification and reason" />
+            <img src="/Other Projects/Project 1/Reason For Closing.png" alt="Reason for closing the Sentinel incident" class="evidence-img" data-caption="Figure 7 — Incident closure classification and reason" />
             <figcaption class="evidence-caption">Figure 7 — Reason for closing</figcaption>
           </figure>
         </div>
@@ -1416,22 +1417,22 @@
     const evidenceGalleries = {
       kql: [
         {
-          src: evidenceBasePath + 'KQL%20Query%20%28Process%20Events%20asc%29.png',
+          src: evidenceBasePath + 'KQL Query (Process Events asc).png',
           alt: 'KQL process events ascending results',
           caption: 'KQL Query Results — DeviceProcessEvents in ascending timeline order'
         },
         {
-          src: evidenceBasePath + 'KQL%20Query%20%28Process%20Events%20desc%29.png',
+          src: evidenceBasePath + 'KQL Query (Process Events desc).png',
           alt: 'KQL process events descending results',
           caption: 'KQL Query Results — DeviceProcessEvents in descending timeline order'
         },
         {
-          src: evidenceBasePath + 'KQL%20Query%20%28Logon%20Events%29.png',
+          src: evidenceBasePath + 'KQL Query (Logon Events).png',
           alt: 'KQL logon events results',
           caption: 'KQL Query Results — DeviceLogonEvents used to review account and logon context'
         },
         {
-          src: evidenceBasePath + 'KQL%20Query%20%28Device%20Events%29.png',
+          src: evidenceBasePath + 'KQL Query (Device Events).png',
           alt: 'KQL device events results',
           caption: 'KQL Query Results — DeviceEvents used to review related Defender endpoint activity'
         }
