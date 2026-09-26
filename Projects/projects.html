@@ -189,6 +189,8 @@
       border:1px solid rgba(var(--tone-rgb),.7);border-radius:22px;background:var(--surface);box-shadow:0 0 28px rgba(var(--tone-rgb),.12);transition:transform .24s}
     .project-card:hover .visual-frame{transform:scale(1.06) rotate(-2deg)}
     .visual-frame img{width:100%;height:100%;object-fit:cover;border-radius:17px;position:relative;z-index:1}
+    .stig-emblem{color:#e8ae65;background:radial-gradient(circle,rgba(232,174,101,.15),transparent 80%),var(--surface)}
+    .stig-emblem svg{width:77px;height:77px;position:relative;z-index:1;filter:drop-shadow(0 0 10px rgba(232,174,101,.27))}
     .thumbnail-fallback{display:none;position:absolute;inset:0;place-items:center;color:var(--tone);font-size:2.3rem}
     .visual-frame.missing-image .thumbnail-fallback{display:grid}
     .project-type,.project-serial{position:absolute;z-index:2;top:13px;font-size:.61rem;letter-spacing:.06em;font-weight:750;color:var(--tone)}
@@ -283,9 +285,9 @@
       <div class="hero-visual" data-reveal role="img" aria-label="Animated cybersecurity portfolio shield illustration">
         <div class="visual-header"><span>PORTFOLIO / INDEX</span><span class="live">LAB NOTES ONLINE</span></div>
         <div class="visual-center"><svg viewBox="0 0 120 138" fill="none" aria-hidden="true"><path d="M60 5 109 23v37c0 35-19 59-49 72C30 119 11 95 11 60V23L60 5Z" fill="rgba(232,174,101,.1)" stroke="#e8ae65" stroke-width="2"/><path d="M60 18 97 32v28c0 27-13 46-37 59-24-13-37-32-37-59V32L60 18Z" stroke="rgba(232,174,101,.45)" stroke-width="1.4" stroke-dasharray="3 5"/><path d="m39 67 14 14 29-30" stroke="#82e5c0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="visual-side">STUDY // 010<br>WRITEUP // 002<br>STATUS // ACTIVE</div>
+        <div class="visual-side">STUDY // 009<br>WRITEUP // 002<br>STATUS // ACTIVE</div>
         <div class="visual-side right">CLOUD / IAM<br>SOC / SIEM<br>SECURITY / VM</div>
-        <div class="visual-foot"><div><small>DOCUMENTED PROJECTS</small><strong>10 Case Studies</strong></div><div><small>ADDITIONAL WORK</small><strong>02 CTF Writeups</strong></div></div>
+        <div class="visual-foot"><div><small>DOCUMENTED PROJECTS</small><strong>09 Case Studies</strong></div><div><small>ADDITIONAL WORK</small><strong>02 CTF Writeups</strong></div></div>
         <div class="visual-sweep"></div>
       </div>
     </section>
@@ -319,17 +321,37 @@
           <div class="filter-tools"><button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="filterContainer">All filters +</button><button class="clear-filter" id="clearFilters" type="button">Reset</button></div>
         </div>
         <div id="filterContainer" class="filter-panel" hidden></div>
-        <div class="results-meta" id="resultsMeta" role="status" aria-live="polite">Showing 12 entries across two collections</div>
+        <div class="results-meta" id="resultsMeta" role="status" aria-live="polite">Showing 11 entries across two collections</div>
       </div>
     </section>
 
     <section class="section" id="project-library" data-reveal>
-      <div class="section-head"><div><div class="eyebrow">02 / Selected projects</div><h2>Field-tested work.</h2><p>Cloud, blue team and offensive security labs; open any card to read the full writeup.</p></div><span class="section-index">10 PROJECTS / 02 SLIDES</span></div>
+      <div class="section-head"><div><div class="eyebrow">02 / Selected projects</div><h2>Field-tested work.</h2><p>Cloud, blue team and offensive security labs; open any card to read the full writeup.</p></div><span class="section-index">09 PROJECTS / 02 SLIDES</span></div>
       <div class="panel carousel" data-carousel="projects" aria-label="Projects carousel">
         <div class="carousel-viewport"><div class="carousel-track">
-          <div class="carousel-slide" aria-label="Slide 1"><div class="project-grid"><a class="project-card tone-copper" data-tags="Vulnerability Management, Risk Management, Blue Team (Defense), Nessus/OpenVAS, PowerShell, Windows Server, Active Directory, Patch Management, Network Security, Firewalls, Azure, System Administration" href="/Projects/Other%20Projects/Vulnerability%20Management%20Lifecycle/Vulnerability%20Management%20Lifecycle%20temp.html" aria-label="Open Vulnerability Management Lifecycle">
+          <div class="carousel-slide" aria-label="Slide 1"><div class="project-grid">
+<a class="project-card tone-copper" data-tags="Vulnerability Management, DISA STIG, Compliance and Auditing, Windows 11, Windows Security, PowerShell, Automation, System Hardening, Audit Policy, Blue Team (Defense), Azure, Tenable Vulnerability Management" href="/Projects/Other%20Projects/DISA%20STIG%20VM%20Task/cyber_range_DISA_project.html" aria-label="Open Windows 11 DISA STIG Remediation Lab">
       <div class="project-visual">
-        <span class="project-type">VULNERABILITY MANAGEMENT</span><span class="project-serial">01 / 10</span>
+        <span class="project-type">VULNERABILITY REMEDIATION</span><span class="project-serial">01 / 09</span>
+        <span class="visual-orbit" aria-hidden="true"></span>
+        <span class="visual-frame stig-emblem" aria-hidden="true">
+          <svg viewBox="0 0 120 138" fill="none" role="presentation">
+            <path d="M60 5 109 23v37c0 35-19 59-49 72C30 119 11 95 11 60V23L60 5Z" fill="rgba(232,174,101,.12)" stroke="currentColor" stroke-width="3"/>
+            <path d="M60 18 97 32v28c0 27-13 46-37 59-24-13-37-32-37-59V32L60 18Z" stroke="currentColor" stroke-opacity=".42" stroke-width="1.6" stroke-dasharray="3 5"/>
+            <path d="m39 67 14 14 29-30" stroke="#82e5c0" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+      <div class="project-body">
+        <h3 class="project-title">Windows 11 DISA STIG Remediation Lab</h3>
+        <p class="project-description">Ten manual and PowerShell remediations validated at four Tenable scan checkpoints.</p>
+        <div class="tag-row"><span class="mini-tag">DISA STIG</span><span class="mini-tag">Tenable</span><span class="mini-tag">PowerShell</span></div>
+        <span class="view-project"><span>Explore case study</span><span aria-hidden="true">↗</span></span>
+      </div>
+    </a>
+<a class="project-card tone-copper" data-tags="Vulnerability Management, Risk Management, Blue Team (Defense), Nessus/OpenVAS, PowerShell, Windows Server, Active Directory, Patch Management, Network Security, Firewalls, Azure, System Administration" href="/Projects/Other%20Projects/Vulnerability%20Management%20Lifecycle/Vulnerability%20Management%20Lifecycle%20temp.html" aria-label="Open Vulnerability Management Lifecycle">
+      <div class="project-visual">
+        <span class="project-type">VULNERABILITY MANAGEMENT</span><span class="project-serial">02 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/Vulnerability%20management%20emblem%20design.png" alt="Vulnerability Management Lifecycle thumbnail" loading="lazy"></span>
       </div>
@@ -342,7 +364,7 @@
     </a>
 <a class="project-card tone-mint" data-tags="Threat Hunting, Microsoft Defender for Endpoint, KQL, Blue Team (Defense), SOC &amp; SIEM, Incident Response, Endpoint Security, Network Security" href="/Projects/Other%20Projects/Threat%20Hunt%201/Unauthorized%20Tor%20Usage.html" aria-label="Open Unauthorized TOR Usage Threat Hunt">
       <div class="project-visual">
-        <span class="project-type">THREAT HUNTING</span><span class="project-serial">02 / 10</span>
+        <span class="project-type">THREAT HUNTING</span><span class="project-serial">03 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/TOR%20threat%20hunt.png" alt="Unauthorized TOR Usage Threat Hunt thumbnail" loading="lazy"></span>
       </div>
@@ -355,7 +377,7 @@
     </a>
 <a class="project-card tone-mint" data-tags="Azure, Encryption, Risk Management" href="/Projects/HomeLabs/HomeLab1/homelab1.html" aria-label="Open Secure Cloud Storage with Azure">
       <div class="project-visual">
-        <span class="project-type">CLOUD SECURITY</span><span class="project-serial">03 / 10</span>
+        <span class="project-type">CLOUD SECURITY</span><span class="project-serial">04 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/homelab1.png" alt="Secure Cloud Storage with Azure thumbnail" loading="lazy"></span>
       </div>
@@ -368,7 +390,7 @@
     </a>
 <a class="project-card tone-copper" data-tags="Linux, OSINT, Reconnaissance" href="/Projects/Other%20Projects/OSINT1/OSINT1.html" aria-label="Open Open-Source Intelligence Profile of a Public Company">
       <div class="project-visual">
-        <span class="project-type">OSINT &amp; RESEARCH</span><span class="project-serial">04 / 10</span>
+        <span class="project-type">OSINT &amp; RESEARCH</span><span class="project-serial">05 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/OSINT1.png" alt="Open-Source Intelligence Profile of a Public Company thumbnail" loading="lazy"></span>
       </div>
@@ -381,7 +403,7 @@
     </a>
 <a class="project-card tone-violet" data-tags="Penetration Testing, Red Team (Offense), Reconnaissance, Vulnerability Management, Metasploit, Nessus/OpenVAS, Linux, Risk Management" href="/Projects/Other%20Projects/RedTeam1/Authorized%20Penetration%20Test:%20Exploiting%20a%20Vulnerable%20Linux%20System.html" aria-label="Open Exploiting a Vulnerable Linux System">
       <div class="project-visual">
-        <span class="project-type">OFFENSIVE SECURITY</span><span class="project-serial">05 / 10</span>
+        <span class="project-type">OFFENSIVE SECURITY</span><span class="project-serial">06 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/redteam1.png" alt="Exploiting a Vulnerable Linux System thumbnail" loading="lazy"></span>
       </div>
@@ -394,7 +416,7 @@
     </a>
 <a class="project-card tone-mint" data-tags="Azure, Terraform, Infrastructure as Code (IaC), Blue Team (Defense), Network Segmentation, Network Security, Cloud Automation" href="/Projects/HomeLabs/HomeLab2/homelab2.html" aria-label="Open Azure Multi-Department Network Automation">
       <div class="project-visual">
-        <span class="project-type">CLOUD AUTOMATION</span><span class="project-serial">06 / 10</span>
+        <span class="project-type">CLOUD AUTOMATION</span><span class="project-serial">07 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/Azure%20Multi-Department%20Network%20Automation.png" alt="Azure Multi-Department Network Automation thumbnail" loading="lazy"></span>
       </div>
@@ -407,7 +429,7 @@
     </a>
 <a class="project-card tone-mint" data-tags="SOC &amp; SIEM, Incident Response, Microsoft Sentinel, Microsoft Defender for Endpoint, KQL, PowerShell, MITRE ATT&amp;CK, Blue Team (Defense), Detection Engineering" href="/Projects/Other%20Projects/Project%201/Sentinel%20PowerShell%20Discovery%20Lab.html" aria-label="Open PowerShell Discovery Lab">
       <div class="project-visual">
-        <span class="project-type">SOC &amp; DETECTION</span><span class="project-serial">07 / 10</span>
+        <span class="project-type">SOC &amp; DETECTION</span><span class="project-serial">08 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/Other%20Projects/Project%201/Sentinel%20Incident%20Overview.png" alt="PowerShell Discovery Lab thumbnail" loading="lazy"></span>
       </div>
@@ -418,22 +440,10 @@
         <span class="view-project"><span>Explore case study</span><span aria-hidden="true">↗</span></span>
       </div>
     </a>
-<a class="project-card tone-copper" data-tags="Vulnerability Management, Windows Security, DISA STIG, Compliance and Auditing, Nessus, PowerShell, Automation, Windows 11, System Hardening, Security Configuration, Audit Policy, Endpoint Security, Risk Management, Blue Team (Defense), Remediation, Security Operations" href="/Projects/Other%20Projects/Win11_STIG_Hardening/Windows%2011%20STIG%20Hardening.html" aria-label="Open Windows 11 STIG Hardening">
-      <div class="project-visual">
-        <span class="project-type">COMPLIANCE</span><span class="project-serial">08 / 10</span>
-        <span class="visual-orbit" aria-hidden="true"></span>
-        <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/Windows%2011%20STIG%20Hardening.png" alt="Windows 11 STIG Hardening thumbnail" loading="lazy"></span>
-      </div>
-      <div class="project-body">
-        <h3 class="project-title">Windows 11 STIG Hardening</h3>
-        <p class="project-description">Windows 11 security configuration and compliance hardening with Nessus and PowerShell.</p>
-        <div class="tag-row"><span class="mini-tag">Nessus</span><span class="mini-tag">DISA STIG</span><span class="mini-tag">Windows 11</span><span class="mini-tag">PowerShell</span></div>
-        <span class="view-project"><span>Explore case study</span><span aria-hidden="true">↗</span></span>
-      </div>
-    </a></div></div>
+</div></div>
 <div class="carousel-slide" aria-label="Slide 2"><div class="project-grid"><a class="project-card tone-violet" data-tags="Penetration Testing, Red Team (Offense), Blue Team (Defense), Vulnerability Management, SQL, Python, Azure, Secure Coding, Application Security (AppSec)" href="/Projects/HomeLabs/HomeLab3/homelab3.html" aria-label="Open Healthcare SQL Injection &amp; Defense Lab">
       <div class="project-visual">
-        <span class="project-type">APPLICATION SECURITY</span><span class="project-serial">09 / 10</span>
+        <span class="project-type">APPLICATION SECURITY</span><span class="project-serial">09 / 09</span>
         <span class="visual-orbit" aria-hidden="true"></span>
         <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/homelab3_logo.png" alt="Healthcare SQL Injection &amp; Defense Lab thumbnail" loading="lazy"></span>
       </div>
@@ -444,19 +454,7 @@
         <span class="view-project"><span>Explore case study</span><span aria-hidden="true">↗</span></span>
       </div>
     </a>
-<a class="project-card tone-copper" data-tags="Vulnerability Management, DISA STIG, Compliance and Auditing, Windows 11, Windows Security, PowerShell, Automation, System Hardening, Audit Policy, Blue Team (Defense), Azure, Tenable Vulnerability Management" href="/Projects/Other%20Projects/DISA%20STIG%20VM%20Task/cyber_range_DISA_project.html" aria-label="Open Windows 11 DISA STIG Remediation Lab">
-      <div class="project-visual">
-        <span class="project-type">VULNERABILITY REMEDIATION</span><span class="project-serial">10 / 10</span>
-        <span class="visual-orbit" aria-hidden="true"></span>
-        <span class="visual-frame"><span class="thumbnail-fallback" aria-hidden="true">◇</span><img src="/Projects/thumbnail/Windows%2011%20STIG%20Hardening.png" alt="Windows 11 DISA STIG Remediation Lab thumbnail" loading="lazy"></span>
-      </div>
-      <div class="project-body">
-        <h3 class="project-title">Windows 11 DISA STIG Remediation Lab</h3>
-        <p class="project-description">Ten manual and PowerShell remediations validated at four Tenable scan checkpoints.</p>
-        <div class="tag-row"><span class="mini-tag">DISA STIG</span><span class="mini-tag">Tenable</span><span class="mini-tag">PowerShell</span></div>
-        <span class="view-project"><span>Explore case study</span><span aria-hidden="true">↗</span></span>
-      </div>
-    </a></div></div>
+</div></div>
         </div></div>
         <div class="empty-state" hidden>No project cards match these filters. Try another search or select Reset.</div>
         <div class="carousel-controls"><div class="page-count" aria-live="polite">PAGE 01 / 02</div>
