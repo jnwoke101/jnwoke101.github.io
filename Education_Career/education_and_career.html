@@ -1,686 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Joseph Nwoke | Education & Career</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1110">
+  <meta name="description" content="Joseph Nwoke — cybersecurity education, professional experience, certifications, and continuing technical training.">
+  <title>Joseph Nwoke | Education &amp; Career</title>
+  <link rel="icon" href="/Logos/webpage_icon.png" type="image/png">
   <style>
     :root {
-      --bg: #0d1117;
-      --card: rgba(17, 24, 39, 0.78);
-      --text: #c9d1d9;
-      --muted: #8b949e;
-      --accent: #2ac3de;
-      --accent-2: #7dd3fc;
-      --line: rgba(42, 195, 222, 0.28);
-      --shadow: rgba(42, 195, 222, 0.22);
+      color-scheme:dark;
+      --bg:#0a100e;--surface:#131c18;--surface-2:#1a2520;
+      --ink:#eef5ee;--muted:#b2c2b7;--soft:#819788;
+      --accent:#83e7a7;--accent-2:#b0f3c4;--line:rgba(131,231,167,.18);
+      --glass:rgba(12,20,16,.91);--shadow:rgba(0,0,0,.33);
+      --grid:rgba(131,231,167,.042);--chip:rgba(131,231,167,.07);
+      --button-ink:#0c2014;--ring:rgba(131,231,167,.17);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Courier New', monospace;
-      min-height: 100vh;
-      margin: 0;
-      background:
-        radial-gradient(circle at 12% 10%, rgba(42, 195, 222, 0.16), transparent 28%),
-        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.12), transparent 24%),
-        linear-gradient(135deg, #0d1117 0%, #090d13 48%, #101827 100%);
-      color: var(--text);
-      overflow-x: hidden;
-      transition: background 0.35s ease, color 0.35s ease;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
-      background-size: 44px 44px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
-      z-index: -3;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.05), transparent);
-      animation: scanline 7s linear infinite;
-      z-index: -2;
-    }
-
-    @keyframes scanline {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100%); }
-    }
-
-    @keyframes floatIn {
-      from {
-        opacity: 0;
-        transform: translateY(22px) scale(0.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes shimmer {
-      0%, 35% { transform: translateX(-120%); }
-      55%, 100% { transform: translateX(120%); }
-    }
-
-    @keyframes typingCursor {
-      0%, 49% { border-color: var(--accent); }
-      50%, 100% { border-color: transparent; }
-    }
-
-    @keyframes spinSlow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .page-shell {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .glass-nav {
-      position: sticky;
-      top: 16px;
-      z-index: 50;
-      margin-top: 18px;
-      backdrop-filter: blur(18px);
-      background: rgba(13, 17, 23, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
-    }
-
-    .nav-link,
-    .theme-button,
-    .action-button {
-      border: 1px solid transparent;
-      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .nav-link:hover,
-    .theme-button:hover,
-    .action-button:hover {
-      transform: translateY(-2px);
-      background: rgba(42, 195, 222, 0.12);
-      border-color: var(--line);
-      color: var(--accent);
-    }
-
-    .hero-card,
-    .content-box {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(42, 195, 222, 0.18);
-      background: var(--card);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
-      animation: floatIn 0.75s ease both;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
-    }
-
-    .hero-card::before,
-    .content-box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(42, 195, 222, 0.12), transparent 36%);
-      pointer-events: none;
-    }
-
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      background: linear-gradient(120deg, transparent 0%, rgba(42, 195, 222, 0.22) 35%, transparent 65%);
-      transform: translateX(-120%);
-      animation: shimmer 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .content-box:hover {
-      transform: translateY(-5px);
-      border-color: rgba(42, 195, 222, 0.45);
-      box-shadow: 0 22px 60px rgba(0,0,0,0.30), 0 0 34px rgba(42, 195, 222, 0.12);
-    }
-
-    .name-glow {
-      color: var(--accent);
-      text-shadow: 0 0 12px rgba(42, 195, 222, 0.38), 0 0 40px rgba(42, 195, 222, 0.16);
-      letter-spacing: 0.08em;
-    }
-
-    .terminal-line {
-      display: inline-block;
-      border-right: 2px solid var(--accent);
-      animation: typingCursor 1s step-end infinite;
-    }
-
-    .section-title {
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-title::after {
-      content: "";
-      height: 1px;
-      flex: 1;
-      background: linear-gradient(90deg, rgba(42, 195, 222, 0.6), transparent);
-    }
-
-    .pill {
-      border: 1px solid rgba(42, 195, 222, 0.28);
-      background: rgba(42, 195, 222, 0.08);
-      color: var(--accent-2);
-      transition: transform 0.25s ease, background 0.25s ease;
-    }
-
-    .pill:hover {
-      transform: translateY(-2px);
-      background: rgba(42, 195, 222, 0.16);
-    }
-
-    .timeline-list {
-      position: relative;
-      display: grid;
-      gap: 18px;
-    }
-
-    .timeline-list::before {
-      content: "";
-      position: absolute;
-      left: 16px;
-      top: 16px;
-      bottom: 16px;
-      width: 1px;
-      background: linear-gradient(to bottom, rgba(42, 195, 222, 0.7), rgba(42, 195, 222, 0.05));
-    }
-
-    .timeline-item {
-      position: relative;
-      padding-left: 52px;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: 7px;
-      top: 22px;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 20px rgba(42, 195, 222, 0.7);
-      z-index: 2;
-    }
-
-    .timeline-card {
-      position: relative;
-      border: 1px solid rgba(42, 195, 222, 0.16);
-      background: rgba(13, 17, 23, 0.50);
-      border-radius: 26px;
-      padding: 22px;
-      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .timeline-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(42, 195, 222, 0.50);
-      background: rgba(42, 195, 222, 0.08);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.24), 0 0 30px rgba(42, 195, 222, 0.11);
-    }
-
-    .year {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent-2);
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .cert-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 16px;
-    }
-
-    .cert-card {
-      position: relative;
-      border: 1px solid rgba(42, 195, 222, 0.16);
-      background: rgba(13, 17, 23, 0.50);
-      border-radius: 24px;
-      padding: 18px;
-      color: inherit;
-      text-decoration: none;
-      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .cert-card:hover {
-      transform: translateY(-6px) scale(1.01);
-      border-color: rgba(42, 195, 222, 0.52);
-      background: rgba(42, 195, 222, 0.08);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.26), 0 0 32px rgba(42, 195, 222, 0.12);
-    }
-
-    .cert-orb {
-      position: relative;
-      width: 58px;
-      height: 58px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      color: var(--accent);
-      border: 1px dashed rgba(42, 195, 222, 0.50);
-      background: radial-gradient(circle at center, rgba(42, 195, 222, 0.15), transparent 65%);
-      margin-bottom: 14px;
-      animation: spinSlow 18s linear infinite;
-    }
-
-    .cert-orb i {
-      animation: spinSlow 18s linear infinite reverse;
-      font-size: 24px;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .footer-line {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.6), transparent);
-    }
-
     body.light-mode {
-      --bg: #ffffff;
-      --card: rgba(255, 255, 255, 0.82);
-      --text: #0b1220;
-      --muted: #4b5563;
-      --accent: #007c92;
-      --accent-2: #0369a1;
-      --line: rgba(0, 124, 146, 0.28);
-      --shadow: rgba(0, 124, 146, 0.2);
-      background:
-        radial-gradient(circle at 12% 10%, rgba(0, 124, 146, 0.12), transparent 30%),
-        radial-gradient(circle at 88% 18%, rgba(3, 105, 161, 0.08), transparent 26%),
-        linear-gradient(135deg, #ffffff 0%, #f5f7fb 48%, #edf6f8 100%) !important;
-      color: var(--text) !important;
+      color-scheme:light;
+      --bg:#f4f8f3;--surface:#ffffff;--surface-2:#edf4ee;
+      --ink:#1c3025;--muted:#4d6557;--soft:#668473;
+      --accent:#206d42;--accent-2:#265a3d;--line:rgba(35,102,61,.20);
+      --glass:rgba(251,255,251,.94);--shadow:rgba(23,65,37,.10);
+      --grid:rgba(35,102,61,.05);--chip:rgba(35,102,61,.05);
+      --button-ink:#ffffff;--ring:rgba(35,102,61,.13);
     }
-
-    body.light-mode::before {
-      background-image:
-        linear-gradient(rgba(0, 124, 146, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 124, 146, 0.055) 1px, transparent 1px);
-    }
-
-    body.light-mode .glass-nav,
-    body.light-mode .hero-card,
-    body.light-mode .content-box {
-      background: rgba(255, 255, 255, 0.78);
-      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
-    }
-
-    body.light-mode .timeline-card,
-    body.light-mode .cert-card {
-      background: rgba(255,255,255,0.72);
-      color: var(--text);
-      border-color: rgba(0, 124, 146, 0.20);
-    }
-
-    body.light-mode .muted {
-      color: #4b5563 !important;
-    }
-
-    body.no-js .reveal,
-    noscript .reveal {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 820px) {
-      .glass-nav {
-        border-radius: 24px;
-      }
-
-      .hero-card {
-        border-radius: 28px;
-      }
-
-      .timeline-list::before {
-        left: 10px;
-      }
-
-      .timeline-item {
-        padding-left: 36px;
-      }
-
-      .timeline-dot {
-        left: 2px;
-      }
-    }
+    *,*:before,*:after{box-sizing:border-box}
+    [hidden]{display:none!important}
+    html{scroll-behavior:smooth;scroll-padding-top:112px}
+    body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);
+      font:16px/1.7 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(ellipse at 88% 5%,var(--ring),transparent 34%),
+      radial-gradient(ellipse at 3% 49%,rgba(82,153,104,.055),transparent 38%),var(--bg);
+      transition:background .3s,color .3s}
+    body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+      background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+      background-size:46px 46px;mask-image:linear-gradient(black,transparent 95%)}
+    a{color:inherit}button{cursor:pointer;font:inherit}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+    ::selection{background:var(--accent);color:var(--button-ink)}
+    .mono,.eyebrow,.brand,.section-index,.number,.cert-index,.date,.chip,.footer-code,.micro,.experience-index{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+    .shell{width:min(1190px,calc(100% - 44px));margin-inline:auto}
+    .skip{position:absolute;top:-70px;left:12px;background:var(--accent);color:var(--button-ink);padding:10px 13px;z-index:100}
+    .skip:focus{top:10px}
+    .scroll-line{position:fixed;top:0;left:0;width:0;height:3px;z-index:100;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+    .nav-shell{position:sticky;top:12px;z-index:40;margin-top:14px;background:var(--glass);border:1px solid var(--line);border-radius:17px;backdrop-filter:blur(18px);box-shadow:0 12px 38px var(--shadow)}
+    .nav-inner{min-height:67px;padding:11px 22px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:.82rem;font-weight:800;letter-spacing:.12em}
+    .brand-mark{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--accent);color:var(--accent);font-size:1.15rem;flex-shrink:0}
+    .navlinks{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:5px}
+    .navlinks a,.theme-button{font-size:.82rem;font-weight:700;text-decoration:none;color:var(--muted);padding:9px 12px;background:transparent;border:1px solid transparent;border-radius:10px;transition:color .2s,background .2s,border-color .2s}
+    .navlinks a:hover,.theme-button:hover{color:var(--accent);background:var(--chip)}
+    .navlinks a[aria-current="page"]{color:var(--accent)}.theme-button{border-color:var(--line);color:var(--ink)}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:47px;align-items:center;padding:86px 0 83px}
+    .eyebrow{display:flex;align-items:center;gap:12px;color:var(--accent);font-weight:800;font-size:.73rem;letter-spacing:.16em;text-transform:uppercase}
+    .eyebrow:before{content:"";height:1px;width:25px;background:var(--accent);flex-shrink:0}
+    h1,h2,h3,p{margin-top:0}h1,h2,h3{line-height:1.17}
+    h1{font-size:clamp(3.15rem,6.5vw,6.3rem);font-weight:850;letter-spacing:-.074em;margin:18px 0 22px}
+    h1 em{font-style:normal;color:var(--accent-2);display:block}
+    h2{font-size:clamp(1.9rem,3.45vw,2.95rem);letter-spacing:-.052em;margin-bottom:11px}
+    .hero-copy{font-size:1.06rem;line-height:1.8;max-width:620px;color:var(--muted)}.hero-copy strong{color:var(--ink)}
+    .hero-badges,.hero-actions{display:flex;flex-wrap:wrap;gap:9px}.hero-badges{margin:22px 0 30px}
+    .hero-badges span{padding:6px 11px;border:1px solid var(--line);border-radius:99px;font:700 .69rem ui-monospace,monospace;color:var(--muted)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid var(--line);border-radius:11px;padding:12px 17px;text-decoration:none;font-size:.84rem;font-weight:800;background:var(--surface);transition:transform .2s,border-color .2s,box-shadow .2s}
+    .btn:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 29px var(--shadow)}
+    .btn.primary{background:var(--accent);color:var(--button-ink);border-color:var(--accent)}
+    .hero-visual{position:relative;min-height:410px;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at 50% 51%,var(--ring),transparent 51%),var(--surface);box-shadow:0 26px 70px var(--shadow)}
+    .visual-top,.visual-bottom{position:absolute;left:24px;right:24px;z-index:2;display:flex;justify-content:space-between;gap:14px}
+    .visual-top{top:21px;font:700 .67rem ui-monospace,monospace;color:var(--accent);letter-spacing:.11em}.visual-top span:last-child{color:var(--muted)}
+    .visual-center{position:absolute;inset:0;display:grid;place-items:center}
+    .orbit,.orbit:before,.orbit:after{position:absolute;border:1px dashed var(--accent);border-radius:50%;opacity:.2}
+    .orbit{width:310px;height:310px;animation:spin 43s linear infinite}
+    .orbit:before,.orbit:after{content:"";inset:36px}.orbit:after{inset:74px}
+    .career-symbol{width:139px;height:139px;display:grid;place-items:center;border:1px solid var(--line);border-radius:29px;background:var(--surface-2);box-shadow:0 0 37px var(--ring);transform:rotate(-8deg)}
+    .career-symbol svg{width:89px;height:89px;transform:rotate(8deg)}
+    .visual-label{position:absolute;z-index:2;top:43%;font:.67rem/2.2 ui-monospace,monospace;letter-spacing:.06em;color:var(--muted);left:21px}.visual-label.right{left:auto;right:21px;text-align:right;color:var(--accent)}
+    .visual-bottom{bottom:23px;align-items:end}.visual-bottom small{display:block;font: .67rem ui-monospace,monospace;color:var(--muted);letter-spacing:.1em}
+    .visual-bottom strong{display:block;font-size:1.1rem;margin-top:4px}.visual-bottom div:last-child{text-align:right}
+    .visual-sweep{position:absolute;inset:auto 0 0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+    .summary-band{border-block:1px solid var(--line);background:var(--chip)}
+    .summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+    .summary-tile{padding:24px 28px;border-right:1px solid var(--line)}.summary-tile:first-child{padding-left:0}.summary-tile:last-child{border:0}
+    .micro{display:block;color:var(--accent);font-size:.66rem;letter-spacing:.12em;margin-bottom:7px}.summary-tile strong{font-size:1.12rem}.summary-tile p{color:var(--muted);font-size:.81rem;margin:4px 0 0}
+    .section{padding-top:88px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:26px}
+    .section-head .eyebrow{margin-bottom:11px}.section-head p{color:var(--muted);max-width:620px;margin-bottom:0}
+    .section-index{font-size:.7rem;letter-spacing:.1em;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:7px 12px;white-space:nowrap}
+    .panel{border:1px solid var(--line);border-radius:19px;background:var(--surface);box-shadow:0 15px 40px var(--shadow)}
+    .education-card{padding:32px;display:grid;grid-template-columns:78px 1fr;gap:27px;align-items:start}
+    .degree-icon{width:67px;height:67px;display:grid;place-items:center;font-size:1.6rem;color:var(--accent);border:1px solid var(--line);background:var(--chip);border-radius:17px}
+    .year{font:.73rem ui-monospace,monospace;color:var(--accent);letter-spacing:.11em;margin-bottom:9px}
+    .education-card h3{font-size:clamp(1.42rem,2.6vw,1.9rem);letter-spacing:-.035em;margin-bottom:5px}
+    .organization{color:var(--accent-2);font-weight:680;margin-bottom:14px}.description{color:var(--muted);font-size:.93rem;line-height:1.78;margin-bottom:0}
+    .experience-list{position:relative;padding:30px 30px 11px}
+    .experience-card{display:grid;grid-template-columns:70px 1fr;gap:19px;position:relative;padding-bottom:30px}
+    .experience-card:not(:last-child) .experience-rail:after{content:"";position:absolute;top:37px;bottom:-30px;left:21px;width:1px;background:var(--line)}
+    .experience-rail{position:relative;padding-top:4px}.experience-index{position:relative;z-index:2;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface-2);width:42px;height:42px;border-radius:12px;color:var(--accent);font-size:.76rem;font-weight:750}
+    .experience-node{display:none}.experience-content{background:var(--surface-2);border:1px solid var(--line);border-radius:16px;padding:24px;transition:transform .2s,border-color .2s}
+    .experience-content:hover{transform:translateY(-3px);border-color:var(--accent)}.eyebrow-small{font-size:.68rem;margin-bottom:11px}
+    .eyebrow-small:before{width:14px}.experience-content h3{font-size:1.2rem;letter-spacing:-.03em;margin-bottom:6px}
+    .experience-content .organization{font-size:.86rem}.experience-content .description{margin-bottom:18px}
+    .chips{display:flex;flex-wrap:wrap;gap:7px}.chip{border:1px solid var(--line);border-radius:999px;padding:5px 9px;background:var(--chip);color:var(--muted);font:.69rem ui-monospace,monospace}
+    .cert-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;padding:23px}
+    .cert-card{min-width:0;display:flex;flex-direction:column;text-decoration:none;background:var(--surface-2);border:1px solid var(--line);border-radius:16px;padding:22px;transition:transform .2s,border-color .2s,box-shadow .2s}
+    .cert-card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 16px 35px var(--shadow)}
+    .cert-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.cert-index{font-size:.63rem;color:var(--accent);letter-spacing:.09em}.cert-arrow{color:var(--accent);font-size:1.15rem}
+    .cert-symbol{display:grid;place-items:center;margin:25px 0 17px;width:53px;height:53px;border-radius:14px;border:1px solid var(--line);color:var(--accent);background:var(--chip);font-size:1.6rem}
+    .cert-card h3{font-size:1rem;line-height:1.42;letter-spacing:-.026em;min-height:2.8em;margin-bottom:10px}
+    .cert-card p{font-size:.84rem;line-height:1.68;color:var(--muted);flex:1;margin-bottom:20px}
+    .cert-link{padding-top:13px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:.78rem;color:var(--accent);font-weight:750}
+    .continuing{display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center;padding:29px 32px}.continuing h3{font-size:1.35rem;letter-spacing:-.025em;margin:4px 0 8px}
+    .continuing p{max-width:690px}.closeout{margin:90px 0 58px;padding:31px 37px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(110deg,var(--chip),transparent),var(--surface);border:1px solid var(--line);border-radius:22px}
+    .closeout h2{font-size:clamp(1.5rem,3vw,2.15rem);margin:6px 0}.closeout p{color:var(--muted);margin:0}
+    footer{border-top:1px solid var(--line);padding:26px 0 39px;color:var(--muted);font-size:.8rem}.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+    .footer-link{color:var(--accent);text-decoration:none}.footer-link:hover{text-decoration:underline}.footer-code{font-size:.69rem;color:var(--accent)}
+    [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .68s ease,transform .68s ease}
+    [data-reveal].shown{opacity:1;transform:none}body.no-js [data-reveal]{opacity:1;transform:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:1050px){.hero{gap:27px}.cert-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:820px){.hero{grid-template-columns:1fr;padding:64px 0 53px}.hero-visual{min-height:340px}.summary-tile{padding:22px 16px}.section{padding-top:67px}.section-head{display:block}.section-index{display:inline-block;margin-top:16px}.continuing{grid-template-columns:1fr}}
+    @media(max-width:600px){.shell{width:calc(100% - 28px)}.nav-inner{flex-direction:column;padding:13px;gap:8px}.navlinks{justify-content:center}.navlinks a,.theme-button{font-size:.73rem;padding:7px 8px}h1{font-size:clamp(3rem,13vw,4.8rem)}.hero{padding-top:46px}.hero-visual{min-height:300px}.visual-label{display:none}.summary-grid{grid-template-columns:1fr}.summary-tile,.summary-tile:first-child{border-right:0;border-bottom:1px solid var(--line);padding:17px 1px}.summary-tile:last-child{border-bottom:0}.education-card{grid-template-columns:1fr;padding:23px;gap:17px}.experience-list{padding:18px 15px 0}.experience-card{grid-template-columns:37px 1fr;gap:8px}.experience-index{width:33px;height:33px;font-size:.65rem}.experience-card:not(:last-child) .experience-rail:after{left:16px;top:32px}.experience-content{padding:17px}.cert-grid{grid-template-columns:1fr;padding:14px}.cert-card h3{min-height:0}.continuing{padding:22px}.closeout{display:block;padding:22px;margin-top:65px}.closeout .btn{margin-top:19px}.hero-actions .btn{flex:1}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}[data-reveal]{opacity:1;transform:none}}
   </style>
 </head>
-
 <body class="no-js">
-  <header class="page-shell glass-nav px-4 py-3">
-    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
-
-      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
-        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
-        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
-        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
-        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
-      </nav>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="scroll-line" id="scrollLine" aria-hidden="true"></div>
+  <header class="shell nav-shell"><div class="nav-inner">
+    <a href="/index.html" class="brand"><span class="brand-mark" aria-hidden="true">◇</span> JN / PORTFOLIO</a>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="/index.html">About</a><a href="/Projects/projects.html">Projects</a>
+      <a href="/Education_Career/education_and_career.html" aria-current="page">Education &amp; Career</a>
+      <button class="theme-button" id="themeToggle" type="button" aria-label="Toggle light and dark mode">☀ Light mode</button>
+    </nav>
+  </div></header>
+  <main id="main">
+    <div class="shell">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div data-reveal><div class="eyebrow">Education / certifications / career progression</div>
+          <h1 id="hero-title">Education<br>&amp; <em>career.</em></h1>
+          <p class="hero-copy">A focused view of my <strong>cybersecurity education, certifications, technical experience</strong>, and ongoing development toward information security roles.</p>
+          <div class="hero-badges"><span>CYBERSECURITY</span><span>SECURITY OPERATIONS</span><span>IT SUPPORT</span></div>
+          <div class="hero-actions"><a class="btn primary" href="#experience">View experience <span aria-hidden="true">↗</span></a><a class="btn" href="#certifications">View certifications ↓</a><a class="btn" href="https://jnwoke101.github.io/Education_Career/CeD.263W-34A6-JTEO.pdf" target="_blank" rel="noopener noreferrer">View degree ↗</a></div>
+        </div>
+        <div class="hero-visual" role="img" aria-label="Abstract green credential shield illustration" data-reveal>
+          <div class="visual-top"><span>JN / CAREER NOTES</span><span>EDUCATION + PRACTICE</span></div>
+          <div class="visual-center"><div class="orbit" aria-hidden="true"></div><div class="career-symbol" aria-hidden="true">
+            <svg viewBox="0 0 100 105" fill="none"><path d="M50 4 88 19v28c0 25-15 44-38 53C27 91 12 72 12 47V19L50 4Z" stroke="var(--accent)" stroke-width="2.2" fill="var(--chip)"/><path d="m32 52 12 12 26-29" stroke="var(--accent-2)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 15 77 26v23c0 16-9 28-27 38-18-10-27-22-27-38V26l27-11Z" stroke="var(--accent)" stroke-opacity=".38" stroke-dasharray="4 5"/></svg>
+          </div></div>
+          <div class="visual-label">IT // FOUNDATION<br>SECURITY // GROWTH<br>LEARNING // ACTIVE</div><div class="visual-label right">BUILD<br>DEFEND<br>VERIFY</div>
+          <div class="visual-bottom"><div><small>DEGREE</small><strong>B.S. Cybersecurity</strong></div><div><small>CONTINUED LEARNING</small><strong>Hands-on labs</strong></div></div>
+          <span class="visual-sweep"></span>
+        </div>
+      </section>
     </div>
-  </header>
-
-  <main id="top" class="page-shell">
-    <section class="py-12 md:py-16">
-      <div class="hero-card rounded-[2rem] p-6 md:p-10">
-        <div class="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-          <div>
-            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">Education • Certifications • Career Path</p>
-            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">EDUCATION<br />& CAREER</h1>
-            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">IT foundation. Cybersecurity growth. Security career path.</p>
-            <p class="mt-6 max-w-3xl leading-8 muted text-[var(--muted)]">
-              A focused view of my cybersecurity education, certifications, technical experience, and ongoing development toward information security roles.
-            </p>
-
-            <div class="mt-7 flex flex-wrap gap-3">
-              <a href="#experience" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Experience</a>
-              <a href="#certifications" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)]">View Certifications</a>
-              <a href="https://jnwoke101.github.io//Education_Career/CeD.263W-34A6-JTEO.pdf" class="action-button rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)]">View Degree</a>
-            </div>
-          </div>
-
-          <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            <div class="content-box rounded-2xl p-5">
-              <p class="text-3xl font-black text-[var(--accent)]">Bachelor's of Science in Cybersecurity</p>
-              <p class="mt-1 text-sm muted text-[var(--muted)]">University of Maryland Global Campus</p>
-            </div>
-            <div class="content-box rounded-2xl p-5">
-              <p class="text-3xl font-black text-[var(--accent)]">SecOps</p>
-              <p class="mt-1 text-sm muted text-[var(--muted)]">Vulnerability management and security monitoring</p>
-            </div>
-            <div class="content-box rounded-2xl p-5">
-              <p class="text-3xl font-black text-[var(--accent)]">IT Support</p>
-              <p class="mt-1 text-sm muted text-[var(--muted)]">Endpoint support, refresh work, and user support</p>
-            </div>
-          </div>
-        </div>
+    <div class="summary-band"><div class="shell summary-grid">
+      <div class="summary-tile"><span class="micro">01 / STUDY</span><strong>University education</strong><p>Cybersecurity foundations, systems, networking, and risk.</p></div>
+      <div class="summary-tile"><span class="micro">02 / PRACTICE</span><strong>IT and security experience</strong><p>Enterprise endpoint work, SecOps, and vulnerability management.</p></div>
+      <div class="summary-tile"><span class="micro">03 / CONTINUE</span><strong>Certifications &amp; labs</strong><p>Industry credentials and ongoing hands-on technical learning.</p></div>
+    </div></div>
+    <div class="shell">
+      <section class="section" id="education" aria-labelledby="education-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">01 / Education</div><h2 id="education-title">The foundation.</h2><p>Formal cybersecurity education with a focus on technical and defensive fundamentals.</p></div><span class="section-index">DEGREE / 001</span></div>
+        <article class="panel education-card" data-reveal><span class="degree-icon" aria-hidden="true">✳</span><div>
+          <div class="year">May 2026</div><h3>Bachelor of Science in Cybersecurity</h3><p class="organization">University of Maryland Global Campus</p><p class="description">Earned a Bachelor of Science in Cybersecurity from UMGC. Coursework focused on cybersecurity principles, risk management, networking, secure systems, and defensive security foundations.</p>
+          <div style="margin-top:22px"><a class="btn" href="https://jnwoke101.github.io/Education_Career/CeD.263W-34A6-JTEO.pdf" target="_blank" rel="noopener noreferrer">View degree document ↗</a></div>
+        </div></article>
+      </section>
+      <section class="section" id="experience" aria-labelledby="experience-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">02 / Experience</div><h2 id="experience-title">The work behind the skills.</h2><p>A timeline of enterprise IT support, security operations, and vulnerability management experience.</p></div><span class="section-index">CAREER / 004</span></div>
+        <div class="panel experience-list"><article class="experience-card" data-reveal>
+      <div class="experience-rail"><span class="experience-index">01</span><span class="experience-node" aria-hidden="true"></span></div>
+      <div class="experience-content"><div class="eyebrow eyebrow-small">Feb 2026 - Present</div>
+        <h3>Cybersecurity Analyst Intern - Vulnerability Management &amp; Security Operations</h3><p class="organization">Log(N) Pacific</p>
+        <p class="description">Support vulnerability management and security operations by reviewing scan results, prioritizing remediation, assisting with security monitoring, and working with tools such as Tenable/Nessus, Microsoft Sentinel, Microsoft Defender, KQL, and PowerShell.</p>
+        <div class="chips" aria-label="Relevant skills"><span class="chip">Vulnerability Management</span><span class="chip">Microsoft Sentinel</span><span class="chip">Tenable/Nessus</span><span class="chip">KQL</span><span class="chip">PowerShell</span></div>
       </div>
-    </section>
-
-    <section class="reveal mb-12">
-      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Education</h2>
-      <div class="content-box rounded-3xl p-5 md:p-7">
-        <div class="relative z-10 timeline-list">
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <div class="timeline-card">
-              <div class="year"><i class="bx bxs-calendar"></i>May 2026</div>
-              <h3 class="text-xl font-bold text-[var(--accent)]">Bachelor of Science in Cybersecurity</h3>
-              <p class="mt-1 muted text-[var(--muted)]">University of Maryland Global Campus</p>
-              <p class="mt-4 leading-7">
-                Earned a Bachelor of Science in Cybersecurity from UMGC. Coursework focused on cybersecurity principles,
-                risk management, networking, secure systems, and defensive security foundations.
-              </p>
-            </div>
-          </div>
-        </div>
+    </article>
+<article class="experience-card" data-reveal>
+      <div class="experience-rail"><span class="experience-index">02</span><span class="experience-node" aria-hidden="true"></span></div>
+      <div class="experience-content"><div class="eyebrow eyebrow-small">July 2026 - Present</div>
+        <h3>IT Technician</h3><p class="organization">Diverse Agile Solutions | BCIT PC Refresh Program</p>
+        <p class="description">Provide enterprise endpoint support for large-scale device refresh projects, including imaging and deploying Windows devices, configuring user profiles, supporting Microsoft 365, OneDrive, printers, shared drives, and documenting service activity through SolarWinds Service Desk. Assist users with post-deployment issues while ensuring devices are properly configured, functional, and ready for business use.</p>
+        <div class="chips" aria-label="Relevant skills"><span class="chip">Endpoint Support</span><span class="chip">Device Refresh</span><span class="chip">Microsoft 365</span><span class="chip">SolarWinds</span><span class="chip">Asset Management</span><span class="chip">Windows Deployment</span></div>
       </div>
-    </section>
-
-    <section id="experience" class="reveal mb-12">
-      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Career Experience</h2>
-      <div class="content-box rounded-3xl p-5 md:p-7">
-        <div class="relative z-10 timeline-list">
-          <div class="timeline-item">
-            <span class="timeline-dot"></span>
-            <div class="timeline-card">
-              <div class="year"><i class="bx bxs-calendar"></i>Feb 2026 - Present</div>
-              <h3 class="text-xl font-bold text-[var(--accent)]">Cybersecurity Analyst Intern - Vulnerability Management & Security Operations</h3>
-              <p class="mt-1 muted text-[var(--muted)]">Log(N) Pacific</p>
-              <p class="mt-4 leading-7">
-                Support vulnerability management and security operations by reviewing scan results, prioritizing remediation, assisting with
-                security monitoring, and working with tools such as Tenable/Nessus, Microsoft Sentinel, Microsoft Defender, KQL, and PowerShell.
-              </p>
-              <div class="mt-4 flex flex-wrap gap-2 text-sm">
-                <span class="pill rounded-full px-3 py-1">Vulnerability Management</span>
-                <span class="pill rounded-full px-3 py-1">Microsoft Sentinel</span>
-                <span class="pill rounded-full px-3 py-1">Tenable/Nessus</span>
-                <span class="pill rounded-full px-3 py-1">KQL</span>
-                <span class="pill rounded-full px-3 py-1">PowerShell</span>
-              </div>
-            </div>
-          </div>
-
-<div class="timeline-item">
-  <span class="timeline-dot"></span>
-  <div class="timeline-card">
-    <div class="year"><i class="bx bxs-calendar"></i>July 2026 - Present</div>
-    <h3 class="text-xl font-bold text-[var(--accent)]">IT Technician</h3>
-    <p class="mt-1 muted text-[var(--muted)]">Diverse Agile Solutions | BCIT PC Refresh Program</p>
-    <p class="mt-4 leading-7">
-      Provide enterprise endpoint support for large-scale device refresh projects, including imaging and deploying Windows devices,
-      configuring user profiles, supporting Microsoft 365, OneDrive, printers, shared drives, and documenting service activity through
-      SolarWinds Service Desk. Assist users with post-deployment issues while ensuring devices are properly configured, functional,
-      and ready for business use.
-    </p>
-    <div class="mt-4 flex flex-wrap gap-2 text-sm">
-      <span class="pill rounded-full px-3 py-1">Endpoint Support</span>
-      <span class="pill rounded-full px-3 py-1">Device Refresh</span>
-      <span class="pill rounded-full px-3 py-1">Microsoft 365</span>
-      <span class="pill rounded-full px-3 py-1">SolarWinds</span>
-      <span class="pill rounded-full px-3 py-1">Asset Management</span>
-      <span class="pill rounded-full px-3 py-1">Windows Deployment</span>
+    </article>
+<article class="experience-card" data-reveal>
+      <div class="experience-rail"><span class="experience-index">03</span><span class="experience-node" aria-hidden="true"></span></div>
+      <div class="experience-content"><div class="eyebrow eyebrow-small">Jan 2025 - Jun 2026</div>
+        <h3>IT Technician</h3><p class="organization">Applied Technology Services | BCIT PC Refresh Program</p>
+        <p class="description">Provide enterprise endpoint support for large-scale device refresh projects, including imaging and deploying Windows devices, configuring user profiles, supporting Microsoft 365, OneDrive, printers, shared drives, and documenting service activity through SolarWinds Service Desk. Assist users with post-deployment issues while ensuring devices are properly configured, functional, and ready for business use.</p>
+        <div class="chips" aria-label="Relevant skills"><span class="chip">Endpoint Support</span><span class="chip">Device Refresh</span><span class="chip">Microsoft 365</span><span class="chip">SolarWinds</span><span class="chip">Asset Management</span><span class="chip">Windows Deployment</span></div>
+      </div>
+    </article>
+<article class="experience-card" data-reveal>
+      <div class="experience-rail"><span class="experience-index">04</span><span class="experience-node" aria-hidden="true"></span></div>
+      <div class="experience-content"><div class="eyebrow eyebrow-small">Jun 2024 - Oct 2024</div>
+        <h3>Desktop Refresh Technician</h3><p class="organization">Applied Technology Services | CCBC Project</p>
+        <p class="description">Supported a desktop refresh project in an academic environment by preparing, replacing, and configuring endpoints for end users. Assisted with hardware troubleshooting, software setup, user support, and device readiness to ensure a smooth transition to refreshed systems.</p>
+        <div class="chips" aria-label="Relevant skills"><span class="chip">Device Refresh</span><span class="chip">Endpoint Setup</span><span class="chip">Hardware Support</span><span class="chip">Software Setup</span><span class="chip">User Support</span><span class="chip">Technical Troubleshooting</span></div>
+      </div>
+    </article></div>
+      </section>
+      <section class="section" id="certifications" aria-labelledby="certifications-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">03 / Certifications</div><h2 id="certifications-title">Credentials &amp; continued study.</h2><p>Click a certification card to open its associated credential PDF.</p></div><span class="section-index">CREDENTIALS / 007</span></div>
+        <div class="panel cert-grid"><a class="cert-card" href="/Certifications/CompTIA CySA+ ce certificate.pdf" target="_blank" rel="noopener noreferrer" aria-label="View CompTIA CySA+ credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 01</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">◈</span>
+      <h3>CompTIA CySA+</h3><p>Security analytics, vulnerability management, detection, and response.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="cert-card" href="/Certifications/CCNA certificate.pdf" target="_blank" rel="noopener noreferrer" aria-label="View CCNA credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 02</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">⌘</span>
+      <h3>CCNA</h3><p>Networking,Routing,and switching.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="cert-card" href="/Certifications/Security+.pdf" target="_blank" rel="noopener noreferrer" aria-label="View CompTIA Security+ credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 03</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">⬡</span>
+      <h3>CompTIA Security+</h3><p>Security fundamentals, risk, threats, controls, and operations.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="cert-card" href="/Certifications/SC-200.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Microsoft Certified Security Operations Analyst (SC-200) credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 04</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">◎</span>
+      <h3>Microsoft Certified Security Operations Analyst (SC-200)</h3><p>Security analytics, vulnerability management, detection, and response.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="cert-card" href="/Certifications/az-900-cert.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Microsoft Azure Fundamentals credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 05</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">◇</span>
+      <h3>Microsoft Azure Fundamentals</h3><p>Azure cloud concepts, services, pricing, governance, and security basics.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="cert-card" href="/Certifications/GoogleCyberSec.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Google Cybersecurity Professional Certificate credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 06</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">✳</span>
+      <h3>Google Cybersecurity Professional Certificate</h3><p>Security foundations, Linux, SIEM concepts, incident response, and detection basics.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a>
+<a class="cert-card" href="/Certifications/Google_cloud_cybersec.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Google Cloud Cybersecurity Certificate credential PDF" data-reveal>
+      <div class="cert-top"><span class="cert-index">CREDENTIAL / 07</span><span class="cert-arrow" aria-hidden="true">↗</span></div>
+      <span class="cert-symbol" aria-hidden="true">⬢</span>
+      <h3>Google Cloud Cybersecurity Certificate</h3><p>Cloud security concepts, security controls, and cloud risk awareness.</p>
+      <span class="cert-link">View credential PDF <span aria-hidden="true">↗</span></span>
+    </a></div>
+      </section>
+      <section class="section" id="continuing" aria-labelledby="continuing-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">04 / Continuing education</div><h2 id="continuing-title">Keep practicing.</h2><p>Structured, hands-on exercises complementing formal education and professional work.</p></div></div>
+        <div class="panel continuing" data-reveal><div><div class="eyebrow eyebrow-small">Hands-On Labs</div><h3>TryHackMe</h3><p class="description">Practice in penetration testing, SOC analysis, Linux, Windows fundamentals, and blue-team workflows.</p></div><a class="btn primary" href="https://tryhackme.com/p/BlueKnight" target="_blank" rel="noopener noreferrer">View profile ↗</a></div>
+      </section>
+      <div class="closeout" data-reveal><div><div class="eyebrow">Explore related work</div><h2>See the projects in practice.</h2><p>Security labs, documented investigations, remediation, and validation.</p></div><a class="btn primary" href="/Projects/projects.html">Browse projects ↗</a></div>
     </div>
-  </div>
-</div>
-
-<div class="timeline-item">
-  <span class="timeline-dot"></span>
-  <div class="timeline-card">
-    <div class="year"><i class="bx bxs-calendar"></i>Jan 2025 - Jun 2026</div>
-    <h3 class="text-xl font-bold text-[var(--accent)]">IT Technician</h3>
-    <p class="mt-1 muted text-[var(--muted)]">Applied Technology Services | BCIT PC Refresh Program</p>
-    <p class="mt-4 leading-7">
-      Provide enterprise endpoint support for large-scale device refresh projects, including imaging and deploying Windows devices,
-      configuring user profiles, supporting Microsoft 365, OneDrive, printers, shared drives, and documenting service activity through
-      SolarWinds Service Desk. Assist users with post-deployment issues while ensuring devices are properly configured, functional,
-      and ready for business use.
-    </p>
-    <div class="mt-4 flex flex-wrap gap-2 text-sm">
-      <span class="pill rounded-full px-3 py-1">Endpoint Support</span>
-      <span class="pill rounded-full px-3 py-1">Device Refresh</span>
-      <span class="pill rounded-full px-3 py-1">Microsoft 365</span>
-      <span class="pill rounded-full px-3 py-1">SolarWinds</span>
-      <span class="pill rounded-full px-3 py-1">Asset Management</span>
-      <span class="pill rounded-full px-3 py-1">Windows Deployment</span>
-    </div>
-  </div>
-</div>
-
-<div class="timeline-item">
-  <span class="timeline-dot"></span>
-  <div class="timeline-card">
-    <div class="year"><i class="bx bxs-calendar"></i>Jun 2024 - Oct 2024</div>
-    <h3 class="text-xl font-bold text-[var(--accent)]">Desktop Refresh Technician</h3>
-    <p class="mt-1 muted text-[var(--muted)]">Applied Technology Services | CCBC Project</p>
-    <p class="mt-4 leading-7">
-      Supported a desktop refresh project in an academic environment by preparing, replacing, and configuring endpoints for end users.
-      Assisted with hardware troubleshooting, software setup, user support, and device readiness to ensure a smooth transition to refreshed systems.
-    </p>
-    <div class="mt-4 flex flex-wrap gap-2 text-sm">
-      <span class="pill rounded-full px-3 py-1">Device Refresh</span>
-      <span class="pill rounded-full px-3 py-1">Endpoint Setup</span>
-      <span class="pill rounded-full px-3 py-1">Hardware Support</span>
-      <span class="pill rounded-full px-3 py-1">Software Setup</span>
-      <span class="pill rounded-full px-3 py-1">User Support</span>
-      <span class="pill rounded-full px-3 py-1">Technical Troubleshooting</span>
-    </div>
-  </div>
-</div>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="certifications" class="reveal mb-12">
-      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Certifications</h2>
-      <div class="content-box rounded-3xl p-5 md:p-7">
-        <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
-          Click any certification to view the credential PDF.
-        </p>
-
-        <div class="relative z-10 cert-grid">
-        <a href="/Certifications/CompTIA CySA+ ce certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-search-alt"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">CompTIA CySA+</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Security analytics, vulnerability management, detection, and response.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-
-<a href="/Certifications/CCNA certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-search-alt"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">CCNA</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Networking,Routing,and switching.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-
-<a href="/Certifications/Security+.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-shield-quarter"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">CompTIA Security+</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Security fundamentals, risk, threats, controls, and operations.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-
-          <a href="/Certifications/SC-200.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-search-alt"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">Microsoft Certified Security Operations Analyst (SC-200)</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Security analytics, vulnerability management, detection, and response.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-
-          <a href="/Certifications/az-900-cert.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-cloud"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">Microsoft Azure Fundamentals</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Azure cloud concepts, services, pricing, governance, and security basics.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-
-          <a href="/Certifications/GoogleCyberSec.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-lock-alt"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">Google Cybersecurity Professional Certificate</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Security foundations, Linux, SIEM concepts, incident response, and detection basics.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-
-          <a href="/Certifications/Google_cloud_cybersec.pdf" target="_blank" rel="noopener noreferrer" class="cert-card">
-            <div class="cert-orb"><i class="bx bx-cloud-lightning"></i></div>
-            <h3 class="font-bold text-[var(--accent)]">Google Cloud Cybersecurity Certificate</h3>
-            <p class="mt-2 text-sm muted text-[var(--muted)]">Cloud security concepts, security controls, and cloud risk awareness.</p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View PDF →</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="reveal mb-14">
-      <h2 class="section-title mb-6 text-2xl md:text-3xl font-bold">Continuing Education</h2>
-      <div class="content-box rounded-3xl p-5 md:p-7">
-        <div class="relative z-10 grid gap-5 md:grid-cols-2">
-          <a href="https://tryhackme.com/p/BlueKnight" target="_blank" rel="noopener noreferrer" class="timeline-card text-inherit no-underline">
-            <div class="year"><i class="bx bx-terminal"></i>Hands-On Labs</div>
-            <h3 class="text-xl font-bold text-[var(--accent)]">TryHackMe</h3>
-            <p class="mt-4 leading-7 muted text-[var(--muted)]">
-              Practice in penetration testing, SOC analysis, Linux, Windows fundamentals, and blue-team workflows.
-            </p>
-            <p class="mt-4 text-sm font-bold text-[var(--accent)]">View Profile →</p>
-          </a>
-        </div>
-      </div>
-    </section>
   </main>
-
-  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
-    <div class="footer-line mb-8"></div>
-    <h2 class="mb-4 text-xl text-[var(--accent)]">Connect With Me</h2>
-    <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" class="transition hover:-translate-y-1 hover:opacity-80">
-        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
-      </a>
-    </div>
-  </footer>
-
+  <footer><div class="shell footer-inner"><div>© <span id="year">2026</span> Joseph Nwoke · Education &amp; Career · <a class="footer-link" href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div><span class="footer-code">JN // LEARN · BUILD · DEFEND</span></div></footer>
   <script>
-    document.body.classList.remove('no-js');
-
-    const toggleButton = document.getElementById('themeToggle');
-    const body = document.body;
-
-    function applyTheme(mode) {
-      const isLight = mode === 'light';
-      body.classList.toggle('light-mode', isLight);
-      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    }
-
-    applyTheme(localStorage.getItem('theme') || 'dark');
-
-    toggleButton.addEventListener('click', () => {
-      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
-      applyTheme(nextTheme);
-    });
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.reveal').forEach((element) => {
-      revealObserver.observe(element);
-    });
+    (()=>{'use strict';document.body.classList.remove('no-js');
+      const toggle=document.getElementById('themeToggle');const bar=document.getElementById('scrollLine');document.getElementById('year').textContent=new Date().getFullYear();
+      function applyTheme(mode){const light=mode==='light';document.body.classList.toggle('light-mode',light);toggle.textContent=light?'☾ Dark mode':'☀ Light mode';toggle.setAttribute('aria-label',light?'Switch to dark mode':'Switch to light mode');try{localStorage.setItem('theme',light?'light':'dark')}catch(_){}}
+      let stored='dark';try{stored=localStorage.getItem('theme')||'dark'}catch(_){}applyTheme(stored);
+      toggle.addEventListener('click',()=>applyTheme(document.body.classList.contains('light-mode')?'dark':'light'));
+      const reveals=[...document.querySelectorAll('[data-reveal]')];if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('shown');observer.unobserve(e.target)}})},{threshold:.07});reveals.forEach(x=>observer.observe(x));}else reveals.forEach(x=>x.classList.add('shown'));
+      function progress(){const root=document.documentElement;bar.style.width=(100*window.scrollY/Math.max(1,root.scrollHeight-root.clientHeight))+'%'}window.addEventListener('scroll',progress,{passive:true});progress();
+    })();
   </script>
-
-  <!-- Cloudflare Web Analytics -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "54eae24760c743d4bddaf7386fb7bb6d"}'></script>
-<!-- End Cloudflare Web Analytics -->
+  <!-- Cloudflare Web Analytics retained from the original page. -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"54eae24760c743d4bddaf7386fb7bb6d"}'></script>
 </body>
 </html>
