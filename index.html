@@ -1,669 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/png" href="/Logos/webpage_icon.png" sizes="64x64" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Joseph Nwoke | About Me</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070c">
+  <meta name="description" content="Joseph Nwoke — cybersecurity and IT operations portfolio. Explore security operations, vulnerability management, Azure labs, and technical projects.">
+  <title>Joseph Nwoke | Cybersecurity &amp; IT Operations</title>
+  <link rel="icon" href="/Logos/webpage_icon.png" type="image/png">
   <style>
     :root {
-      --bg: #0d1117;
-      --bg-2: #111827;
-      --card: rgba(17, 24, 39, 0.78);
-      --text: #c9d1d9;
-      --muted: #8b949e;
-      --accent: #2ac3de;
-      --accent-2: #7dd3fc;
-      --line: rgba(42, 195, 222, 0.28);
-      --shadow: rgba(42, 195, 222, 0.22);
+      color-scheme: dark;
+      --bg: #05070c;
+      --surface: #0e121a;
+      --surface-2: #151c29;
+      --ink: #f2f6ff;
+      --muted: #afbdd3;
+      --soft: #889bb8;
+      --accent: #678dff; /* Royal-blue primary accent */
+      --accent-2: #abc1ff;
+      --signal: #ff667d; /* Crimson status / secondary accent */
+      --line: rgba(119,151,232,.23);
+      --glass: rgba(7,10,18,.92);
+      --shadow: rgba(0,0,0,.39);
+      --grid: rgba(103,141,255,.048);
+      --button-ink: #080f25;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Courier New', monospace;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 12% 10%, rgba(42, 195, 222, 0.16), transparent 28%),
-        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.12), transparent 24%),
-        linear-gradient(135deg, #0d1117 0%, #090d13 48%, #101827 100%);
-      color: var(--text);
-      overflow-x: hidden;
-      transition: background 0.35s ease, color 0.35s ease;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(42, 195, 222, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(42, 195, 222, 0.035) 1px, transparent 1px);
-      background-size: 44px 44px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent 90%);
-      z-index: -3;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(180deg, transparent, rgba(42, 195, 222, 0.05), transparent);
-      animation: scanline 7s linear infinite;
-      z-index: -2;
-    }
-
-    @keyframes scanline {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100%); }
-    }
-
-    @keyframes floatIn {
-      from {
-        opacity: 0;
-        transform: translateY(22px) scale(0.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes spinSlow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes typingCursor {
-      0%, 49% { border-color: var(--accent); }
-      50%, 100% { border-color: transparent; }
-    }
-
-    @keyframes shimmer {
-      0%, 35% { transform: translateX(-120%); }
-      55%, 100% { transform: translateX(120%); }
-    }
-
-    .page-shell {
-      width: min(1100px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .glass-nav {
-      position: sticky;
-      top: 16px;
-      z-index: 40;
-      margin-top: 18px;
-      backdrop-filter: blur(18px);
-      background: rgba(13, 17, 23, 0.72);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.25);
-    }
-
-    .nav-link,
-    .theme-button {
-      border: 1px solid transparent;
-      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-    }
-
-    .nav-link:hover,
-    .theme-button:hover {
-      transform: translateY(-2px);
-      background: rgba(42, 195, 222, 0.12);
-      border-color: var(--line);
-      color: var(--accent);
-    }
-
-    .hero {
-      min-height: 72vh;
-      display: grid;
-      align-items: center;
-      padding: 64px 0 36px;
-      position: relative;
-    }
-
-    .hero-card {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: linear-gradient(145deg, rgba(17, 24, 39, 0.88), rgba(13, 17, 23, 0.72));
-      backdrop-filter: blur(20px);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
-      animation: floatIn 0.8s ease both;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      background: linear-gradient(120deg, transparent 0%, rgba(42, 195, 222, 0.25) 35%, transparent 65%);
-      transform: translateX(-120%);
-      animation: shimmer 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .name-glow {
-      color: var(--accent);
-      text-shadow: 0 0 12px rgba(42, 195, 222, 0.38), 0 0 40px rgba(42, 195, 222, 0.16);
-      letter-spacing: 0.08em;
-    }
-
-    .terminal-line {
-      display: inline-block;
-      border-right: 2px solid var(--accent);
-      animation: typingCursor 1s step-end infinite;
-    }
-
-    .profile-wrap {
-      position: relative;
-      width: 168px;
-      height: 168px;
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-    }
-
-    .profile-wrap::before,
-    .profile-wrap::after {
-      content: "";
-      position: absolute;
-      border-radius: 999px;
-      inset: 0;
-      border: 1px dashed rgba(42, 195, 222, 0.65);
-      animation: spinSlow 18s linear infinite;
-    }
-
-    .profile-wrap::after {
-      inset: 12px;
-      border-style: solid;
-      border-color: rgba(42, 195, 222, 0.25);
-      animation-duration: 12s;
-      animation-direction: reverse;
-    }
-
-    .profile-image {
-      width: 128px;
-      height: 128px;
-      border-radius: 999px;
-      object-fit: cover;
-      border: 4px solid var(--accent);
-      box-shadow: 0 0 28px rgba(42, 195, 222, 0.28);
-      z-index: 2;
-    }
-
-    .content-box {
-      position: relative;
-      background: var(--card) !important;
-      border: 1px solid rgba(42, 195, 222, 0.18);
-      box-shadow: 0 16px 42px rgba(0,0,0,0.22);
-      backdrop-filter: blur(16px);
-      overflow: hidden;
-      animation: floatIn 0.7s ease both;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
-    }
-
-    .content-box::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(42, 195, 222, 0.10), transparent 36%);
-      pointer-events: none;
-    }
-
-    .content-box:hover {
-      transform: translateY(-5px);
-      border-color: rgba(42, 195, 222, 0.45);
-      box-shadow: 0 22px 60px rgba(0,0,0,0.28), 0 0 34px rgba(42, 195, 222, 0.12);
-    }
-
-    .section-title {
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-title::after {
-      content: "";
-      height: 1px;
-      flex: 1;
-      background: linear-gradient(90deg, rgba(42, 195, 222, 0.6), transparent);
-    }
-
-    .pill {
-      border: 1px solid rgba(42, 195, 222, 0.28);
-      background: rgba(42, 195, 222, 0.08);
-      color: var(--accent-2);
-      transition: transform 0.25s ease, background 0.25s ease;
-    }
-
-    .pill:hover {
-      transform: translateY(-2px);
-      background: rgba(42, 195, 222, 0.16);
-    }
-
-    .stat-card,
-    .cert-item,
-    .tool-card {
-      border: 1px solid rgba(42, 195, 222, 0.16);
-      background: rgba(13, 17, 23, 0.48);
-      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-    }
-
-    .stat-card:hover,
-    .cert-item:hover,
-    .tool-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: rgba(42, 195, 222, 0.5);
-      background: rgba(42, 195, 222, 0.08);
-    }
-
-    .timeline-item {
-      position: relative;
-      padding-left: 28px;
-    }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 7px;
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 18px rgba(42, 195, 222, 0.7);
-    }
-
-    .timeline-item::after {
-      content: "";
-      position: absolute;
-      left: 5px;
-      top: 24px;
-      width: 1px;
-      height: calc(100% + 12px);
-      background: rgba(42, 195, 222, 0.22);
-    }
-
-    .timeline-item:last-child::after {
-      display: none;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .footer-line {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(42, 195, 222, 0.6), transparent);
-    }
-
     body.light-mode {
-      --bg: #ffffff;
-      --bg-2: #f4f7fb;
-      --card: rgba(255, 255, 255, 0.82);
-      --text: #0b1220;
-      --muted: #4b5563;
-      --accent: #007c92;
-      --accent-2: #0369a1;
-      --line: rgba(0, 124, 146, 0.28);
-      --shadow: rgba(0, 124, 146, 0.2);
-      background:
-        radial-gradient(circle at 12% 10%, rgba(0, 124, 146, 0.12), transparent 30%),
-        radial-gradient(circle at 88% 18%, rgba(3, 105, 161, 0.08), transparent 26%),
-        linear-gradient(135deg, #ffffff 0%, #f5f7fb 48%, #edf6f8 100%) !important;
-      color: var(--text) !important;
+      color-scheme: light;
+      --bg: #f4f7fe;
+      --surface: #ffffff;
+      --surface-2: #ecf2ff;
+      --ink: #18223a;
+      --muted: #53637f;
+      --soft: #667796;
+      --accent: #254fc0;
+      --accent-2: #244da9;
+      --signal: #b52849;
+      --line: rgba(55,85,168,.19);
+      --glass: rgba(249,251,255,.94);
+      --shadow: rgba(31,57,123,.12);
+      --grid: rgba(59,91,180,.048);
+      --button-ink: #ffffff;
     }
+    *,*::before,*::after {box-sizing:border-box}
+    [hidden] {display:none!important}
+    html {scroll-behavior:smooth;scroll-padding-top:105px}
+    body {margin:0;min-height:100vh;overflow-x:hidden;color:var(--ink);
+      font:16px/1.7 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+      background:radial-gradient(ellipse at 85% 3%,rgba(64,104,245,.18),transparent 32%),
+        radial-gradient(ellipse at 5% 45%,rgba(223,51,85,.065),transparent 36%),var(--bg);
+      transition:background .3s,color .3s}
+    body::before {content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+      background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+        linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+      background-size:46px 46px;mask-image:linear-gradient(black,transparent 90%)}
+    a {color:inherit} button {cursor:pointer;font:inherit}
+    a:focus-visible,button:focus-visible {outline:2px solid var(--accent);outline-offset:4px}
+    ::selection {background:var(--accent);color:var(--bg)}
+    .mono,.brand,.eyebrow,.small-label,.pill,.stat-num,.section-num,.skill-label,.project-num,.cred-num,.footer-code {
+      font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+    .shell {width:min(1190px,calc(100% - 44px));margin-inline:auto}
+    .skip {position:absolute;left:10px;top:-75px;padding:11px;background:var(--accent);color:var(--button-ink);z-index:200}
+    .skip:focus {top:10px}
+    .progress {position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+      background:linear-gradient(90deg,var(--accent),var(--signal));box-shadow:0 0 16px var(--accent)}
 
-    body.light-mode::before {
-      background-image:
-        linear-gradient(rgba(0, 124, 146, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 124, 146, 0.055) 1px, transparent 1px);
+    /* Navigation */
+    .nav {position:sticky;top:12px;z-index:40;margin-top:14px;border:1px solid var(--line);
+      border-radius:17px;background:var(--glass);backdrop-filter:blur(18px);box-shadow:0 16px 44px var(--shadow)}
+    .nav-inner {display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;padding:10px 20px}
+    .brand {text-decoration:none;display:flex;align-items:center;gap:11px;font-weight:800;font-size:.81rem;letter-spacing:.12em;white-space:nowrap}
+    .brand-icon {width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--accent);
+      border-radius:9px;color:var(--accent);transform:rotate(-8deg);font-size:1.23rem}
+    .brand-icon span {transform:rotate(8deg)}
+    .navlinks {display:flex;flex-wrap:wrap;align-items:center;gap:4px;justify-content:flex-end}
+    .navlinks a,.theme-button {border:1px solid transparent;text-decoration:none;color:var(--muted);
+      font-size:.8rem;font-weight:750;padding:9px 11px;border-radius:10px;background:transparent;transition:.2s}
+    .navlinks a:hover,.theme-button:hover {color:var(--accent);background:rgba(103,141,255,.11)}
+    .navlinks a[aria-current="page"] {color:var(--accent)}
+    .theme-button {border-color:var(--line);color:var(--ink)}
+
+    /* Introduction */
+    .hero {display:grid;grid-template-columns:1.06fr .94fr;gap:43px;align-items:center;padding:89px 0 74px}
+    .eyebrow {display:flex;align-items:center;gap:12px;color:var(--accent);font-size:.73rem;
+      font-weight:800;text-transform:uppercase;letter-spacing:.18em}
+    .eyebrow::before {content:"";display:block;width:26px;height:1px;background:var(--accent);flex-shrink:0}
+    h1,h2,h3,p {margin-top:0}h1,h2,h3 {line-height:1.17}
+    h1 {font-size:clamp(3.6rem,7.1vw,7.25rem);line-height:1.04;font-weight:850;
+      letter-spacing:-.082em;margin:24px 0 24px}
+    h1 em {display:block;color:var(--accent-2);font-style:normal}
+    h2 {font-size:clamp(1.9rem,3.6vw,3.1rem);letter-spacing:-.057em;margin-bottom:14px}
+    h3 {font-size:1.12rem;letter-spacing:-.027em}
+    .hero-copy {color:var(--muted);max-width:580px;font-size:1.06rem;line-height:1.85}
+    .hero-copy strong {color:var(--ink)}
+    .pills {display:flex;gap:9px;flex-wrap:wrap;margin:23px 0 31px}
+    .pill {border:1px solid var(--line);color:var(--muted);border-radius:99px;
+      font-size:.71rem;font-weight:700;letter-spacing:.035em;padding:5px 11px}
+    .actions {display:flex;gap:10px;flex-wrap:wrap}
+    .btn {display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      border:1px solid var(--line);border-radius:12px;padding:12px 18px;background:var(--surface);
+      color:var(--ink);text-decoration:none;font-size:.84rem;font-weight:800;
+      transition:transform .2s,border-color .2s,box-shadow .2s}
+    .btn:hover {transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 28px var(--shadow)}
+    .btn.primary {background:var(--accent);color:var(--button-ink);border-color:var(--accent)}
+    .btn.primary:hover {filter:brightness(1.09)}
+    .btn.tiny {font-size:.78rem;padding:9px 12px}
+
+    /* Abstract shield replaces profile photo entirely */
+    .visual {min-height:421px;position:relative;overflow:hidden;border-radius:26px;
+      border:1px solid var(--line);background:radial-gradient(circle at 50% 45%,rgba(103,141,255,.17),transparent 44%),var(--surface);
+      box-shadow:0 28px 72px var(--shadow)}
+    .visual::before,.visual::after {content:"";position:absolute;top:50%;left:50%;width:350px;height:350px;
+      margin:-175px 0 0 -175px;border:1px dashed rgba(103,141,255,.35);border-radius:50%;animation:spin 35s linear infinite}
+    .visual::after {height:260px;width:260px;margin:-130px 0 0 -130px;border-color:rgba(255,102,125,.33);
+      animation-direction:reverse;animation-duration:26s}
+    .visual-top,.visual-bottom {position:absolute;left:23px;right:23px;z-index:2;display:flex;justify-content:space-between;gap:12px}
+    .visual-top {top:19px;color:var(--accent);font:800 .67rem ui-monospace,monospace;letter-spacing:.13em}
+    .visual-top .live {color:var(--signal)}
+    .visual-top .live::before {content:"";display:inline-block;width:7px;height:7px;margin-right:8px;
+      background:var(--signal);border-radius:50%;box-shadow:0 0 13px var(--signal);animation:blink 2s infinite}
+    .visual-center {position:absolute;inset:0;display:grid;place-items:center}
+    .visual-center svg {width:142px;height:166px;filter:drop-shadow(0 0 23px rgba(103,141,255,.23));animation:float 6s ease-in-out infinite}
+    .visual-side {position:absolute;top:49%;left:22px;transform:translateY(-50%);z-index:2;
+      color:var(--muted);font:.67rem/2 ui-monospace,monospace;letter-spacing:.08em}
+    .visual-side.right {left:auto;right:22px;text-align:right;color:var(--signal)}
+    .visual-bottom {bottom:22px;align-items:end}
+    .visual-bottom small {display:block;color:var(--muted);font:700 .66rem ui-monospace,monospace;letter-spacing:.13em}
+    .visual-bottom strong {display:block;margin-top:6px;font-size:1.14rem}
+    .visual-bottom div:last-child {text-align:right}
+    .visual::marker {display:none}
+    .visual-sweep {position:absolute;left:0;right:0;bottom:0;height:2px;
+      background:linear-gradient(90deg,transparent,var(--accent),var(--signal),transparent);animation:blink 4s infinite}
+
+    /* Strip */
+    .focus-band {border-block:1px solid var(--line);background:linear-gradient(90deg,rgba(103,141,255,.060),transparent,rgba(255,102,125,.037))}
+    .focus-list {display:grid;grid-template-columns:repeat(3,1fr)}
+    .focus-item {padding:24px 30px;border-right:1px solid var(--line)}
+    .focus-item:first-child {padding-left:0}.focus-item:last-child {border:0}
+    .small-label {display:block;font-size:.67rem;color:var(--accent);letter-spacing:.14em;margin-bottom:9px}
+    .focus-item strong {font-size:1.08rem}
+    .focus-item p {color:var(--muted);font-size:.81rem;margin:5px 0 0}
+
+    /* Sections / cards */
+    .section {padding-top:87px}
+    .section-head {display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:25px}
+    .section-head .eyebrow {margin-bottom:14px}
+    .section-head p {color:var(--muted);max-width:610px;margin:0}
+    .section-num {color:var(--accent);border:1px solid var(--line);padding:7px 12px;border-radius:999px;
+      font-size:.7rem;letter-spacing:.1em;white-space:nowrap}
+    .panel {background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;
+      box-shadow:0 13px 36px var(--shadow);position:relative;overflow:hidden}
+    .panel::before {content:"";position:absolute;left:0;right:0;top:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(103,141,255,.55),transparent);pointer-events:none}
+    .panel > * {position:relative}
+    .panel p {color:var(--muted)}
+    .panel p:last-child {margin-bottom:0}
+    .panel strong {color:var(--ink)}
+    .two-col {display:grid;grid-template-columns:1.05fr .95fr;gap:17px}
+    .panel-label {color:var(--accent);font:800 .71rem ui-monospace,monospace;letter-spacing:.15em;text-transform:uppercase}
+    .about-text {font-size:1.03rem;line-height:1.92}
+    .about-list {margin:19px 0 0;padding:0;list-style:none}
+    .about-list li {display:flex;gap:11px;margin:11px 0;color:var(--muted);font-size:.9rem}
+    .about-list li::before {content:"↗";color:var(--signal);font-weight:800}
+    .timeline {display:grid;gap:17px;margin-top:21px}
+    .timeline-item {border-left:1px solid var(--line);padding-left:18px;position:relative}
+    .timeline-item::before {content:"";position:absolute;left:-5px;top:8px;width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 14px rgba(103,141,255,.40)}
+    .timeline-item h3 {margin-bottom:5px}
+    .timeline-item p {font-size:.87rem;margin:0}
+
+    /* Featured work */
+    .project-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .project {display:flex;flex-direction:column;min-height:273px;border:1px solid var(--line);
+      border-radius:18px;background:var(--surface);padding:24px;text-decoration:none;position:relative;overflow:hidden;
+      transition:transform .24s,border-color .24s,box-shadow .24s}
+    .project::before {content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 0% 0%,rgba(103,141,255,.12),transparent 52%)}
+    .project:nth-child(2)::before {background:radial-gradient(circle at 0% 0%,rgba(255,102,125,.09),transparent 52%)}
+    .project:nth-child(3)::before {background:radial-gradient(circle at 0% 0%,rgba(120,142,255,.12),transparent 52%)}
+    .project:hover {transform:translateY(-5px);border-color:var(--accent);box-shadow:0 18px 40px var(--shadow)}
+    .project > * {position:relative}
+    .project-num {font-size:.72rem;letter-spacing:.13em;color:var(--accent);display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .project-glyph {font-size:1.75rem;line-height:1;margin:25px 0 16px;color:var(--signal)}
+    .project h3 {font-size:1.12rem;margin-bottom:9px}
+    .project p {color:var(--muted);font-size:.84rem;line-height:1.73;margin:0 0 16px}
+    .project .read {color:var(--accent);font-weight:800;font-size:.8rem;margin-top:auto}
+
+    /* Credentials */
+    .credentials {display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .credential {display:flex;align-items:center;justify-content:space-between;gap:15px;text-decoration:none;
+      border:1px solid var(--line);border-radius:13px;background:var(--surface-2);padding:17px 19px;transition:.2s}
+    .credential:hover {transform:translateY(-2px);border-color:var(--accent)}
+    .credential-text {display:flex;align-items:center;gap:14px;font-size:.89rem;font-weight:750}
+    .cred-num {color:var(--accent);font-size:.69rem}
+    .credential .arrow {color:var(--accent);font-size:.76rem;font-weight:800;white-space:nowrap}
+
+    /* Tools, properly grouped */
+    .skills-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .skill-card {border:1px solid var(--line);border-radius:17px;padding:23px;background:var(--surface);
+      transition:transform .23s,border-color .23s,box-shadow .23s}
+    .skill-card:hover {transform:translateY(-4px);border-color:var(--accent);box-shadow:0 13px 33px var(--shadow)}
+    .skill-label {color:var(--accent);font-size:.66rem;letter-spacing:.13em;margin-bottom:14px}
+    .skill-card h3 {font-size:1.05rem;margin-bottom:8px}
+    .skill-card p {font-size:.81rem;color:var(--muted);margin-bottom:18px}
+    .chips {display:flex;gap:7px;flex-wrap:wrap}
+    .chip {font:.71rem/1.45 ui-monospace,Consolas,monospace;color:var(--muted);
+      border:1px solid var(--line);border-radius:8px;padding:6px 9px;background:var(--surface-2)}
+
+    /* Closeout */
+    .note {border:1px solid rgba(103,141,255,.40);border-radius:18px;
+      background:linear-gradient(115deg,rgba(103,141,255,.13),rgba(255,102,125,.024)),var(--surface);
+      padding:27px;display:grid;grid-template-columns:47px 1fr;gap:16px}
+    .note-symbol {font-size:1.7rem;color:var(--accent)}
+    .note h3 {margin-bottom:8px}.note p {margin:0;color:var(--muted)}
+    .closing {margin:93px 0 65px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+      padding:37px;border:1px solid var(--line);border-radius:22px;
+      background:linear-gradient(112deg,rgba(103,141,255,.14),rgba(255,102,125,.037)),var(--surface)}
+    .closing h2 {margin:13px 0 9px}.closing p {margin:0;color:var(--muted);max-width:600px}
+    footer {border-top:1px solid var(--line);padding:30px 0 42px;color:var(--muted);font-size:.83rem}
+    .footer-inner {display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:15px}
+    .footer-link {text-decoration:none;color:var(--accent);font-weight:750}
+    .footer-link:hover {text-decoration:underline}
+    .footer-code {font-size:.72rem;color:var(--accent);letter-spacing:.05em}
+
+    /* Motion */
+    [data-reveal] {opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
+    [data-reveal].shown {opacity:1;transform:none}
+    body.no-js [data-reveal] {opacity:1;transform:none}
+    @keyframes spin {to {transform:rotate(360deg)}}
+    @keyframes float {50% {transform:translateY(-11px)}}
+    @keyframes blink {50% {opacity:.35}}
+    @media(max-width:990px) {
+      .hero {grid-template-columns:1fr;gap:27px;padding-top:61px}
+      .visual {min-height:335px}
+      .project-grid,.skills-grid {grid-template-columns:repeat(2,1fr)}
+      .section-num {display:none}
     }
-
-    body.light-mode .glass-nav {
-      background: rgba(255, 255, 255, 0.78);
-      box-shadow: 0 18px 46px rgba(15, 23, 42, 0.10);
+    @media(max-width:680px) {
+      .shell {width:calc(100% - 28px)}
+      .nav-inner {justify-content:center;flex-wrap:wrap;padding:12px}
+      .navlinks {justify-content:center}
+      .navlinks a,.theme-button {padding:7px 9px}
+      .hero {padding:49px 0 57px}
+      h1 {font-size:clamp(3.05rem,14vw,5.2rem)}
+      .visual {min-height:305px}
+      .visual-side {display:none}
+      .focus-list {grid-template-columns:1fr}
+      .focus-item,.focus-item:first-child {padding:20px 0;border-right:0;border-bottom:1px solid var(--line)}
+      .focus-item:last-child {border:0}
+      .two-col,.project-grid,.credentials,.skills-grid {grid-template-columns:1fr}
+      .section {padding-top:68px}
+      .closing {margin-top:72px;display:block;padding:25px}
+      .closing .btn {margin-top:21px}
+      .note {grid-template-columns:1fr}
+      .footer-inner {display:block}
+      .footer-code {display:block;margin-top:10px}
     }
-
-    body.light-mode .hero-card,
-    body.light-mode .content-box {
-      background: rgba(255, 255, 255, 0.78) !important;
-      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.10);
-    }
-
-    body.light-mode .profile-image {
-      border-color: #000000 !important;
-    }
-
-    body.light-mode .stat-card,
-    body.light-mode .cert-item,
-    body.light-mode .tool-card {
-      background: rgba(255,255,255,0.64);
-      border-color: rgba(0, 124, 146, 0.18);
-    }
-
-    body.light-mode .muted {
-      color: #4b5563 !important;
-    }
-
-    @media (max-width: 720px) {
-      .glass-nav {
-        border-radius: 24px;
-      }
-
-      .hero {
-        min-height: auto;
-        padding-top: 36px;
-      }
-
-      .profile-wrap {
-        width: 142px;
-        height: 142px;
-      }
-
-      .profile-image {
-        width: 108px;
-        height: 108px;
-      }
-    }
-
-    /* Safety fallback: if JavaScript fails, show the sections instead of hiding them forever. */
-    noscript .reveal,
-    body.no-js .reveal {
-      opacity: 1;
-      transform: translateY(0);
+    @media(prefers-reduced-motion:reduce) {
+      *,*::before,*::after {animation:none!important;transition:none!important;scroll-behavior:auto!important}
+      [data-reveal] {opacity:1;transform:none}
     }
   </style>
 </head>
-
 <body class="no-js">
-  <header class="page-shell glass-nav px-4 py-3">
-    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-      <a href="#top" class="font-bold tracking-[0.25em] text-[var(--accent)] text-center md:text-left">Portfolio</a>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
 
-      <nav class="flex flex-wrap items-center justify-center gap-2 text-sm">
-        <a class="nav-link px-4 py-2 rounded-full" href="/index.html">About</a>
-        <a class="nav-link px-4 py-2 rounded-full" href="/Projects/projects.html">Projects</a>
-        <a class="nav-link px-4 py-2 rounded-full" href="/Education_Career/education_and_career.html">Education & Career</a>
-        <button id="themeToggle" class="theme-button px-4 py-2 rounded-full text-[var(--accent)]" type="button">🌙 Light Mode</button>
+  <header class="nav shell">
+    <div class="nav-inner">
+      <a class="brand" href="/index.html"><span class="brand-icon" aria-hidden="true"><span>◇</span></span>JN / Portfolio</a>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="/index.html" aria-current="page">About</a>
+        <a href="/Projects/projects.html">Projects</a>
+        <a href="/Education_Career/education_and_career.html">Education &amp; Career</a>
+        <button class="theme-button" id="themeToggle" type="button" aria-label="Toggle color theme">☀ Light mode</button>
       </nav>
     </div>
   </header>
 
-  <main id="top" class="page-shell">
-    <section class="hero">
-      <div class="hero-card rounded-[2rem] p-6 md:p-10">
-        <div class="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
-          <div>
-            <p class="mb-4 text-sm uppercase tracking-[0.35em] text-[var(--accent-2)]">IT Support • Cybersecurity • Cloud Defense</p>
-            <h1 class="name-glow text-4xl sm:text-5xl md:text-7xl font-black leading-tight">JOSEPH<br />NWOKE</h1>
-            <p class="terminal-line mt-5 text-base md:text-lg text-[var(--text)]">Building labs. Hunting threats. Securing systems.</p>
-
-            <div class="mt-7 flex flex-wrap gap-3">
-              <span class="pill rounded-full px-4 py-2 text-sm">Security+</span>
-              <span class="pill rounded-full px-4 py-2 text-sm">CySA+</span>
-              <span class="pill rounded-full px-4 py-2 text-sm">Microsoft Sentinel</span>
-              <span class="pill rounded-full px-4 py-2 text-sm">Vulnerability Management</span>
-            </div>
-
-            <div class="mt-8 flex flex-wrap gap-3">
-              <a href="/Projects/projects.html" class="rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 font-semibold text-[#071018] transition hover:-translate-y-1 hover:shadow-[0_0_30px_var(--shadow)]">View Projects</a>
-              <a href="#skills" class="rounded-full border border-[var(--line)] px-6 py-3 text-[var(--accent)] transition hover:-translate-y-1 hover:bg-[rgba(42,195,222,0.12)]">Explore Tools</a>
-            </div>
+  <main id="main">
+    <div class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div data-reveal>
+          <div class="eyebrow">Cybersecurity / IT operations / hands-on labs</div>
+          <h1 id="hero-title">Joseph <em>Nwoke.</em></h1>
+          <p class="hero-copy">I work at the intersection of <strong>enterprise IT support, security operations, and vulnerability management</strong>. I turn technical problems into documented, repeatable workflows—from endpoint troubleshooting to detection engineering and Windows hardening.</p>
+          <div class="pills" aria-label="Areas of focus">
+            <span class="pill">CompTIA Security+</span><span class="pill">CompTIA CySA+</span>
+            <span class="pill">Microsoft Sentinel</span><span class="pill">Tenable / DISA STIG</span>
           </div>
-
-          <div class="flex flex-col items-center gap-6">
-            <div class="profile-wrap">
-              <img src="profile.png" alt="Profile" class="profile-image" />
-            </div>
-
-            <div class="grid w-full grid-cols-3 gap-3 text-center">
-              <div class="stat-card rounded-2xl p-4">
-                <p class="text-2xl font-black text-[var(--accent)]">SOC</p>
-                <p class="mt-1 text-xs muted text-[var(--muted)]">Monitoring</p>
-              </div>
-              <div class="stat-card rounded-2xl p-4">
-                <p class="text-2xl font-black text-[var(--accent)]">Vuln</p>
-                <p class="mt-1 text-xs muted text-[var(--muted)]">Mgmt</p>
-              </div>
-              <div class="stat-card rounded-2xl p-4">
-                <p class="text-2xl font-black text-[var(--accent)]">Cloud</p>
-                <p class="mt-1 text-xs muted text-[var(--muted)]">Security</p>
-              </div>
-            </div>
+          <div class="actions">
+            <a class="btn primary" href="/Projects/projects.html">Explore projects <span aria-hidden="true">↗</span></a>
+            <a class="btn" href="#expertise">Explore skills <span aria-hidden="true">↓</span></a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="reveal content-box rounded-3xl p-6 md:p-8">
-      <h2 class="section-title mb-5 text-2xl font-bold">About Me</h2>
-      <p class="relative z-10 leading-8">
-        I am a cybersecurity-focused IT professional with a Bachelor’s degree in Cybersecurity 
-        from UMGC and hands-on experience across endpoint support, vulnerability management, security monitoring, 
-        and cloud security labs. My background combines real-world IT support experience with cybersecurity internship 
-        work focused on vulnerability management and security operations. I have worked with tools and technologies such 
-        as Microsoft Sentinel, Microsoft Defender, Tenable/Nessus, PowerShell, KQL, Active Directory, and Azure.      </p>
-    </section>
-
-    <section class="mt-10 grid gap-6 md:grid-cols-2">
-      <div class="reveal content-box rounded-3xl p-6 md:p-8">
-        <h2 class="section-title mb-6 text-2xl font-bold">Education</h2>
-        <div class="timeline-item relative z-10 pb-2">
-          <h3 class="text-lg font-bold text-[var(--accent)]">University of Maryland Global Campus</h3>
-          <p class="mt-2 text-sm muted text-[var(--muted)]">Bachelor of Science in Cybersecurity — May 2026</p>
+        <!-- Abstract security artwork; no personal photograph on this page. -->
+        <div class="visual" data-reveal role="img" aria-label="Animated shield representing security operations, remediation, and cloud security">
+          <div class="visual-top"><span>JN / SECURITY WORKSPACE</span><span class="live">LAB ACTIVE</span></div>
+          <div class="visual-side">SOC // SIEM<br>VM // STIG<br>IT // OPS</div>
+          <div class="visual-side right">DETECT<br>REMEDIATE<br>VALIDATE</div>
+          <div class="visual-center">
+            <svg viewBox="0 0 120 138" fill="none" aria-hidden="true">
+              <path d="M60 5 109 23v37c0 35-19 59-49 72C30 119 11 95 11 60V23L60 5Z" fill="rgba(103,141,255,.13)" stroke="#678dff" stroke-width="2"/>
+              <path d="M60 18 97 32v28c0 27-13 46-37 59-24-13-37-32-37-59V32L60 18Z" stroke="rgba(103,141,255,.53)" stroke-width="1.4" stroke-dasharray="3 5"/>
+              <path d="m39 67 14 14 29-30" stroke="#ff667d" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="visual-bottom"><div><small>FOCUS</small><strong>Security + Operations</strong></div><div><small>APPROACH</small><strong>Build · Test · Document</strong></div></div>
+          <div class="visual-sweep"></div>
         </div>
-      </div>
+      </section>
+    </div>
 
-      <div class="reveal content-box rounded-3xl p-6 md:p-8">
-        <h2 class="section-title mb-6 text-2xl font-bold">Current Focus</h2>
-        <div class="space-y-5 relative z-10">
-          <div class="timeline-item">
-            <h3 class="font-bold text-[var(--accent)]">Security Operations Growth</h3>
-            <p class="mt-1 text-sm leading-6 muted text-[var(--muted)]">Building stronger SIEM, vulnerability management, incident response, and detection skills.</p>
-          </div>
-          <div class="timeline-item">
-            <h3 class="font-bold text-[var(--accent)]">Offensive Security Practice</h3>
-            <p class="mt-1 text-sm leading-6 muted text-[var(--muted)]">Continuing hands-on lab work in penetration testing, enumeration, exploitation, and remediation.</p>
-          </div>
+    <div class="focus-band">
+      <div class="shell focus-list">
+        <div class="focus-item"><span class="small-label">01 / DETECT</span><strong>Security operations</strong><p>SIEM monitoring, endpoint telemetry, investigations, and KQL.</p></div>
+        <div class="focus-item"><span class="small-label">02 / REMEDIATE</span><strong>Vulnerability management</strong><p>Tenable scanning, DISA STIGs, prioritization, and verification.</p></div>
+        <div class="focus-item"><span class="small-label">03 / OPERATE</span><strong>IT &amp; infrastructure</strong><p>Windows endpoints, Active Directory, Azure, and user support.</p></div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <section class="section" id="about" aria-labelledby="about-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">01 / Background</div><h2 id="about-title">A practical foundation in security.</h2><p>Technical support experience, cybersecurity training, and a portfolio built around demonstrable work.</p></div><span class="section-num">ABOUT / 001</span></div>
+        <div class="two-col">
+          <article class="panel" data-reveal>
+            <div class="panel-label">Who I am</div>
+            <h3 style="font-size:1.55rem;margin:16px 0">IT experience applied to cyber defense.</h3>
+            <p class="about-text">I earned a B.S. in Cybersecurity from the University of Maryland Global Campus. My professional background in end-user support informs how I approach incidents and vulnerabilities: understand the environment, verify the impact, implement the change, and document the result.</p>
+            <p class="about-text">Through my cybersecurity internship and independent labs, I have worked on vulnerability assessments, Windows security configurations, SIEM detection, endpoint investigations, and Azure infrastructure.</p>
+          </article>
+          <article class="panel" data-reveal>
+            <div class="panel-label">My approach</div>
+            <h3 style="font-size:1.55rem;margin:16px 0">Evidence before conclusions.</h3>
+            <p>I prefer projects that show the full lifecycle—not just the final screenshot. My writeups connect an initial observation to the technical steps, verification results, and limitations discovered along the way.</p>
+            <ul class="about-list">
+              <li>Investigate alerts and document the supporting telemetry.</li>
+              <li>Prioritize findings and validate remediation with rescans.</li>
+              <li>Build repeatable PowerShell and cloud lab workflows.</li>
+              <li>Communicate technical outcomes clearly to other teams.</li>
+            </ul>
+          </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="reveal mt-10">
-      <h2 class="section-title mb-5 text-2xl font-bold">Certifications</h2>
-      <div class="content-box rounded-3xl p-5 md:p-6">
-        <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
-          Click any certification to view the credential PDF.
-        </p>
+      <section class="section" id="journey" aria-labelledby="journey-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">02 / Education &amp; direction</div><h2 id="journey-title">Where the work comes from.</h2></div><span class="section-num">PATH / 002</span></div>
+        <div class="two-col">
+          <article class="panel" data-reveal>
+            <div class="panel-label">Education</div>
+            <h3 style="font-size:1.35rem;margin:17px 0 9px">University of Maryland Global Campus</h3>
+            <p style="margin-bottom:17px">Bachelor of Science in Cybersecurity · May 2026</p>
+            <div class="chips"><span class="chip">Windows &amp; Linux</span><span class="chip">Cloud security</span><span class="chip">Network defense</span></div>
+          </article>
+          <article class="panel" data-reveal>
+            <div class="panel-label">Areas of growth</div>
+            <div class="timeline">
+              <div class="timeline-item"><h3>Security operations &amp; detection</h3><p>Investigations, SIEM analysis, endpoint telemetry, and incident response.</p></div>
+              <div class="timeline-item"><h3>Vulnerability management &amp; hardening</h3><p>Risk-based remediation, PowerShell, Windows configuration, and compliance evidence.</p></div>
+              <div class="timeline-item"><h3>Cloud and identity</h3><p>Azure infrastructure, Active Directory, Microsoft Entra ID, and security monitoring.</p></div>
+            </div>
+          </article>
+        </div>
+      </section>
 
-        <div class="relative z-10 grid gap-3 md:grid-cols-2">
-          <a href="/Certifications/Security+.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
-            <span>CompTIA Security+</span>
-            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+      <section class="section" id="featured" aria-labelledby="featured-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">03 / Selected work</div><h2 id="featured-title">Projects that show the process.</h2><p>Three examples of how I investigate, remediate, and validate in hands-on environments.</p></div><span class="section-num">PROJECTS / 003</span></div>
+        <div class="project-grid" data-reveal>
+          <a class="project" href="/Projects/Other%20Projects/DISA%20STIG%20VM%20Task/cyber_range_DISA_project.html">
+            <div class="project-num"><span>01 / SYSTEM HARDENING</span><span aria-hidden="true">↗</span></div><div class="project-glyph" aria-hidden="true">⬡</div>
+            <h3>Windows 11 DISA STIG Remediation</h3>
+            <p>Ten controls tracked through baseline, manual fixes, rollback, and automated Tenable verification.</p>
+            <span class="read">View case study →</span>
           </a>
-
-          <a href="/Certifications/CompTIA CySA+ ce certificate.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
-            <span>CompTIA CySA+</span>
-            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          <a class="project" href="/Projects/Other%20Projects/Project%201/Sentinel%20PowerShell%20Discovery%20Lab.html">
+            <div class="project-num"><span>02 / DETECTION ENGINEERING</span><span aria-hidden="true">↗</span></div><div class="project-glyph" aria-hidden="true">⌁</div>
+            <h3>Sentinel PowerShell Discovery Lab</h3>
+            <p>Endpoint telemetry, KQL analytics, alert validation, and investigation of simulated PowerShell discovery.</p>
+            <span class="read">View case study →</span>
           </a>
-
-          <a href="/Certifications/az-900-cert.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
-            <span>Microsoft Azure Fundamentals</span>
-            <span class="text-sm text-[var(--accent)]">View PDF →</span>
-          </a>
-
-          <a href="/Certifications/GoogleCyberSec.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4">
-            <span>Google Cybersecurity Professional Certificate</span>
-            <span class="text-sm text-[var(--accent)]">View PDF →</span>
-          </a>
-
-          <a href="/Certifications/Google_cloud_cybersec.pdf" target="_blank" rel="noopener noreferrer" class="cert-item flex items-center justify-between rounded-2xl p-4 md:col-span-2">
-            <span>Google Cloud Cybersecurity Certificate</span>
-            <span class="text-sm text-[var(--accent)]">View PDF →</span>
+          <a class="project" href="/Projects/Other%20Projects/Vulnerability%20Management%20Lifecycle/Vulnerability%20Management%20Lifecycle%20temp.html">
+            <div class="project-num"><span>03 / VULNERABILITY MANAGEMENT</span><span aria-hidden="true">↗</span></div><div class="project-glyph" aria-hidden="true">◇</div>
+            <h3>Vulnerability Management Lifecycle</h3>
+            <p>Identification, prioritization, remediation, and follow-up assessment in a controlled lab.</p>
+            <span class="read">View case study →</span>
           </a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="skills" class="reveal mt-10">
-      <h2 class="section-title mb-5 text-2xl font-bold">Tools I Use</h2>
-      <div class="content-box rounded-3xl p-6 md:p-8">
-        <p class="relative z-10 mb-6 leading-7 muted text-[var(--muted)]">
-          A focused look at the platforms and tools I use across IT support, SOC operations, vulnerability management, cloud security, scripting, and hands-on security labs.
-        </p>
-
-        <div class="relative z-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          <div class="tool-card rounded-2xl p-5">
-            <h3 class="mb-3 font-bold text-[var(--accent)]">SOC & Detection</h3>
-            <div class="flex flex-wrap gap-2 text-sm">
-              <span class="pill rounded-full px-3 py-1">Microsoft Sentinel</span>
-              <span class="pill rounded-full px-3 py-1">Microsoft Defender</span>
-              <span class="pill rounded-full px-3 py-1">KQL</span>
-              <span class="pill rounded-full px-3 py-1">MITRE ATT&CK</span>
-              <span class="pill rounded-full px-3 py-1">Incident Response</span>
-            </div>
-          </div>
-
-          <div class="tool-card rounded-2xl p-5">
-            <h3 class="mb-3 font-bold text-[var(--accent)]">Vulnerability Management</h3>
-            <div class="flex flex-wrap gap-2 text-sm">
-              <span class="pill rounded-full px-3 py-1">Tenable</span>
-              <span class="pill rounded-full px-3 py-1">Nessus</span>
-              <span class="pill rounded-full px-3 py-1">OpenVAS</span>
-              <span class="pill rounded-full px-3 py-1">CVSS</span>
-              <span class="pill rounded-full px-3 py-1">DISA STIG</span>
-            </div>
-          </div>
-
-          <div class="tool-card rounded-2xl p-5">
-            <h3 class="mb-3 font-bold text-[var(--accent)]">Cloud & Infrastructure</h3>
-            <div class="flex flex-wrap gap-2 text-sm">
-              <span class="pill rounded-full px-3 py-1">Microsoft Azure</span>
-              <span class="pill rounded-full px-3 py-1">Azure Arc</span>
-              <span class="pill rounded-full px-3 py-1">Log Analytics</span>
-              <span class="pill rounded-full px-3 py-1">Active Directory</span>
-              <span class="pill rounded-full px-3 py-1">Windows Server</span>
-            </div>
-          </div>
-
-          <div class="tool-card rounded-2xl p-5">
-            <h3 class="mb-3 font-bold text-[var(--accent)]">Offensive Security Labs</h3>
-            <div class="flex flex-wrap gap-2 text-sm">
-              <span class="pill rounded-full px-3 py-1">Kali Linux</span>
-              <span class="pill rounded-full px-3 py-1">Nmap</span>
-              <span class="pill rounded-full px-3 py-1">Metasploit</span>
-              <span class="pill rounded-full px-3 py-1">Burp Suite</span>
-              <span class="pill rounded-full px-3 py-1">John the Ripper</span>
-            </div>
-          </div>
-
-          <div class="tool-card rounded-2xl p-5">
-            <h3 class="mb-3 font-bold text-[var(--accent)]">Networking & Analysis</h3>
-            <div class="flex flex-wrap gap-2 text-sm">
-              <span class="pill rounded-full px-3 py-1">Wireshark</span>
-              <span class="pill rounded-full px-3 py-1">TCP/IP</span>
-              <span class="pill rounded-full px-3 py-1">DNS</span>
-              <span class="pill rounded-full px-3 py-1">Firewall Rules</span>
-              <span class="pill rounded-full px-3 py-1">NSGs</span>
-            </div>
-          </div>
-
-          <div class="tool-card rounded-2xl p-5">
-            <h3 class="mb-3 font-bold text-[var(--accent)]">Automation & IT Support</h3>
-            <div class="flex flex-wrap gap-2 text-sm">
-              <span class="pill rounded-full px-3 py-1">PowerShell</span>
-              <span class="pill rounded-full px-3 py-1">Python</span>
-              <span class="pill rounded-full px-3 py-1">Microsoft 365</span>
-              <span class="pill rounded-full px-3 py-1">SolarWinds</span>
-              <span class="pill rounded-full px-3 py-1">OneDrive</span>
-            </div>
+      <section class="section" id="certifications" aria-labelledby="cert-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">04 / Credentials</div><h2 id="cert-title">Certifications &amp; training.</h2><p>Credential links preserved from my original About page.</p></div><span class="section-num">CREDENTIALS / 004</span></div>
+        <div class="panel" data-reveal>
+          <div class="credentials">
+            <a class="credential" href="/Certifications/Security+.pdf" target="_blank" rel="noopener noreferrer"><span class="credential-text"><span class="cred-num">01</span>CompTIA Security+</span><span class="arrow">View PDF ↗</span></a>
+            <a class="credential" href="/Certifications/CompTIA%20CySA+%20ce%20certificate.pdf" target="_blank" rel="noopener noreferrer"><span class="credential-text"><span class="cred-num">02</span>CompTIA CySA+</span><span class="arrow">View PDF ↗</span></a>
+            <a class="credential" href="/Certifications/az-900-cert.pdf" target="_blank" rel="noopener noreferrer"><span class="credential-text"><span class="cred-num">03</span>Microsoft Azure Fundamentals (AZ-900)</span><span class="arrow">View PDF ↗</span></a>
+            <a class="credential" href="/Certifications/GoogleCyberSec.pdf" target="_blank" rel="noopener noreferrer"><span class="credential-text"><span class="cred-num">04</span>Google Cybersecurity Professional Certificate</span><span class="arrow">View PDF ↗</span></a>
+            <a class="credential" href="/Certifications/Google_cloud_cybersec.pdf" target="_blank" rel="noopener noreferrer"><span class="credential-text"><span class="cred-num">05</span>Google Cloud Cybersecurity Certificate</span><span class="arrow">View PDF ↗</span></a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="reveal mt-10 content-box rounded-3xl p-6 md:p-8">
-      <h2 class="section-title mb-5 text-2xl font-bold">What I'm Working On Now</h2>
-      <div class="relative z-10 space-y-4 leading-8">
-        <p>
-          Right now, I’m focused on strengthening my security operations and vulnerability management skills while continuing hands-on offensive security practice through labs and projects.
-        </p>
-        <p>
-          I’m building experience with SIEM monitoring, KQL queries, endpoint security, vulnerability remediation, Azure-based security labs, and penetration testing fundamentals.
-        </p>
-        <p>
-          My short-term goal is to move fully into an information security role where I can contribute technically, support investigations, help reduce risk, and continue growing as a security professional.
-        </p>
+      <section class="section" id="expertise" aria-labelledby="expertise-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">05 / Technical toolkit</div><h2 id="expertise-title">Tools grouped by the work they do.</h2><p>Separated into practical domains so each tool has a clear purpose—not just a long list of product names.</p></div><span class="section-num">SKILLS / 005</span></div>
+        <div class="skills-grid" data-reveal>
+          <article class="skill-card"><div class="skill-label">01 / DETECT &amp; RESPOND</div><h3>Security operations</h3><p>Analyzing events, hunting activity, and investigating endpoint alerts.</p><div class="chips"><span class="chip">Microsoft Sentinel</span><span class="chip">Defender for Endpoint</span><span class="chip">Splunk</span><span class="chip">KQL</span><span class="chip">VirusTotal</span><span class="chip">MITRE ATT&amp;CK</span></div></article>
+          <article class="skill-card"><div class="skill-label">02 / ASSESS &amp; VERIFY</div><h3>Vulnerability management</h3><p>Finding misconfigurations and checking that fixes actually pass.</p><div class="chips"><span class="chip">Tenable</span><span class="chip">Nessus</span><span class="chip">DISA STIG</span><span class="chip">CVSS</span><span class="chip">Remediation tracking</span></div></article>
+          <article class="skill-card"><div class="skill-label">03 / BUILD &amp; SECURE</div><h3>Cloud &amp; identity</h3><p>Working with cloud resources, accounts, policies, and hybrid infrastructure.</p><div class="chips"><span class="chip">Microsoft Azure</span><span class="chip">Entra ID</span><span class="chip">Active Directory</span><span class="chip">Azure Arc</span><span class="chip">Log Analytics</span><span class="chip">Windows Server</span></div></article>
+          <article class="skill-card"><div class="skill-label">04 / SUPPORT &amp; DELIVER</div><h3>Enterprise IT support</h3><p>Keeping devices and users operational through deployment and troubleshooting.</p><div class="chips"><span class="chip">Windows 10 / 11</span><span class="chip">Device imaging</span><span class="chip">Microsoft 365</span><span class="chip">SolarWinds tickets</span><span class="chip">Endpoint deployment</span><span class="chip">Printer troubleshooting</span></div></article>
+          <article class="skill-card"><div class="skill-label">05 / INSPECT &amp; CONNECT</div><h3>Networking &amp; analysis</h3><p>Understanding network traffic and the policies that shape access.</p><div class="chips"><span class="chip">Wireshark</span><span class="chip">TCP/IP</span><span class="chip">DNS</span><span class="chip">pfSense</span><span class="chip">Azure NSGs</span><span class="chip">Firewall rules</span></div></article>
+          <article class="skill-card"><div class="skill-label">06 / SCRIPT &amp; TEST</div><h3>Automation &amp; security labs</h3><p>Creating repeatable fixes and validating behavior in controlled environments.</p><div class="chips"><span class="chip">PowerShell</span><span class="chip">Python</span><span class="chip">Group Policy</span><span class="chip">Kali Linux</span><span class="chip">Nmap</span><span class="chip">Metasploit</span><span class="chip">Burp Suite</span></div></article>
+        </div>
+      </section>
+
+      <section class="section" id="now" aria-labelledby="now-title">
+        <div class="section-head" data-reveal><div><div class="eyebrow">06 / Current focus</div><h2 id="now-title">Building toward deeper security work.</h2></div><span class="section-num">NEXT / 006</span></div>
+        <div class="note" data-reveal><span class="note-symbol" aria-hidden="true">✳</span><div><h3>Detection, remediation, and engineering</h3><p>I am developing deeper security operations and vulnerability management experience through practical projects in Sentinel, Defender for Endpoint, PowerShell, Tenable, and Azure. I am also building out enterprise-style identity and infrastructure labs to understand not just how a security finding appears, but how it can be addressed without disrupting operations.</p></div></div>
+      </section>
+
+      <div class="closing" data-reveal>
+        <div><div class="eyebrow">Explore the full portfolio</div><h2>See the work behind the skills.</h2><p>Each case study documents the environment, decisions, technical steps, and verification evidence.</p></div>
+        <a class="btn primary" href="/Projects/projects.html">Browse all projects ↗</a>
       </div>
-    </section>
+    </div>
   </main>
 
-  <footer class="page-shell py-12 text-center text-sm muted text-[var(--muted)]">
-    <div class="footer-line mb-8"></div>
-    <h2 class="mb-4 text-xl text-[var(--accent)]">Connect With Me</h2>
-    <div class="flex justify-center gap-6">
-      <a href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" class="transition hover:-translate-y-1 hover:opacity-80">
-        <img src="/Logos/linkedin.png" alt="LinkedIn" class="h-8" />
-      </a>
-    </div>
-  </footer>
+  <footer><div class="shell footer-inner"><div>© <span id="year">2026</span> Joseph Nwoke · Cybersecurity portfolio &nbsp;·&nbsp; <a class="footer-link" href="https://www.linkedin.com/in/joseph-n-b4a967284/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div><span class="footer-code">JN // SECURITY · OPERATIONS · LABS</span></div></footer>
 
   <script>
-    document.body.classList.remove('no-js');
+    (() => {
+      'use strict';
+      document.body.classList.remove('no-js');
+      const themeButton = document.getElementById('themeToggle');
+      const progress = document.getElementById('progress');
+      const year = document.getElementById('year');
+      year.textContent = new Date().getFullYear();
 
-    const toggleButton = document.getElementById('themeToggle');
-    const body = document.body;
-
-    function applyTheme(mode) {
-      const isLight = mode === 'light';
-      body.classList.toggle('light-mode', isLight);
-      toggleButton.textContent = isLight ? '🌚 Dark Mode' : '🌙 Light Mode';
-      localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    }
-
-    applyTheme(localStorage.getItem('theme') || 'dark');
-
-    toggleButton.addEventListener('click', () => {
-      const nextTheme = body.classList.contains('light-mode') ? 'dark' : 'light';
-      applyTheme(nextTheme);
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+      function applyTheme(mode) {
+        const light = mode === 'light';
+        document.body.classList.toggle('light-mode', light);
+        themeButton.textContent = light ? '☾ Dark mode' : '☀ Light mode';
+        themeButton.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+        try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (_) {}
+      }
+      let storedTheme = 'dark';
+      try { storedTheme = localStorage.getItem('theme') || 'dark'; } catch (_) {}
+      applyTheme(storedTheme);
+      themeButton.addEventListener('click', () => {
+        applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
       });
-    }, { threshold: 0.12 });
 
-    document.querySelectorAll('.reveal').forEach((element) => {
-      observer.observe(element);
-    });
+      const reveals = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) { entry.target.classList.add('shown'); observer.unobserve(entry.target); }
+          });
+        }, { threshold: .08 });
+        reveals.forEach(element => observer.observe(element));
+      } else {
+        reveals.forEach(element => element.classList.add('shown'));
+      }
+      function updateProgress() {
+        const root = document.documentElement;
+        const range = Math.max(1, root.scrollHeight - root.clientHeight);
+        progress.style.width = (100 * window.scrollY / range) + '%';
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    })();
   </script>
-<!-- Cloudflare Web Analytics -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "3a352c63adc147828dc993f061fa69d7"}'></script>
-<!-- End Cloudflare Web Analytics -->
+  <!-- Preserved Cloudflare Web Analytics from the original page. Remove this tag if you no longer use that account. -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "3a352c63adc147828dc993f061fa69d7"}'></script>
 </body>
 </html>
